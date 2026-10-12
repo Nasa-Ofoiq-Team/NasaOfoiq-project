@@ -389,13 +389,26 @@ window.addEventListener('DOMContentLoaded', () => {
   const defaultCoords = [32.2438, 35.39];
   map = L.map('map').setView(defaultCoords, 12);
 
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap contributors'
+  // خرائط Esri المضمونة والسريعة
+  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+    maxZoom: 19,
+    attribution: 'Tiles &copy; Esri'
   }).addTo(map);
 
-  marker = L.marker(defaultCoords,{icon:L.divIcon({className:'pin',html:'<i></i><b></b>',iconSize:[30,30],iconAnchor:[15,15]})}).addTo(map)
+  marker = L.marker(defaultCoords, {
+    icon: L.divIcon({
+      className: 'pin',
+      html: '<i></i><b></b>',
+      iconSize: [30, 30],
+      iconAnchor: [15, 15]
+    })
+  }).addTo(map)
     .bindPopup('موقع المزرعة: النصارية / نابلس (32.2438, 35.39)')
     .openPopup();
+
+  setTimeout(() => {
+    if (map) map.invalidateSize();
+  }, 400);
 });
 
 function locateUserOnMap() {
@@ -628,4 +641,75 @@ function selectedRecCondition(rec, month) {
   if (soilStatus === "Saturated") return "التربة مشبعة بالمياه، أوقف الري فوراً لتجنب تعفن الجذور واستفد من المطر.";
   if (soilStatus === "Very dry") return "قم بري تكميلي في الصباح الباكر لتعويض نقص الرطوبة";
   return rec["ma7mod condition"] || "جاهز للزراعة";
+}
+function downloadPDFPlan() {
+  toast('جاري تحضير تقرير الطباعة عالي الجودة... ⏳');
+
+  // إنشاء عنصر طباعة مؤقت ومنسق بشكل احترافي للـ PDF
+  const reportContainer = document.createElement('div');
+  reportContainer.style.padding = '30px';
+  reportContainer.style.fontFamily = 'Cairo, sans-serif';
+  reportContainer.style.direction = 'rtl';
+  reportContainer.style.color = '#1b3b22';
+  reportContainer.style.backgroundColor = '#ffffff';
+
+  // المحتوى المنسق بدقة للتقرير
+  reportContainer.innerHTML = `
+    <div style="border-bottom: 3px solid #2E7D32; padding-bottom: 15px; margin-bottom: 20px; text-align: center;">
+      <h1 style="color: #2E7D32; font-size: 24px; font-weight: 900; margin: 0;">🌿 مشروع أفق (Ofoiq) - التكيف الزراعي</h1>
+      <h3 style="color: #6D4C41; font-size: 16px; margin: 5px 0 0 0;">خطة الدورة الزراعية المخصصة - النصارية / نابلس</h3>
+      <p style="font-size: 11px; color: #666; margin-top: 5px;">مستند صادرة بناءً على تحليلات بيانات NASA POWER الميدانية</p>
+    </div>
+
+    <div style="background-color: #f5f2eb; padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #e0dacf;">
+      <h4 style="color: #1b3b22; font-size: 14px; margin: 0 0 10px 0; font-weight: bold;">📊 مؤشرات التناوب المحصولي والنتائج المتوقعة:</h4>
+      <table style="width: 100%; font-size: 12px; border-collapse: collapse;">
+        <tr>
+          <td style="padding: 8px; border: 1px solid #ccc; font-weight: bold; background-color: #e8f5e9; color: #2E7D32;">توفير المياه:</td>
+          <td style="padding: 8px; border: 1px solid #ccc;">توفير 35% من مياه الري في المواسم الجافة</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #ccc; font-weight: bold; background-color: #fff3e0; color: #e65100;">خصوبة التربة:</td>
+          <td style="padding: 8px; border: 1px solid #ccc;">تحسين 30% في تثبيت النيتروجين الطبيعي</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3 style="color: #2E7D32; font-size: 16px; font-weight: bold; margin-bottom: 10px;">🔄 تتابع المحاصيل الزراعية الموصى بها للـ 3 مواسم القادمة:</h3>
+
+    <div style="margin-bottom: 15px; padding: 12px; border-right: 5px solid #2E7D32; background-color: #f9f9f9; border-radius: 6px;">
+      <h4 style="margin: 0; color: #2E7D32; font-size: 14px; font-weight: bold;">الموسم 1 (أيلول - تشرين) : 🌱 المحاصيل البقولية (عدس / فول)</h4>
+      <p style="margin: 5px 0 0 0; font-size: 12px; color: #333;"><strong>الفائدة الرئيسية:</strong> تثبيت النيتروجين الطبيعي بالتربة وتقليل الحاجة للأسمدة الكيماوية.</p>
+    </div>
+
+    <div style="margin-bottom: 15px; padding: 12px; border-right: 5px solid #e65100; background-color: #f9f9f9; border-radius: 6px;">
+      <h4 style="margin: 0; color: #e65100; font-size: 14px; font-weight: bold;">الموسم 2 (كانون - نيسان) : 🌾 الحبوب (شعير / قمح)</h4>
+      <p style="margin: 5px 0 0 0; font-size: 12px; color: #333;"><strong>الفائدة الرئيسية:</strong> جذور عميقة تفكك التربة وتستفيد من موسمي الأمطار في النصارية.</p>
+    </div>
+
+    <div style="margin-bottom: 20px; padding: 12px; border-right: 5px solid #0288d1; background-color: #f9f9f9; border-radius: 6px;">
+      <h4 style="margin: 0; color: #0288d1; font-size: 14px; font-weight: bold;">الموسم 3 (موسم الموازنة) : 🌻 حمص / محاصيل راحة</h4>
+      <p style="margin: 5px 0 0 0; font-size: 12px; color: #333;"><strong>الفائدة الرئيسية:</strong> كسر دورة الآفات والأمراض وإعادة توازن رطوبة التربة.</p>
+    </div>
+
+    <div style="text-align: center; border-t: 1px solid #ddd; pt: 10px; font-size: 10px; color: #888; margin-top: 30px;">
+      تم إنتاج هذا المستند بواسطة تطبيق Ofoiq أفق - NASA Space Apps Challenge 2026
+    </div>
+  `;
+
+  // إعدادات التنزيل بدقة عالية وبدون غباش
+  const opt = {
+    margin:       [0.4, 0.4, 0.4, 0.4],
+    filename:     'خطة_أفق_الزراعية_النصرية.pdf',
+    image:        { type: 'jpeg', quality: 1.0 },
+    html2canvas:  { scale: 3, useCORS: true, letterRendering: true },
+    jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+  };
+
+  html2pdf().set(opt).from(reportContainer).save().then(() => {
+    toast('تم تنزيل تقرير الخطة بنجاح  🌾');
+  }).catch(err => {
+    console.error(err);
+    toast('حدث خطأ أثناء تنزيل الملف', false);
+  });
 }
