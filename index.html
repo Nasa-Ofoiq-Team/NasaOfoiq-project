@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ofoiq أفق | التكيف الزراعي باستخدام بيانات ناسا</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@700&family=Cairo:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            earth: {
+              primary: '#2E7D32',
+              secondary: '#6D4C41',
+              water: '#0288D1',
+              sand: '#F5F2EB',
+              dark: '#1B3B22',
+              accent: '#E65100'
+            }
+          },
+          fontFamily: {
+            sans: ['Cairo', 'Plus Jakarta Sans', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- ربط ملف الـ CSS الخارجي -->
+  <link rel="stylesheet" href="thekra.css">
+</head>
+<body class="font-sans antialiased min-h-screen flex flex-col relative overflow-x-hidden">
+  <div class="sun"></div>
+  <div id="field"></div>
+  <canvas id="fx"></canvas>
+
+  <!-- Header -->
+  <header class="custom-dark-header backdrop-blur-md text-white shadow-xl sticky top-0 z-50 border-b border-emerald-900/60">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+      
+      <!-- الشعار الأصلي -->
+      <a href="javascript:void(0)" onclick="goToStep(1)" class="flex items-center gap-3 shrink-0 cursor-pointer no-underline select-none">
+        <img src="1791745068.jpg" alt="أفق" class="h-10 w-10 rounded-lg object-cover border border-emerald-500/40">
+        <div>
+          <span class="text-xl font-extrabold tracking-tight text-white">Ofoiq <span class="text-[#58EB4C]">أفق</span></span>
+        </div>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-2 lg:gap-4 text-sm font-bold bg-emerald-950/70 p-1.5 rounded-xl border border-emerald-800/60 shadow-inner">
+        <div id="step-btn-1" onclick="goToStep(1)" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-emerald-400 cursor-pointer transition-all duration-300">
+          <span class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs shrink-0 shadow-sm">1</span>
+          <span class="whitespace-nowrap">بيانات مزرعتك</span>
+        </div>
+
+        <i class="fa-solid fa-chevron-left text-xs text-emerald-700/60"></i>
+
+        <div id="step-btn-2" onclick="goToStep(2)" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-300 cursor-pointer transition-all duration-300">
+          <span class="w-6 h-6 rounded-full bg-gray-700 text-gray-300 flex items-center justify-center text-xs shrink-0">2</span>
+          <span class="whitespace-nowrap">تحليل بيانات ناسا المباشر</span>
+        </div>
+
+        <i class="fa-solid fa-chevron-left text-xs text-emerald-700/60"></i>
+
+        <div id="step-btn-3" onclick="goToStep(3)" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-300 cursor-pointer transition-all duration-300">
+          <span class="w-6 h-6 rounded-full bg-gray-700 text-gray-300 flex items-center justify-center text-xs shrink-0">3</span>
+          <span class="whitespace-nowrap">خطة الدورة الزراعية</span>
+        </div>
+      </nav>
+
+      <div class="flex items-center gap-3 shrink-0">
+        <div class="flex items-center gap-2 bg-emerald-950/80 px-3.5 py-1.5 rounded-full border border-emerald-800">
+          <span class="w-2.5 h-2.5 rounded-full bg-[#58EB4C] animate-pulse shrink-0"></span>
+          <span class="text-xs text-emerald-300 font-bold whitespace-nowrap">بيانات NASA POWER الميدانية (النصارية)</span>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
+
+    <!-- الشاشة 1 -->
+    <section id="screen-1" class="space-y-6">
+      <div class="text-center max-w-4xl mx-auto space-y-2">
+        <h1 class="text-3xl sm:text-4xl font-black flex items-center justify-center gap-3">
+          <span class="title-gradient">أرضك بتحكي، وإحنا بنساعدك تفهمها</span>
+          <span class="text-2xl sm:text-3xl animate-bounce">🌱✨</span>
+        </h1>
+        <p class="text-emerald-100/90 text-sm font-semibold">مربوط مباشرة ببيانات محطة النصارية / نابلس مع التوصيات الفورية للمزارع</p>
+      </div>
+
+      <div class="max-w-5xl mx-auto glass-card rounded-2xl p-6 sm:p-10 shadow-xl">
+        <form id="farm-form" class="space-y-6" onsubmit="handleFormSubmit(event)">
+          
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <label class="block text-sm font-bold text-gray-800">
+                <i class="fa-solid fa-location-dot text-earth-primary ml-2"></i>موقع المزرعة / المنطقة
+              </label>
+              <button type="button" onclick="locateUserOnMap()" class="bg-earth-sand hover:bg-amber-100 text-earth-dark text-xs font-bold px-3.5 py-2 rounded-lg border border-amber-300 transition flex items-center space-x-1.5 space-x-reverse shadow-sm">
+                <i class="fa-solid fa-crosshairs text-earth-primary"></i>
+                <span>حدد موقعك على الخريطة</span>
+              </button>
+            </div>
+
+            <select id="input-region" class="w-full bg-white border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-[#58EB4C] outline-none text-sm font-bold">
+              <option value="Al-Nasariya, Nablus">النصارية / نابلس (بيانات محطة NASA POWER الحقيقية)</option>
+            </select>
+
+            <div class="rounded-xl overflow-hidden border border-gray-300 shadow-inner">
+              <div id="map"></div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div class="space-y-2">
+              <label class="block text-sm font-bold text-gray-800">
+                <i class="fa-solid fa-calendar-day text-earth-primary ml-2"></i>اختر التاريخ المستهدف من البيانات
+              </label>
+              <select id="input-date" onchange="onDateSelect(this.value)" class="w-full bg-white border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-[#58EB4C] outline-none text-sm font-bold">
+              </select>
+            </div>
+
+            <div class="space-y-2">
+              <label class="block text-sm font-bold text-gray-800">
+                <i class="fa-solid fa-seedling text-earth-primary ml-2"></i>المحصول المستهدف
+              </label>
+              <select id="input-crop" class="w-full bg-white border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-[#58EB4C] outline-none text-sm font-bold">
+                <option value="Legumes">البقوليات (عدس / حمص / فول)</option>
+                <option value="Wheat">القمح</option>
+                <option value="Barley">الشعير</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <label class="block text-sm font-bold text-gray-800">
+              <i class="fa-solid fa-bullseye text-earth-accent ml-2"></i>حدد هدف مزرعتك الأساسي :<span class="text-red-500">*</span>
+            </label>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              
+              <label id="goal-card-water" onclick="selectGoal('Water Conservation')" class="border border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer transition hover:border-[#58EB4C] goal-card-selected">
+                <input type="radio" name="goal" value="Water Conservation" class="sr-only" checked>
+                <i class="fa-solid fa-droplet-slash text-earth-water text-xl mb-1"></i>
+                <span class="text-xs font-bold text-gray-800">توفير المياه وحماية التربة</span>
+              </label>
+
+              <label id="goal-card-yield" onclick="selectGoal('Yield Enhancement')" class="border border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer transition hover:border-[#58EB4C]">
+                <input type="radio" name="goal" value="Yield Enhancement" class="sr-only">
+                <i class="fa-solid fa-chart-line text-emerald-600 text-xl mb-1"></i>
+                <span class="text-xs font-bold text-gray-800">زيادة الإنتاجية</span>
+              </label>
+
+              <label id="goal-card-drought" onclick="selectGoal('Drought Resilience')" class="border border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer transition hover:border-[#58EB4C]">
+                <input type="radio" name="goal" value="Drought Resilience" class="sr-only">
+                <i class="fa-solid fa-sun text-amber-600 text-xl mb-1"></i>
+                <span class="text-xs font-bold text-gray-800">مقاومة الجفاف</span>
+              </label>
+
+            </div>
+          </div>
+
+          <button type="submit" class="w-full bg-earth-primary hover:bg-emerald-800 text-white font-extrabold py-4 rounded-xl shadow-lg transition flex items-center justify-center space-x-2 space-x-reverse text-base cursor-pointer hover:shadow-[0_0_25px_rgba(88,235,76,0.4)]">
+            <span>حلل بياناتي 🌱🚀</span>
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- الشاشة 2 -->
+    <section id="screen-2" class="space-y-6 hidden">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-emerald-800/30 pb-4">
+        <div>
+          <h2 class="text-2xl font-bold text-white">حالة وقراءات المزرعة المباشرة 🌱</h2>
+          <p class="text-sm text-emerald-100 font-semibold">تاريخ القراءة: <span id="display-date" class="font-bold text-[#58EB4C]">2022-09-01</span> | الهدف المختار: <span id="display-goal" class="font-bold text-[#58EB4C]">توفير المياه وحماية التربة</span></p>
+        </div>
+        <button onclick="goToStep(1)" class="bg-white/10 hover:bg-white/20 text-white text-xs font-bold px-3.5 py-2 rounded-xl border border-white/20 transition flex items-center space-x-1.5 space-x-reverse">
+          <i class="fa-solid fa-arrow-right"></i>
+          <span>تغيير التاريخ أو الهدف</span>
+        </button>
+      </div>
+
+      <div id="notification-banner" class="p-5 rounded-2xl shadow-lg border-2 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-emerald-50 border-emerald-300">
+        <div class="flex items-start space-x-4 space-x-reverse">
+          <div id="stage"></div><div id="notification-icon-bg" class="w-12 h-12 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-2xl shrink-0 shadow mt-1 sm:mt-0">
+            <i id="notification-icon" class="fa-solid fa-bell"></i>
+          </div>
+          <div>
+            <span class="text-xs font-extrabold text-gray-500 uppercase tracking-wider block">📢 إشعار التوصية المباشر للمزارع </span>
+            <h3 id="notification-text" class="text-xl font-black text-emerald-900 mt-0.5">الظروف مثالية اليوم! ابدأ زراعة المحاصيل الأساسية أو قم بالتسميد.</h3>
+            
+            <p id="notification-reason" class="text-xs text-gray-700 font-bold mt-1.5 bg-white/70 p-2 rounded-lg border border-emerald-200/60 inline-block">
+              💡 <strong>السبب:</strong> رطوبة التربة والمدى الحراري مناسبان جداً لبذر البقوليات وتثبيت النيتروجين في الأرض.
+            </p>
+          </div>
+        </div>
+        
+        <span id="notification-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-200 text-emerald-800 whitespace-nowrap self-start sm:self-center">
+          توصية معتمدة
+        </span>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        
+        <div class="hover-glow-card p-5 rounded-2xl shadow-md border-r-4 border-emerald-500 space-y-2">
+          <div class="flex justify-between items-start">
+            <span class="text-xs font-bold text-emerald-800 uppercase">🌱 مؤشر صحة التربة (Soil Moisture Status)</span>
+            <span id="val-gwetroot" class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">GWETROOT: 0.45</span>
+          </div>
+          <div class="space-y-1">
+            <span id="val-soil-status" class="text-xl font-black text-amber-600 block">Very dry</span>
+            <span id="val-gwettop" class="text-xs text-gray-500 font-bold block">رطوبة الطبقة السطحية (GWETTOP): 0.09</span>
+          </div>
+          <div class="pt-2 border-t border-gray-100 flex items-center space-x-1.5 space-x-reverse text-gray-600 text-xs font-bold">
+            <i class="fa-solid fa-circle-info text-emerald-600"></i>
+            <span id="soil-desc">قم بري تكميلي في الصباح الباكر لتعويض نقص الرطوبة</span>
+          </div>
+        </div>
+
+        <div class="hover-glow-card p-5 rounded-2xl shadow-md border-r-4 border-blue-500 space-y-2">
+          <div class="flex justify-between items-start">
+            <span class="text-xs font-bold text-blue-800 uppercase">🌧️ الأمطار التراكمية (Cumulative Rainfall)</span>
+            <span id="val-prectotcorr" class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-800">اليومي: 0.0 ملم</span>
+          </div>
+          <div class="space-y-1">
+            <span id="val-cum-rain" class="text-xl font-black text-earth-dark block">0.0 ملم</span>
+            <span class="text-xs text-gray-500 font-bold block">حالة التحقق: VALID</span>
+          </div>
+          <div class="pt-2 border-t border-gray-100 flex items-center space-x-1.5 space-x-reverse text-blue-700 text-xs font-bold">
+            <i class="fa-solid fa-cloud-showers-heavy"></i>
+            <span>تراكمي الهطول المطري للفترة</span>
+          </div>
+        </div>
+
+        <div class="hover-glow-card p-5 rounded-2xl shadow-md border-r-4 border-amber-500 space-y-2">
+          <div class="flex justify-between items-start">
+            <span class="text-xs font-bold text-amber-800 uppercase">🌡️ درجات الحرارة والمدى اليومي</span>
+            <span id="val-temp-avg" class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800">المعدل: 31.4°C</span>
+          </div>
+          <div class="space-y-1">
+            <span id="val-temp-range" class="text-xl font-black text-gray-800 block">العظمى: 41.5°C | الصغرى: 24.8°C</span>
+            <span id="val-diurnal" class="text-xs text-gray-500 font-bold block">المدى الحراري اليومي (Diurnal Range): 16.71°C</span>
+          </div>
+          <div class="pt-2 border-t border-gray-100 flex items-center space-x-1.5 space-x-reverse text-amber-700 text-xs font-bold">
+            <i class="fa-solid fa-temperature-half"></i>
+            <span>الفارق الحراري مناسب لتنظيم مواعيد السقاية</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="bg-emerald-950/80 border border-emerald-500/40 rounded-2xl p-4 text-white flex items-center gap-3">
+        <i class="fa-solid fa-lightbulb text-amber-400 text-2xl"></i>
+        <div>
+          <span class="text-xs font-bold text-emerald-300 block">توصية مخصصة بناءً على هدفك الرئيسي:</span>
+          <p id="goal-custom-advice" class="text-sm font-extrabold text-white">يتم تحسين جدول السقاية لتقليل فاقد التبخر بناءً على خيارك لتوفير المياه.</p>
+        </div>
+      </div>
+
+      <div class="hover-glow-card p-6 rounded-2xl shadow-md space-y-4">
+        <div class="flex items-center justify-between">
+          <h3 class="text-base font-bold text-earth-dark">اتجاه الأمطار التراكمية ورطوبة التربة عبر الأشهر (النصارية) 🌧️🌱</h3>
+          <span class="text-xs text-gray-400 font-bold">بيانات NASA POWER الميدانية</span>
+        </div>
+        <div class="h-64">
+          <canvas id="nasaChart"></canvas>
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
+        <button onclick="goToStep(1)" class="w-full sm:w-auto bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold px-5 py-3.5 rounded-xl border border-gray-300 transition flex items-center justify-center space-x-2 space-x-reverse cursor-pointer">
+          <i class="fa-solid fa-arrow-right"></i>
+          <span>تغيير التاريخ والبيانات</span>
+        </button>
+
+        <button onclick="goToStep(3)" class="w-full sm:w-auto bg-earth-primary hover:bg-emerald-800 text-white font-extrabold py-3.5 px-8 rounded-xl shadow-lg transition flex items-center justify-center space-x-2 space-x-reverse text-sm cursor-pointer hover:shadow-[0_0_20px_rgba(88,235,76,0.3)]">
+          <span>عرض خطة الدورة الزراعية الذكية</span>
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+      </div>
+    </section>
+
+    <!-- الشاشة 3 -->
+    <section id="screen-3" class="space-y-6 hidden">
+      
+      <div class="bg-earth-dark text-white p-6 rounded-2xl shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div>
+          <span class="bg-[#58EB4C] text-earth-dark text-[11px] font-black px-3 py-1 rounded-full uppercase tracking-wider">
+            خطة التناوب المحصولي
+          </span>
+          <h2 class="text-2xl font-black mt-2">خطة مزرعتك للـ 3 مواسم القادمة 🌱</h2>
+          <p class="text-xs text-emerald-200 font-semibold mt-1">
+            مصممة لمنطقة النصارية بناءً على تحليلات NASA POWER لرفع خصوبة التربة وتوفير المياه.
+          </p>
+        </div>
+
+        <div class="flex items-center gap-4 bg-emerald-900/80 p-3.5 rounded-xl border border-emerald-700/60 shrink-0">
+          <div class="text-center px-2">
+            <span id="stat-green" class="block text-xl font-black text-[#58EB4C]">توفير 35%</span>
+            <span id="stat-sub-1" class="text-[10px] text-emerald-200 font-bold">من مياه الري</span>
+          </div>
+          <div class="h-8 w-px bg-emerald-700"></div>
+          <div class="text-center px-2">
+            <span id="stat-amber" class="block text-xl font-black text-amber-300">تحسين 30%</span>
+            <span id="stat-sub-2" class="text-[10px] text-emerald-200 font-bold">في خصوبة التربة</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <h3 class="text-base font-extrabold text-white flex items-center gap-2">
+          <i class="fa-solid fa-arrows-spin text-[#58EB4C]"></i>
+          تتابع المحاصيل الموصى به لمزرعتك:
+        </h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          
+          <div class="glass-card rounded-2xl p-5 shadow-md border-t-4 border-emerald-500 flex flex-col justify-between space-y-3">
+            <div>
+              <span class="bg-emerald-100 text-emerald-800 text-xs font-black px-2.5 py-1 rounded-md">
+                الموسم 1 (أيلول - تشرين)
+              </span>
+              <h4 class="text-xl font-black text-earth-dark mt-2.5">🌱 المحاصيل البقولية (عدس/فول)</h4>
+              <p class="text-xs text-emerald-700 font-bold mt-1">
+                ✓ التوصية الحالية بناءً على قراءات محطة النصارية
+              </p>
+            </div>
+            <p class="text-xs text-gray-600 font-semibold bg-emerald-50/60 p-2.5 rounded-lg border border-emerald-100">
+              <strong>الفائدة:</strong> تثبيت النيتروجين الطبيعي بالتربة وتقليل الحاجة للأسمدة الكيماوية.
+            </p>
+          </div>
+
+          <div class="glass-card rounded-2xl p-5 shadow-md border-t-4 border-amber-500 flex flex-col justify-between space-y-3">
+            <div>
+              <span class="bg-amber-100 text-amber-800 text-xs font-black px-2.5 py-1 rounded-md">
+                الموسم 2 (كانون - نيسان)
+              </span>
+              <h4 class="text-xl font-black text-earth-dark mt-2.5">🌾 الحبوب (شعير / قمح)</h4>
+              <p class="text-xs text-amber-700 font-bold mt-1">
+                استغلال النيتروجين المتبقي بالتربة
+              </p>
+            </div>
+            <p class="text-xs text-gray-600 font-semibold bg-amber-50/60 p-2.5 rounded-lg border border-amber-100">
+              <strong>الفائدة:</strong> جذور عميقة تفكك التربة وتستفيد من موسمي الأمطار في النصارية.
+            </p>
+          </div>
+
+          <div class="glass-card rounded-2xl p-5 shadow-md border-t-4 border-blue-500 flex flex-col justify-between space-y-3">
+            <div>
+              <span class="bg-blue-100 text-blue-800 text-xs font-black px-2.5 py-1 rounded-md">
+                الموسم 3 (موسم الموازنة)
+              </span>
+              <h4 class="text-xl font-black text-earth-dark mt-2.5">🌻 حمص / محاصيل راحة</h4>
+              <p class="text-xs text-blue-700 font-bold mt-1">
+                كسر دورة الآفات والأمراض
+              </p>
+            </div>
+            <p class="text-xs text-gray-600 font-semibold bg-blue-50/60 p-2.5 rounded-lg border border-blue-100">
+              <strong>الفائدة:</strong> إعادة توازن رطوبة التربة وتوفير عائد اقتصادي متجدد للمزارع.
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
+        <button onclick="goToStep(2)" class="w-full sm:w-auto bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold px-5 py-3.5 rounded-xl border border-gray-300 transition flex items-center justify-center space-x-2 space-x-reverse cursor-pointer">
+          <i class="fa-solid fa-arrow-right"></i>
+          <span>العودة للتحليل المباشر</span>
+        </button>
+
+        <button onclick="toast('تم تنزيل خطة مزرعتك بنجاح 🌾')" class="w-full sm:w-auto bg-earth-primary hover:bg-emerald-800 text-white text-xs font-extrabold px-6 py-3.5 rounded-xl shadow-md transition flex items-center justify-center space-x-2 space-x-reverse hover:shadow-[0_0_20px_rgba(88,235,76,0.3)]">
+          <i class="fa-solid fa-file-pdf text-lg"></i>
+          <span>تنزيل التقرير الخطة التنفيذية (PDF)</span>
+        </button>
+      </div>
+
+    </section>
+  </main>
+
+  <footer class="bg-white border-t border-gray-200 py-4 mt-auto relative z-10">
+    <div class="max-w-7xl mx-auto px-4 text-center text-xs text-gray-500 font-bold">
+      تطبيق Ofoiq (أفق) - NASA Space Apps Challenge 2026 
+    </div>
+  </footer>
+
+  <!-- ========================================== -->
+  <!-- 🤖 الشات بوت الذكي - مستشار أفق الزراعي   -->
+  <!-- ========================================== -->
+
+  <button id="ofoiq-chat-trigger" onclick="toggleOfoiqChat()" class="fixed bottom-6 left-6 z-50 bg-gradient-to-r from-emerald-600 to-[#2E7D32] text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-all duration-300 flex items-center gap-3 border-2 border-[#58EB4C] group">
+    <div class="relative">
+      <i class="fa-solid fa-robot text-2xl group-hover:rotate-12 transition-transform"></i>
+      <span class="absolute -top-1 -right-1 w-3 h-3 bg-[#58EB4C] rounded-full animate-ping"></span>
+      <span class="absolute -top-1 -right-1 w-3 h-3 bg-[#58EB4C] rounded-full"></span>
+    </div>
+    <span class="font-extrabold text-sm hidden sm:inline-block pl-1">اسأل عن مزرعتك</span>
+  </button>
+
+  <div id="ofoiq-chat-window" class="fixed bottom-24 left-4 sm:left-6 z-50 w-[calc(100%-2rem)] sm:w-96 h-[500px] max-h-[80vh] bg-emerald-950/95 backdrop-blur-xl border-2 border-emerald-500/50 rounded-2xl shadow-2xl flex flex-col overflow-hidden transition-all duration-300 transform translate-y-10 opacity-0 pointer-events-none">
+    
+    <div class="bg-gradient-to-r from-[#07140a] to-[#12301a] p-4 border-b border-emerald-800/80 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-emerald-800/80 border border-[#58EB4C]/40 flex items-center justify-center text-[#58EB4C] text-xl shadow-inner">
+          <i class="fa-solid fa-robot"></i>
+        </div>
+        <div>
+          <h4 class="font-black text-white text-sm">مستشار أفق الزراعي 🌱</h4>
+          <span class="text-[11px] text-emerald-300 font-semibold flex items-center gap-1">
+            <span class="w-2 h-2 rounded-full bg-[#58EB4C] animate-pulse"></span>
+            مُدرّب على بيانات NASA (النصارية)
+          </span>
+        </div>
+      </div>
+      <button onclick="toggleOfoiqChat()" class="text-emerald-400 hover:text-white p-1 transition">
+        <i class="fa-solid fa-xmark text-xl"></i>
+      </button>
+    </div>
+
+    <div id="ofoiq-chat-messages" class="flex-1 p-4 overflow-y-auto space-y-3 text-xs font-bold leading-relaxed">
+      <div class="flex items-start gap-2">
+        <div class="w-7 h-7 rounded-lg bg-emerald-800 flex items-center justify-center text-[#58EB4C] text-xs shrink-0 mt-0.5">🤖</div>
+        <div class="bg-emerald-900/80 text-emerald-100 p-3 rounded-2xl rounded-tr-none border border-emerald-700/60 max-w-[85%] shadow">
+          مرحباً بك يازارع الخير! 🌾<br>
+          أنا مستشارك الزراعي الذكي لمنطقة **النصارية**. يمكنك سؤالي عن حالة الطقس، رطوبة التربة، توجيهات الري، أو متى تزرع البقوليات بناءً على بيانات NASA الحقيقية. كيف أساعدك اليوم؟
+        </div>
+      </div>
+    </div>
+
+    <div class="px-3 py-2 bg-emerald-950/60 border-t border-emerald-900/50 flex gap-1.5 overflow-x-auto text-[11px] no-scrollbar">
+      <button onclick="sendQuickQuestion('شو حالة التربة اليوم؟')" class="bg-emerald-900/60 hover:bg-emerald-800 text-emerald-200 px-2.5 py-1 rounded-full border border-emerald-700/50 whitespace-nowrap transition">🌱 رطوبة التربة</button>
+      <button onclick="sendQuickQuestion('هل ينفع ازرع بقوليات هسا؟')" class="bg-emerald-900/60 hover:bg-emerald-800 text-emerald-200 px-2.5 py-1 rounded-full border border-emerald-700/50 whitespace-nowrap transition">🫘 توصية البقوليات</button>
+      <button onclick="sendQuickQuestion('كم كمية المطر التراكمية؟')" class="bg-emerald-900/60 hover:bg-emerald-800 text-emerald-200 px-2.5 py-1 rounded-full border border-emerald-700/50 whitespace-nowrap transition">🌧️ كمية الأمطار</button>
+    </div>
+
+    <form onsubmit="handleOfoiqChatSubmit(event)" class="p-3 bg-[#07140a] border-t border-emerald-800/60 flex items-center gap-2">
+      <input type="text" id="ofoiq-chat-input" placeholder="اسأل المستشار الزراعي..." class="flex-1 bg-emerald-950/80 border border-emerald-800 text-white placeholder-emerald-600 text-xs rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-[#58EB4C] font-semibold">
+      <button type="submit" class="bg-gradient-to-r from-emerald-600 to-[#2E7D32] hover:from-emerald-500 hover:to-emerald-700 text-white w-9 h-9 rounded-xl flex items-center justify-center transition shadow-md shrink-0">
+        <i class="fa-solid fa-paper-plane text-xs"></i>
+      </button>
+    </form>
+
+  </div>
+
+  <!-- ربط ملف الـ JavaScript الخارجي -->
+  <script src="thekraa.js"></script>
+</body>
+</html>
