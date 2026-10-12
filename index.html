@@ -377,12 +377,10 @@
           <i class="fa-solid fa-arrow-right"></i>
           <span>العودة للتحليل المباشر</span>
         </button>
-
-        <button onclick="toast('تم تنزيل خطة مزرعتك بنجاح 🌾')" class="w-full sm:w-auto bg-earth-primary hover:bg-emerald-800 text-white text-xs font-extrabold px-6 py-3.5 rounded-xl shadow-md transition flex items-center justify-center space-x-2 space-x-reverse hover:shadow-[0_0_20px_rgba(88,235,76,0.3)]">
-          <i class="fa-solid fa-file-pdf text-lg"></i>
-          <span>تنزيل التقرير الخطة التنفيذية (PDF)</span>
-        </button>
-      </div>
+<button onclick="downloadPDFPlan()" class="w-full sm:w-auto bg-earth-primary hover:bg-emerald-800 text-white text-xs font-extrabold px-6 py-3.5 rounded-xl shadow-md transition flex items-center justify-center space-x-2 space-x-reverse hover:shadow-[0_0_20px_rgba(88,235,76,0.3)] cursor-pointer">
+  <i class="fa-solid fa-file-pdf text-lg"></i>
+  <span>تنزيل تقرير الخطة التنفيذية (PDF)</span>
+</button>
 
     </section>
   </main>
@@ -450,7 +448,7 @@
     </form>
 
   </div>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <!-- ربط ملف الـ JavaScript الخارجي -->
   <script src="thekraa.js"></script>
 </body>
