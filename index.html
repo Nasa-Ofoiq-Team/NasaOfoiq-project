@@ -1,455 +1,141 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ofoiq أفق | التكيف الزراعي باستخدام بيانات ناسا</title>
-  
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@700&family=Cairo:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>أفق Ofoiq — التوأم الرقمي للمزرعة</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0}body{font-family:Cairo,sans-serif;background:#07140a;color:#eaf7e6;overflow:hidden;height:100vh}
+#c{position:fixed;inset:0;width:100%;height:100%;cursor:grab}
+.p{position:fixed;background:rgba(8,26,14,.74);backdrop-filter:blur(14px);border:1px solid #58eb4c33;border-radius:18px;padding:14px}
+#top{top:10px;right:10px;left:10px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;padding:8px 14px}
+b.l{font-size:22px;font-weight:900}b.l i{color:#58eb4c;font-style:normal}
+button{font:700 12px Cairo;color:#cfe;background:#12301a;border:1px solid #58eb4c44;border-radius:10px;padding:7px 12px;cursor:pointer}
+button.on{background:#58eb4c;color:#07140a}.g{display:flex;gap:6px}
+#info{top:70px;right:10px;width:340px;max-height:calc(100vh - 340px);overflow:auto}
+#roi{top:70px;left:10px;width:250px}
+#bot{bottom:10px;left:10px;right:10px}
+h3{font-size:13px;color:#58eb4c;margin-bottom:6px}.d{font-size:20px;font-weight:900}
+#st{display:inline-block;padding:5px 12px;border-radius:99px;font-weight:900;font-size:13px;margin:6px 0;color:#07140a}
+.m{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:8px 0}.m div{background:#ffffff0d;border-radius:10px;padding:6px 9px;font-size:11px}.m b{display:block;font-size:15px}
+.t{font-size:11.5px;line-height:1.7;background:#ffffff0d;border-radius:10px;padding:7px 9px;margin-top:6px}.t u{text-decoration:none;color:#58eb4c;font-weight:900;display:block}
+#ch{width:100%;height:150px;display:block;cursor:pointer}.big{font-size:24px;font-weight:900;color:#58eb4c}
+input[type=range]{width:100%;accent-color:#58eb4c}.sw{display:inline-block;width:10px;height:10px;border-radius:3px;margin-left:5px}
+@media(max-width:800px){#roi{display:none}#info{width:auto;left:10px;top:108px;max-height:34vh}}
+</style></head><body><canvas id="c"></canvas>
+<div class="p" id="top"><b class="l" style="display:flex;align-items:center;gap:10px"><svg id="logo-ofoiq" viewBox="0 0 400 300" style="height:48px;width:auto;background:#eaf7e6;border-radius:10px;padding:2px 8px"><path d="M 120 100 L 210 65 L 300 100 L 285 110 L 285 140 C 285 140, 275 160, 265 140 L 265 125 L 230 148 C 230 148, 220 162, 195 162 C 170 162, 150 148, 150 148 L 138 128 L 138 170 C 138 185, 170 200, 205 200 C 240 200, 270 185, 270 170 C 270 170, 240 182, 205 182 C 170 182, 150 170, 150 170 L 150 142 L 120 100 Z" fill="#0a522c"/><path d="M 80 200 C 140 150, 270 150, 330 200 C 260 172, 150 172, 80 200 Z" fill="#0a522c"/><text x="205" y="275" font-family="Cairo" font-weight="900" font-size="65" fill="#0a522c" text-anchor="middle">أفق</text></svg><small style="font-size:11px;font-weight:400;color:#9cb;line-height:1.5">Ofoiq<br>مزرعة النصارية — نابلس • NASA POWER</small></b>
+<div class="g"><button id="m1" class="on" onclick="mode(1)">📡 اليوم بيوم</button><button id="m2" onclick="mode(2)">🔄 دورة 3 مواسم</button></div>
+<div class="g" id="goals"><button class="on" data-g="w">💧 توفير مياه</button><button data-g="y">📈 إنتاجية</button><button data-g="d">☀️ مقاومة جفاف</button></div></div>
+<div class="p" id="info"></div><div class="p" id="tip" style="display:none;pointer-events:none;z-index:9;padding:8px 11px;font-size:12px;line-height:1.7;max-width:250px"></div>
+<div class="p" id="roi"><h3>🧮 الأثر على مزرعتك</h3><div style="font-size:12px">المساحة: <b id="dv">5</b> دونم</div><input type="range" id="dr" min="1" max="50" value="5"><div class="m"><div>💧 مياه موفّرة<b class="big" id="rw"></b></div><div>💰 وفر مالي<b class="big" id="rm"></b></div></div><div class="t" id="rt"></div></div>
+<div class="p" id="bot"><canvas id="ch"></canvas><div class="g" style="margin-top:8px;justify-content:space-between"><div class="g" style="flex-wrap:wrap;align-items:center"><button id="pl" onclick="play()">▶ تشغيل</button><button onclick="step(-1)">→ اليوم السابق</button><input type="date" id="dd" min="2022-09-01" max="2022-12-31" value="2022-09-01" onchange="setDate(this.value)" style="font:700 12px Cairo;background:#12301a;color:#eaf7e6;border:1px solid #58eb4c66;border-radius:10px;padding:5px 8px;color-scheme:dark"><button onclick="step(1)">اليوم التالي ←</button><span id="jp" class="g" style="flex-wrap:wrap"></span></div><div id="leg" style="font-size:11px;color:#9cb"><span class="sw" style="background:#58eb4c"></span>ملاءمة البذر (0–100) <span class="sw" style="background:#4aa3ff"></span>أعمدة زرقاء = مطر (ملم) <span class="sw" style="background:#ff8a3c"></span>خط برتقالي = الحرارة العظمى <span class="sw" style="background:#fff"></span>اليوم المختار</div></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const DATA=[[41.47,24.76,31.4,56,2.85,0.09,0.45,0.0],[41.5,24.44,31.24,56,2.87,0.09,0.45,0.0],[41.01,24.48,30.98,57,2.96,0.09,0.45,0.0],[40.11,23.91,30.27,56,3.39,0.09,0.45,0.0],[39.24,22.97,29.44,57,2.94,0.09,0.45,0.0],[36.39,22.8,28.41,59,3.23,0.1,0.45,0.28],[36.7,22.89,28.96,55,2.92,0.1,0.45,0.01],[38.46,22.5,29.52,53,2.7,0.1,0.45,0.0],[39.96,21.78,29.36,51,3.35,0.1,0.45,0.0],[39.33,21.57,28.88,53,3.04,0.1,0.45,0.0],[38.87,21.14,28.32,54,2.6,0.1,0.45,0.0],[37.6,20.59,27.66,54,2.52,0.1,0.45,0.0],[36.74,22.35,28.15,60,3.07,0.1,0.45,0.0],[35.42,22.58,27.46,55,3.36,0.1,0.45,0.0],[35.74,20.59,27.25,50,2.49,0.1,0.45,0.0],[38.51,20.21,28.35,51,2.85,0.1,0.45,0.0],[39.31,20.77,28.41,57,2.87,0.1,0.45,0.0],[36.8,21.59,28.17,61,2.97,0.1,0.45,0.0],[35.44,22.1,27.57,59,3.36,0.1,0.45,0.0],[35.04,21.13,27.03,59,3.38,0.1,0.45,0.0],[33.01,20.61,25.86,56,3.55,0.1,0.45,0.0],[34.15,20.13,26.19,50,2.79,0.1,0.45,0.0],[36.55,21.74,27.97,43,2.51,0.1,0.45,0.0],[37.83,21.55,28.63,38,2.83,0.1,0.45,0.0],[38.19,22.71,29.26,32,2.76,0.1,0.45,0.0],[39.47,23.54,29.92,27,2.42,0.1,0.45,0.0],[37.72,22.34,28.43,37,2.82,0.1,0.45,0.0],[35.0,20.39,26.45,48,2.92,0.1,0.45,0.0],[37.71,19.87,27.47,53,3.54,0.1,0.45,0.0],[39.49,20.79,28.99,49,3.06,0.1,0.45,0.0],[39.33,23.79,29.98,43,2.81,0.09,0.45,0.0],[37.19,22.35,28.41,59,2.32,0.09,0.45,0.0],[36.65,20.82,27.95,57,2.74,0.09,0.45,0.0],[36.61,21.6,27.75,59,2.53,0.09,0.45,0.0],[36.22,21.18,27.01,58,2.52,0.09,0.45,0.0],[35.55,19.74,26.25,58,2.16,0.09,0.45,0.0],[33.65,20.28,25.66,58,3.06,0.09,0.45,0.0],[31.77,19.35,24.53,55,3.06,0.09,0.45,0.0],[31.69,20.26,24.59,53,2.43,0.09,0.45,0.0],[31.11,18.0,23.73,54,2.06,0.09,0.45,0.0],[33.36,17.64,24.67,58,2.74,0.09,0.45,0.0],[33.16,18.52,24.84,57,2.44,0.09,0.45,0.0],[31.38,18.9,24.08,62,2.74,0.09,0.45,0.0],[31.15,17.13,23.63,62,2.17,0.09,0.45,0.0],[31.59,20.09,24.7,54,1.48,0.09,0.45,0.0],[34.7,19.1,26.2,38,2.79,0.09,0.45,0.0],[32.94,21.18,25.68,48,2.65,0.09,0.45,0.0],[31.46,18.85,24.43,60,2.22,0.09,0.45,0.0],[32.63,18.96,24.66,56,2.56,0.09,0.45,0.0],[31.4,18.46,24.15,59,2.71,0.11,0.45,1.38],[29.57,19.94,24.04,62,2.15,0.19,0.46,1.17],[30.31,18.39,23.36,65,2.36,0.2,0.46,0.05],[31.34,17.67,23.61,60,2.56,0.2,0.46,0.0],[30.27,18.09,23.4,63,1.97,0.2,0.46,0.01],[30.49,18.71,24.08,49,5.73,0.19,0.46,0.77],[31.6,20.93,25.06,49,3.56,0.23,0.46,0.31],[30.85,18.57,23.65,57,2.33,0.23,0.46,0.0],[31.51,17.07,23.61,50,1.77,0.22,0.46,0.0],[33.21,19.35,25.07,38,2.67,0.22,0.46,0.0],[30.92,18.24,23.83,49,2.62,0.21,0.46,0.0],[29.66,18.64,23.0,60,2.16,0.21,0.46,0.0],[28.3,16.45,21.46,63,2.24,0.21,0.46,0.2],[27.08,15.92,20.47,68,2.53,0.21,0.46,0.05],[27.72,16.04,20.74,65,1.59,0.21,0.46,0.0],[28.24,16.04,20.74,54,2.02,0.21,0.46,0.0],[30.29,16.08,21.89,43,2.29,0.2,0.46,0.0],[31.09,16.17,23.08,45,2.63,0.2,0.46,0.0],[27.08,16.98,20.89,58,2.59,0.2,0.46,0.0],[24.69,15.3,19.2,67,3.15,0.31,0.47,4.72],[24.1,14.83,18.58,74,1.95,0.4,0.47,2.06],[25.31,13.91,18.42,66,1.86,0.4,0.47,0.07],[27.88,13.88,19.31,53,2.46,0.39,0.47,0.0],[28.35,13.46,20.13,44,3.38,0.37,0.47,0.0],[29.46,16.69,22.27,51,4.24,0.35,0.47,0.01],[28.07,18.4,22.07,62,2.81,0.35,0.47,0.54],[25.88,17.07,20.51,65,2.81,0.35,0.47,0.1],[23.91,15.2,18.62,64,2.64,0.34,0.47,0.04],[24.11,14.04,18.2,64,1.93,0.33,0.46,0.0],[25.66,13.1,18.56,51,2.1,0.32,0.46,0.0],[27.29,13.47,19.4,45,3.5,0.31,0.46,0.0],[27.26,12.51,18.67,39,5.15,0.29,0.46,0.0],[29.67,13.45,20.98,40,4.67,0.28,0.46,0.0],[26.62,15.43,19.71,59,2.91,0.28,0.46,0.02],[27.31,12.2,19.4,57,2.22,0.28,0.46,0.28],[23.33,14.35,18.58,66,2.79,0.31,0.46,1.91],[20.74,11.32,15.58,77,4.55,0.48,0.48,15.13],[21.94,12.78,16.45,72,3.09,0.53,0.5,4.0],[23.09,10.91,16.73,64,4.02,0.48,0.5,0.0],[23.46,13.35,18.28,58,4.02,0.48,0.5,0.0],[23.36,14.14,17.74,68,2.49,0.5,0.49,2.78],[22.8,11.02,16.46,72,1.99,0.48,0.5,0.22],[24.39,10.66,16.62,59,2.41,0.48,0.5,0.09],[24.42,10.29,16.3,58,3.05,0.48,0.49,0.19],[23.67,10.33,15.61,59,3.86,0.48,0.49,0.04],[23.93,10.48,16.61,58,2.95,0.47,0.49,0.0],[23.33,9.85,15.51,64,2.53,0.47,0.49,0.0],[20.88,11.55,15.7,74,1.5,0.48,0.49,0.69],[21.59,10.4,15.96,73,1.84,0.48,0.49,0.0],[23.31,10.04,15.89,64,2.09,0.47,0.49,0.0],[23.03,11.43,16.17,64,1.99,0.47,0.49,0.0],[23.75,10.14,16.38,58,2.24,0.47,0.49,0.0],[25.21,9.86,16.3,55,3.43,0.47,0.48,0.0],[24.08,13.18,17.82,45,1.96,0.47,0.48,0.0],[23.7,13.55,17.62,56,1.9,0.47,0.48,0.0],[21.42,13.32,16.73,73,1.8,0.47,0.48,0.09],[23.31,13.43,17.34,69,1.58,0.47,0.48,0.1],[24.83,11.56,17.53,58,2.42,0.46,0.48,0.0],[24.88,11.52,16.83,59,3.99,0.45,0.48,0.0],[24.33,10.7,15.87,55,4.26,0.45,0.48,0.0],[24.24,9.04,15.13,51,4.29,0.43,0.47,0.0],[23.89,9.23,15.13,56,2.83,0.42,0.47,0.0],[21.31,10.37,15.12,73,1.78,0.43,0.47,0.69],[20.89,9.73,14.78,71,2.49,0.43,0.47,0.18],[20.14,9.53,13.66,63,3.9,0.44,0.47,0.92],[19.01,9.0,13.31,80,2.17,0.46,0.48,2.57],[16.73,9.28,12.81,85,2.36,0.49,0.48,1.78],[15.98,7.97,11.3,89,3.97,0.54,0.49,9.05],[18.21,6.47,11.46,78,3.05,0.49,0.5,0.21],[18.71,8.2,13.0,74,1.02,0.48,0.5,0.04],[19.67,6.19,11.89,66,3.45,0.48,0.49,0.0],[18.81,6.02,11.37,63,4.95,0.48,0.49,0.0],[19.96,6.51,12.17,65,4.75,0.48,0.49,0.0]];
+const $=i=>document.getElementById(i),cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const D=DATA.map(r=>({tx:r[0],tn:r[1],t:r[2],rh:r[3],ws:r[4],gt:r[5],gr:r[6],p:r[7]})),N=D.length;
+let cum=0,sow=N-1,base=0,smart=0;
+function stat(d){if(d.p>=9)return['⚠️ خطر انجراف — لا تحرث، ثبّت التربة','#4aa3ff'];if(d.gt>=.4)return['💧 تشبّع — أوقف الري وصرّف المياه','#4aa3ff'];if(d.tx>=35&&d.gt<.15)return['🔥 إجهاد حراري وجفاف — ري فجري + تغطية','#ff6a3c'];if(d.gt>=.19&&d.tx<=31)return['✅ نافذة بذر مثالية','#58eb4c'];if(d.gt<.15)return['⏳ جفاف — انتظر المطر وجهّز الأرض','#f0b43c'];return['🌤 ظروف مقبولة — راقب الرطوبة','#c8e06a']}
+D.forEach((d,i)=>{cum+=d.p;d.cum=cum;const Ra=9.5+4.5*Math.cos((244+i-172)*6.283/365);d.et=.0023*Ra*(d.t+17.8)*Math.sqrt(Math.max(d.tx-d.tn,1))*.8;
+d.ir=d.gt>=.4?0:Math.max(0,d.et-d.p);base+=d.et;smart+=d.ir;
+d.sc=Math.round(100*(.4*(1-cl(Math.abs(d.t-18)/14))+.4*cl(d.gt/.22)*(d.gt>.45?.6:1)+.2*(d.p>9?0:1)));d.s=stat(d);if(sow==N-1&&d.cum>=5&&d.gt>=.19)sow=i});
+const sav=1-smart/base;let PLAN=null,day=0,M=1,goal='w',gr=0,grT=0,season=0;
+fetch('data.json').then(r=>r.text()).then(t=>{PLAN=JSON.parse(t.replace(/\}\s*\n(\s*)\{/g,'},\n$1{')).daily_data.map(r=>r.resilient_action_plan);ui()}).catch(()=>{});
+const dt=i=>new Date(2022,8,1+i).toLocaleDateString('en-US',{day:'numeric',month:'long'});
+const CR={L:['🌱 بقوليات (عدس/فول)',0x58eb4c,.8,'تثبّت النيتروجين'],W:['🌾 قمح',0xe3c04d,1.3,'تستهلك النيتروجين'],B:['🌾 شعير',0xd9b25a,1.1,'تستهلك النيتروجين بكفاءة مائية'],C:['🌻 حمص / محاصيل راحة',0x7fd1c7,.7,'كسر دورة الآفات']};
+const cer=()=>goal=='y'?'W':'B',sched=s=>[['L',cer(),'C'],[cer(),'C','L'],['C','L',cer()]][s];
+const SH={L:12,W:-8,B:-8,C:2};
+// ---------- 3D ----------
+const R=new THREE.WebGLRenderer({canvas:$('c'),antialias:true});R.setPixelRatio(Math.min(devicePixelRatio,2));
+const S=new THREE.Scene(),cam=new THREE.PerspectiveCamera(48,1,.1,200);S.fog=new THREE.Fog(0x9ec5e8,16,45);S.background=new THREE.Color(0x9ec5e8);
+const sun=new THREE.DirectionalLight(0xffffff,1);sun.position.set(6,10,4);S.add(sun,new THREE.HemisphereLight(0xcfe8ff,0x4a3a22,.7));
+const gnd=new THREE.Mesh(new THREE.CircleGeometry(30,48),new THREE.MeshLambertMaterial({color:0x5a6b3a}));gnd.rotation.x=-1.5708;gnd.position.y=-.2;S.add(gnd);
+const sunB=new THREE.Mesh(new THREE.SphereGeometry(.9,16,16),new THREE.MeshBasicMaterial({color:0xffd27a}));sunB.position.set(-9,9,-14);S.add(sunB);
+const plots=[],geo=new THREE.BoxGeometry(1.9,.3,1.9);
+for(let b=0;b<3;b++)for(let k=0;k<4;k++){const m=new THREE.Mesh(geo,new THREE.MeshLambertMaterial({color:0xc19a62}));m.position.set((k-1.5)*2.1,0,(b-1)*2.5);S.add(m);plots.push({m,b})}
+const spr=[],cov=[],pipe=[],warnSign=[];
+function createWarnMesh(){
+  const g = new THREE.Group();
+  const m1 = new THREE.Mesh(new THREE.CylinderGeometry(.08,.08,.6,8), new THREE.MeshBasicMaterial({color: 0xff3333}));
+  m1.position.y = 2.4;
+  const m2 = new THREE.Mesh(new THREE.SphereGeometry(.1,8,8), new THREE.MeshBasicMaterial({color: 0xff3333}));
+  m2.position.y = 1.95;
+  g.add(m1, m2);
+  g.visible = false;
+  return g;
+}
 
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            earth: {
-              primary: '#2E7D32',
-              secondary: '#6D4C41',
-              water: '#0288D1',
-              sand: '#F5F2EB',
-              dark: '#1B3B22',
-              accent: '#E65100'
-            }
-          },
-          fontFamily: {
-            sans: ['Cairo', 'Plus Jakarta Sans', 'sans-serif'],
-          }
-        }
-      }
-    }
-  </script>
+for(let b=0;b<3;b++){const z=(b-1)*2.5,pm=new THREE.Mesh(new THREE.CylinderGeometry(.04,.04,8.6,8),new THREE.MeshLambertMaterial({color:0x777777}));pm.rotation.z=1.5708;pm.position.set(0,1.6,z);S.add(pm);pipe.push(pm);
+const g=new THREE.BufferGeometry(),a=new Float32Array(450);for(let i=0;i<150;i++)a.set([(Math.random()-.5)*8.4,Math.random()*1.4+.2,z+(Math.random()-.5)*1.8],i*3);g.setAttribute('position',new THREE.BufferAttribute(a,3));
+const pt=new THREE.Points(g,new THREE.PointsMaterial({color:0x6ec0ff,size:.09,transparent:true,opacity:.9}));pt.visible=false;S.add(pt);spr.push(pt);
+const cm=new THREE.Mesh(new THREE.CylinderGeometry(1,1,8.6,24,1,true,0,Math.PI),new THREE.MeshLambertMaterial({color:0xdff6ff,transparent:true,opacity:.28,side:THREE.DoubleSide,depthWrite:false}));cm.rotation.z=1.5708;cm.position.set(0,.15,z);cm.scale.set(.001,1,.98);cm.visible=false;S.add(cm);cov.push(cm);
+const wm=createWarnMesh();wm.position.set(0,0,z);S.add(wm);warnSign.push(wm);}
 
-  <!-- ربط ملف الـ CSS الخارجي -->
-  <link rel="stylesheet" href="thekra.css">
-</head>
-<body class="font-sans antialiased min-h-screen flex flex-col relative overflow-x-hidden">
-  <div class="sun"></div>
-  <div id="field"></div>
-  <canvas id="fx"></canvas>
-
-  <!-- Header -->
-  <header class="custom-dark-header backdrop-blur-md text-white shadow-xl sticky top-0 z-50 border-b border-emerald-900/60">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
-      
-      <!-- الشعار الأصلي -->
-      <a href="javascript:void(0)" onclick="goToStep(1)" class="flex items-center gap-3 shrink-0 cursor-pointer no-underline select-none">
-        <img src="1791745068.jpg" alt="أفق" class="h-10 w-10 rounded-lg object-cover border border-emerald-500/40">
-        <div>
-          <span class="text-xl font-extrabold tracking-tight text-white">Ofoiq <span class="text-[#58EB4C]">أفق</span></span>
-        </div>
-      </a>
-
-      <nav class="hidden md:flex items-center gap-2 lg:gap-4 text-sm font-bold bg-emerald-950/70 p-1.5 rounded-xl border border-emerald-800/60 shadow-inner">
-        <div id="step-btn-1" onclick="goToStep(1)" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-emerald-400 cursor-pointer transition-all duration-300">
-          <span class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs shrink-0 shadow-sm">1</span>
-          <span class="whitespace-nowrap">بيانات مزرعتك</span>
-        </div>
-
-        <i class="fa-solid fa-chevron-left text-xs text-emerald-700/60"></i>
-
-        <div id="step-btn-2" onclick="goToStep(2)" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-300 cursor-pointer transition-all duration-300">
-          <span class="w-6 h-6 rounded-full bg-gray-700 text-gray-300 flex items-center justify-center text-xs shrink-0">2</span>
-          <span class="whitespace-nowrap">تحليل بيانات ناسا المباشر</span>
-        </div>
-
-        <i class="fa-solid fa-chevron-left text-xs text-emerald-700/60"></i>
-
-        <div id="step-btn-3" onclick="goToStep(3)" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-300 cursor-pointer transition-all duration-300">
-          <span class="w-6 h-6 rounded-full bg-gray-700 text-gray-300 flex items-center justify-center text-xs shrink-0">3</span>
-          <span class="whitespace-nowrap">خطة الدورة الزراعية</span>
-        </div>
-      </nav>
-
-      <div class="flex items-center gap-3 shrink-0">
-        <div class="flex items-center gap-2 bg-emerald-950/80 px-3.5 py-1.5 rounded-full border border-emerald-800">
-          <span class="w-2.5 h-2.5 rounded-full bg-[#58EB4C] animate-pulse shrink-0"></span>
-          <span class="text-xs text-emerald-300 font-bold whitespace-nowrap">بيانات NASA POWER الميدانية (النصارية)</span>
-        </div>
-      </div>
-
-    </div>
-  </header>
-
-  <!-- Main Content -->
-  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
-
-    <!-- الشاشة 1 -->
-    <section id="screen-1" class="space-y-6">
-      <div class="text-center max-w-4xl mx-auto space-y-2">
-        <h1 class="text-3xl sm:text-4xl font-black flex items-center justify-center gap-3">
-          <span class="title-gradient">أرضك بتحكي، وإحنا بنساعدك تفهمها</span>
-          <span class="text-2xl sm:text-3xl animate-bounce">🌱✨</span>
-        </h1>
-        <p class="text-emerald-100/90 text-sm font-semibold">مربوط مباشرة ببيانات محطة النصارية / نابلس مع التوصيات الفورية للمزارع</p>
-      </div>
-
-      <div class="max-w-5xl mx-auto glass-card rounded-2xl p-6 sm:p-10 shadow-xl">
-        <form id="farm-form" class="space-y-6" onsubmit="handleFormSubmit(event)">
-          
-          <div class="space-y-3">
-            <div class="flex items-center justify-between">
-              <label class="block text-sm font-bold text-gray-800">
-                <i class="fa-solid fa-location-dot text-earth-primary ml-2"></i>موقع المزرعة / المنطقة
-              </label>
-              <button type="button" onclick="locateUserOnMap()" class="bg-earth-sand hover:bg-amber-100 text-earth-dark text-xs font-bold px-3.5 py-2 rounded-lg border border-amber-300 transition flex items-center space-x-1.5 space-x-reverse shadow-sm">
-                <i class="fa-solid fa-crosshairs text-earth-primary"></i>
-                <span>حدد موقعك على الخريطة</span>
-              </button>
-            </div>
-
-            <select id="input-region" class="w-full bg-white border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-[#58EB4C] outline-none text-sm font-bold">
-              <option value="Al-Nasariya, Nablus">النصارية / نابلس (بيانات محطة NASA POWER الحقيقية)</option>
-            </select>
-
-            <div class="rounded-xl overflow-hidden border border-gray-300 shadow-inner">
-              <div id="map"></div>
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div class="space-y-2">
-              <label class="block text-sm font-bold text-gray-800">
-                <i class="fa-solid fa-calendar-day text-earth-primary ml-2"></i>اختر التاريخ المستهدف من البيانات
-              </label>
-              <select id="input-date" onchange="onDateSelect(this.value)" class="w-full bg-white border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-[#58EB4C] outline-none text-sm font-bold">
-              </select>
-            </div>
-
-            <div class="space-y-2">
-              <label class="block text-sm font-bold text-gray-800">
-                <i class="fa-solid fa-seedling text-earth-primary ml-2"></i>المحصول المستهدف
-              </label>
-              <select id="input-crop" class="w-full bg-white border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-[#58EB4C] outline-none text-sm font-bold">
-                <option value="Legumes">البقوليات (عدس / حمص / فول)</option>
-                <option value="Wheat">القمح</option>
-                <option value="Barley">الشعير</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="space-y-2">
-            <label class="block text-sm font-bold text-gray-800">
-              <i class="fa-solid fa-bullseye text-earth-accent ml-2"></i>حدد هدف مزرعتك الأساسي :<span class="text-red-500">*</span>
-            </label>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              
-              <label id="goal-card-water" onclick="selectGoal('Water Conservation')" class="border border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer transition hover:border-[#58EB4C] goal-card-selected">
-                <input type="radio" name="goal" value="Water Conservation" class="sr-only" checked>
-                <i class="fa-solid fa-droplet-slash text-earth-water text-xl mb-1"></i>
-                <span class="text-xs font-bold text-gray-800">توفير المياه وحماية التربة</span>
-              </label>
-
-              <label id="goal-card-yield" onclick="selectGoal('Yield Enhancement')" class="border border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer transition hover:border-[#58EB4C]">
-                <input type="radio" name="goal" value="Yield Enhancement" class="sr-only">
-                <i class="fa-solid fa-chart-line text-emerald-600 text-xl mb-1"></i>
-                <span class="text-xs font-bold text-gray-800">زيادة الإنتاجية</span>
-              </label>
-
-              <label id="goal-card-drought" onclick="selectGoal('Drought Resilience')" class="border border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer transition hover:border-[#58EB4C]">
-                <input type="radio" name="goal" value="Drought Resilience" class="sr-only">
-                <i class="fa-solid fa-sun text-amber-600 text-xl mb-1"></i>
-                <span class="text-xs font-bold text-gray-800">مقاومة الجفاف</span>
-              </label>
-
-            </div>
-          </div>
-
-          <button type="submit" class="w-full bg-earth-primary hover:bg-emerald-800 text-white font-extrabold py-4 rounded-xl shadow-lg transition flex items-center justify-center space-x-2 space-x-reverse text-base cursor-pointer hover:shadow-[0_0_25px_rgba(88,235,76,0.4)]">
-            <span>حلل بياناتي 🌱🚀</span>
-          </button>
-        </form>
-      </div>
-    </section>
-
-    <!-- الشاشة 2 -->
-    <section id="screen-2" class="space-y-6 hidden">
-      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-emerald-800/30 pb-4">
-        <div>
-          <h2 class="text-2xl font-bold text-white">حالة وقراءات المزرعة المباشرة 🌱</h2>
-          <p class="text-sm text-emerald-100 font-semibold">تاريخ القراءة: <span id="display-date" class="font-bold text-[#58EB4C]">2022-09-01</span> | الهدف المختار: <span id="display-goal" class="font-bold text-[#58EB4C]">توفير المياه وحماية التربة</span></p>
-        </div>
-        <button onclick="goToStep(1)" class="bg-white/10 hover:bg-white/20 text-white text-xs font-bold px-3.5 py-2 rounded-xl border border-white/20 transition flex items-center space-x-1.5 space-x-reverse">
-          <i class="fa-solid fa-arrow-right"></i>
-          <span>تغيير التاريخ أو الهدف</span>
-        </button>
-      </div>
-
-      <div id="notification-banner" class="p-5 rounded-2xl shadow-lg border-2 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-emerald-50 border-emerald-300">
-        <div class="flex items-start space-x-4 space-x-reverse">
-          <div id="stage"></div><div id="notification-icon-bg" class="w-12 h-12 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-2xl shrink-0 shadow mt-1 sm:mt-0">
-            <i id="notification-icon" class="fa-solid fa-bell"></i>
-          </div>
-          <div>
-            <span class="text-xs font-extrabold text-gray-500 uppercase tracking-wider block">📢 إشعار التوصية المباشر للمزارع </span>
-            <h3 id="notification-text" class="text-xl font-black text-emerald-900 mt-0.5">الظروف مثالية اليوم! ابدأ زراعة المحاصيل الأساسية أو قم بالتسميد.</h3>
-            
-            <p id="notification-reason" class="text-xs text-gray-700 font-bold mt-1.5 bg-white/70 p-2 rounded-lg border border-emerald-200/60 inline-block">
-              💡 <strong>السبب:</strong> رطوبة التربة والمدى الحراري مناسبان جداً لبذر البقوليات وتثبيت النيتروجين في الأرض.
-            </p>
-          </div>
-        </div>
-        
-        <span id="notification-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-200 text-emerald-800 whitespace-nowrap self-start sm:self-center">
-          توصية معتمدة
-        </span>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        
-        <div class="hover-glow-card p-5 rounded-2xl shadow-md border-r-4 border-emerald-500 space-y-2">
-          <div class="flex justify-between items-start">
-            <span class="text-xs font-bold text-emerald-800 uppercase">🌱 مؤشر صحة التربة (Soil Moisture Status)</span>
-            <span id="val-gwetroot" class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">GWETROOT: 0.45</span>
-          </div>
-          <div class="space-y-1">
-            <span id="val-soil-status" class="text-xl font-black text-amber-600 block">Very dry</span>
-            <span id="val-gwettop" class="text-xs text-gray-500 font-bold block">رطوبة الطبقة السطحية (GWETTOP): 0.09</span>
-          </div>
-          <div class="pt-2 border-t border-gray-100 flex items-center space-x-1.5 space-x-reverse text-gray-600 text-xs font-bold">
-            <i class="fa-solid fa-circle-info text-emerald-600"></i>
-            <span id="soil-desc">قم بري تكميلي في الصباح الباكر لتعويض نقص الرطوبة</span>
-          </div>
-        </div>
-
-        <div class="hover-glow-card p-5 rounded-2xl shadow-md border-r-4 border-blue-500 space-y-2">
-          <div class="flex justify-between items-start">
-            <span class="text-xs font-bold text-blue-800 uppercase">🌧️ الأمطار التراكمية (Cumulative Rainfall)</span>
-            <span id="val-prectotcorr" class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-800">اليومي: 0.0 ملم</span>
-          </div>
-          <div class="space-y-1">
-            <span id="val-cum-rain" class="text-xl font-black text-earth-dark block">0.0 ملم</span>
-            <span class="text-xs text-gray-500 font-bold block">حالة التحقق: VALID</span>
-          </div>
-          <div class="pt-2 border-t border-gray-100 flex items-center space-x-1.5 space-x-reverse text-blue-700 text-xs font-bold">
-            <i class="fa-solid fa-cloud-showers-heavy"></i>
-            <span>تراكمي الهطول المطري للفترة</span>
-          </div>
-        </div>
-
-        <div class="hover-glow-card p-5 rounded-2xl shadow-md border-r-4 border-amber-500 space-y-2">
-          <div class="flex justify-between items-start">
-            <span class="text-xs font-bold text-amber-800 uppercase">🌡️ درجات الحرارة والمدى اليومي</span>
-            <span id="val-temp-avg" class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800">المعدل: 31.4°C</span>
-          </div>
-          <div class="space-y-1">
-            <span id="val-temp-range" class="text-xl font-black text-gray-800 block">العظمى: 41.5°C | الصغرى: 24.8°C</span>
-            <span id="val-diurnal" class="text-xs text-gray-500 font-bold block">المدى الحراري اليومي (Diurnal Range): 16.71°C</span>
-          </div>
-          <div class="pt-2 border-t border-gray-100 flex items-center space-x-1.5 space-x-reverse text-amber-700 text-xs font-bold">
-            <i class="fa-solid fa-temperature-half"></i>
-            <span>الفارق الحراري مناسب لتنظيم مواعيد السقاية</span>
-          </div>
-        </div>
-
-      </div>
-
-      <div class="bg-emerald-950/80 border border-emerald-500/40 rounded-2xl p-4 text-white flex items-center gap-3">
-        <i class="fa-solid fa-lightbulb text-amber-400 text-2xl"></i>
-        <div>
-          <span class="text-xs font-bold text-emerald-300 block">توصية مخصصة بناءً على هدفك الرئيسي:</span>
-          <p id="goal-custom-advice" class="text-sm font-extrabold text-white">يتم تحسين جدول السقاية لتقليل فاقد التبخر بناءً على خيارك لتوفير المياه.</p>
-        </div>
-      </div>
-
-      <div class="hover-glow-card p-6 rounded-2xl shadow-md space-y-4">
-        <div class="flex items-center justify-between">
-          <h3 class="text-base font-bold text-earth-dark">اتجاه الأمطار التراكمية ورطوبة التربة عبر الأشهر (النصارية) 🌧️🌱</h3>
-          <span class="text-xs text-gray-400 font-bold">بيانات NASA POWER الميدانية</span>
-        </div>
-        <div class="h-64">
-          <canvas id="nasaChart"></canvas>
-        </div>
-      </div>
-
-      <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
-        <button onclick="goToStep(1)" class="w-full sm:w-auto bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold px-5 py-3.5 rounded-xl border border-gray-300 transition flex items-center justify-center space-x-2 space-x-reverse cursor-pointer">
-          <i class="fa-solid fa-arrow-right"></i>
-          <span>تغيير التاريخ والبيانات</span>
-        </button>
-
-        <button onclick="goToStep(3)" class="w-full sm:w-auto bg-earth-primary hover:bg-emerald-800 text-white font-extrabold py-3.5 px-8 rounded-xl shadow-lg transition flex items-center justify-center space-x-2 space-x-reverse text-sm cursor-pointer hover:shadow-[0_0_20px_rgba(88,235,76,0.3)]">
-          <span>عرض خطة الدورة الزراعية الذكية</span>
-          <i class="fa-solid fa-chevron-left"></i>
-        </button>
-      </div>
-    </section>
-
-    <!-- الشاشة 3 -->
-    <section id="screen-3" class="space-y-6 hidden">
-      
-      <div class="bg-earth-dark text-white p-6 rounded-2xl shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div>
-          <span class="bg-[#58EB4C] text-earth-dark text-[11px] font-black px-3 py-1 rounded-full uppercase tracking-wider">
-            خطة التناوب المحصولي
-          </span>
-          <h2 class="text-2xl font-black mt-2">خطة مزرعتك للـ 3 مواسم القادمة 🌱</h2>
-          <p class="text-xs text-emerald-200 font-semibold mt-1">
-            مصممة لمنطقة النصارية بناءً على تحليلات NASA POWER لرفع خصوبة التربة وتوفير المياه.
-          </p>
-        </div>
-
-        <div class="flex items-center gap-4 bg-emerald-900/80 p-3.5 rounded-xl border border-emerald-700/60 shrink-0">
-          <div class="text-center px-2">
-            <span id="stat-green" class="block text-xl font-black text-[#58EB4C]">توفير 35%</span>
-            <span id="stat-sub-1" class="text-[10px] text-emerald-200 font-bold">من مياه الري</span>
-          </div>
-          <div class="h-8 w-px bg-emerald-700"></div>
-          <div class="text-center px-2">
-            <span id="stat-amber" class="block text-xl font-black text-amber-300">تحسين 30%</span>
-            <span id="stat-sub-2" class="text-[10px] text-emerald-200 font-bold">في خصوبة التربة</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="space-y-3">
-        <h3 class="text-base font-extrabold text-white flex items-center gap-2">
-          <i class="fa-solid fa-arrows-spin text-[#58EB4C]"></i>
-          تتابع المحاصيل الموصى به لمزرعتك:
-        </h3>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          
-          <div class="glass-card rounded-2xl p-5 shadow-md border-t-4 border-emerald-500 flex flex-col justify-between space-y-3">
-            <div>
-              <span class="bg-emerald-100 text-emerald-800 text-xs font-black px-2.5 py-1 rounded-md">
-                الموسم 1 (أيلول - تشرين)
-              </span>
-              <h4 class="text-xl font-black text-earth-dark mt-2.5">🌱 المحاصيل البقولية (عدس/فول)</h4>
-              <p class="text-xs text-emerald-700 font-bold mt-1">
-                ✓ التوصية الحالية بناءً على قراءات محطة النصارية
-              </p>
-            </div>
-            <p class="text-xs text-gray-600 font-semibold bg-emerald-50/60 p-2.5 rounded-lg border border-emerald-100">
-              <strong>الفائدة:</strong> تثبيت النيتروجين الطبيعي بالتربة وتقليل الحاجة للأسمدة الكيماوية.
-            </p>
-          </div>
-
-          <div class="glass-card rounded-2xl p-5 shadow-md border-t-4 border-amber-500 flex flex-col justify-between space-y-3">
-            <div>
-              <span class="bg-amber-100 text-amber-800 text-xs font-black px-2.5 py-1 rounded-md">
-                الموسم 2 (كانون - نيسان)
-              </span>
-              <h4 class="text-xl font-black text-earth-dark mt-2.5">🌾 الحبوب (شعير / قمح)</h4>
-              <p class="text-xs text-amber-700 font-bold mt-1">
-                استغلال النيتروجين المتبقي بالتربة
-              </p>
-            </div>
-            <p class="text-xs text-gray-600 font-semibold bg-amber-50/60 p-2.5 rounded-lg border border-amber-100">
-              <strong>الفائدة:</strong> جذور عميقة تفكك التربة وتستفيد من موسمي الأمطار في النصارية.
-            </p>
-          </div>
-
-          <div class="glass-card rounded-2xl p-5 shadow-md border-t-4 border-blue-500 flex flex-col justify-between space-y-3">
-            <div>
-              <span class="bg-blue-100 text-blue-800 text-xs font-black px-2.5 py-1 rounded-md">
-                الموسم 3 (موسم الموازنة)
-              </span>
-              <h4 class="text-xl font-black text-earth-dark mt-2.5">🌻 حمص / محاصيل راحة</h4>
-              <p class="text-xs text-blue-700 font-bold mt-1">
-                كسر دورة الآفات والأمراض
-              </p>
-            </div>
-            <p class="text-xs text-gray-600 font-semibold bg-blue-50/60 p-2.5 rounded-lg border border-blue-100">
-              <strong>الفائدة:</strong> إعادة توازن رطوبة التربة وتوفير عائد اقتصادي متجدد للمزارع.
-            </p>
-          </div>
-
-        </div>
-      </div>
-
-      <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
-        <button onclick="goToStep(2)" class="w-full sm:w-auto bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold px-5 py-3.5 rounded-xl border border-gray-300 transition flex items-center justify-center space-x-2 space-x-reverse cursor-pointer">
-          <i class="fa-solid fa-arrow-right"></i>
-          <span>العودة للتحليل المباشر</span>
-        </button>
-<button onclick="downloadPDFPlan()" class="w-full sm:w-auto bg-earth-primary hover:bg-emerald-800 text-white text-xs font-extrabold px-6 py-3.5 rounded-xl shadow-md transition flex items-center justify-center space-x-2 space-x-reverse hover:shadow-[0_0_20px_rgba(88,235,76,0.3)] cursor-pointer">
-  <i class="fa-solid fa-file-pdf text-lg"></i>
-  <span>تنزيل تقرير الخطة التنفيذية (PDF)</span>
-</button>
-
-    </section>
-  </main>
-
-  <footer class="bg-white border-t border-gray-200 py-4 mt-auto relative z-10">
-    <div class="max-w-7xl mx-auto px-4 text-center text-xs text-gray-500 font-bold">
-      تطبيق Ofoiq (أفق) - NASA Space Apps Challenge 2026 
-    </div>
-  </footer>
-
-  <!-- ========================================== -->
-  <!-- 🤖 الشات بوت الذكي - مستشار أفق الزراعي   -->
-  <!-- ========================================== -->
-
-  <button id="ofoiq-chat-trigger" onclick="toggleOfoiqChat()" class="fixed bottom-6 left-6 z-50 bg-gradient-to-r from-emerald-600 to-[#2E7D32] text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-all duration-300 flex items-center gap-3 border-2 border-[#58EB4C] group">
-    <div class="relative">
-      <i class="fa-solid fa-robot text-2xl group-hover:rotate-12 transition-transform"></i>
-      <span class="absolute -top-1 -right-1 w-3 h-3 bg-[#58EB4C] rounded-full animate-ping"></span>
-      <span class="absolute -top-1 -right-1 w-3 h-3 bg-[#58EB4C] rounded-full"></span>
-    </div>
-    <span class="font-extrabold text-sm hidden sm:inline-block pl-1">اسأل عن مزرعتك</span>
-  </button>
-
-  <div id="ofoiq-chat-window" class="fixed bottom-24 left-4 sm:left-6 z-50 w-[calc(100%-2rem)] sm:w-96 h-[500px] max-h-[80vh] bg-emerald-950/95 backdrop-blur-xl border-2 border-emerald-500/50 rounded-2xl shadow-2xl flex flex-col overflow-hidden transition-all duration-300 transform translate-y-10 opacity-0 pointer-events-none">
-    
-    <div class="bg-gradient-to-r from-[#07140a] to-[#12301a] p-4 border-b border-emerald-800/80 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-emerald-800/80 border border-[#58EB4C]/40 flex items-center justify-center text-[#58EB4C] text-xl shadow-inner">
-          <i class="fa-solid fa-robot"></i>
-        </div>
-        <div>
-          <h4 class="font-black text-white text-sm">مستشار أفق الزراعي 🌱</h4>
-          <span class="text-[11px] text-emerald-300 font-semibold flex items-center gap-1">
-            <span class="w-2 h-2 rounded-full bg-[#58EB4C] animate-pulse"></span>
-            مُدرّب على بيانات NASA (النصارية)
-          </span>
-        </div>
-      </div>
-      <button onclick="toggleOfoiqChat()" class="text-emerald-400 hover:text-white p-1 transition">
-        <i class="fa-solid fa-xmark text-xl"></i>
-      </button>
-    </div>
-
-    <div id="ofoiq-chat-messages" class="flex-1 p-4 overflow-y-auto space-y-3 text-xs font-bold leading-relaxed">
-      <div class="flex items-start gap-2">
-        <div class="w-7 h-7 rounded-lg bg-emerald-800 flex items-center justify-center text-[#58EB4C] text-xs shrink-0 mt-0.5">🤖</div>
-        <div class="bg-emerald-900/80 text-emerald-100 p-3 rounded-2xl rounded-tr-none border border-emerald-700/60 max-w-[85%] shadow">
-          مرحباً بك يازارع الخير! 🌾<br>
-          أنا مستشارك الزراعي الذكي لمنطقة **النصارية**. يمكنك سؤالي عن حالة الطقس، رطوبة التربة، توجيهات الري، أو متى تزرع البقوليات بناءً على بيانات NASA الحقيقية. كيف أساعدك اليوم؟
-        </div>
-      </div>
-    </div>
-
-    <div class="px-3 py-2 bg-emerald-950/60 border-t border-emerald-900/50 flex gap-1.5 overflow-x-auto text-[11px] no-scrollbar">
-      <button onclick="sendQuickQuestion('شو حالة التربة اليوم؟')" class="bg-emerald-900/60 hover:bg-emerald-800 text-emerald-200 px-2.5 py-1 rounded-full border border-emerald-700/50 whitespace-nowrap transition">🌱 رطوبة التربة</button>
-      <button onclick="sendQuickQuestion('هل ينفع ازرع بقوليات هسا؟')" class="bg-emerald-900/60 hover:bg-emerald-800 text-emerald-200 px-2.5 py-1 rounded-full border border-emerald-700/50 whitespace-nowrap transition">🫘 توصية البقوليات</button>
-      <button onclick="sendQuickQuestion('كم كمية المطر التراكمية؟')" class="bg-emerald-900/60 hover:bg-emerald-800 text-emerald-200 px-2.5 py-1 rounded-full border border-emerald-700/50 whitespace-nowrap transition">🌧️ كمية الأمطار</button>
-    </div>
-
-    <form onsubmit="handleOfoiqChatSubmit(event)" class="p-3 bg-[#07140a] border-t border-emerald-800/60 flex items-center gap-2">
-      <input type="text" id="ofoiq-chat-input" placeholder="اسأل المستشار الزراعي..." class="flex-1 bg-emerald-950/80 border border-emerald-800 text-white placeholder-emerald-600 text-xs rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-[#58EB4C] font-semibold">
-      <button type="submit" class="bg-gradient-to-r from-emerald-600 to-[#2E7D32] hover:from-emerald-500 hover:to-emerald-700 text-white w-9 h-9 rounded-xl flex items-center justify-center transition shadow-md shrink-0">
-        <i class="fa-solid fa-paper-plane text-xs"></i>
-      </button>
-    </form>
-
-  </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-  <!-- ربط ملف الـ JavaScript الخارجي -->
-  <script src="thekraa.js"></script>
-</body>
-</html>
+const blk=[0,1,2].map(()=>({irr:0,cov:0,a:.001,w:0})),BR=new THREE.Color(0x8a6a2b);let sel=-1,hm=null,sx=0,sy=0;
+function E(b,d){const k=blk[b],ge=cl(d.gt+(k.irr?.16:0)+(k.cov?.04:0)),tx=d.tx-(k.cov?4:0);return{ge,tx,s:cl((.15-ge)/.1)*cl((tx-28)/8)}}
+const per=16,st=new THREE.InstancedMesh(new THREE.CylinderGeometry(.03,.06,1,5),new THREE.MeshLambertMaterial({color:0xffffff}),12*per),tmp=new THREE.Object3D(),col=new THREE.Color();S.add(st);
+const ph=[];for(let i=0;i<12*per;i++)ph.push(Math.random()*6.28);
+const RN=500,rp=new Float32Array(RN*3);for(let i=0;i<RN;i++)rp.set([(Math.random()-.5)*14,Math.random()*9,(Math.random()-.5)*10],i*3);
+const rg=new THREE.BufferGeometry();rg.setAttribute('position',new THREE.BufferAttribute(rp,3));
+const rain=new THREE.Points(rg,new THREE.PointsMaterial({color:0x9fd0ff,size:.07,transparent:true,opacity:.8}));S.add(rain);
+let th=.6,ph2=.95,rad=15,drag=false,auto=true,lx=0,ly=0;const cv=$('c');
+cv.onpointerdown=e=>{sx=e.clientX;sy=e.clientY;drag=true;auto=false;lx=e.clientX;ly=e.clientY};onpointerup=()=>drag=false;
+onpointermove=e=>{if(!drag)return;th-=(e.clientX-lx)*.008;ph2=cl(ph2-(e.clientY-ly)*.006,.3,1.4);lx=e.clientX;ly=e.clientY};
+const RC=new THREE.Raycaster(),mv2=new THREE.Vector2(),pms=plots.map(p=>p.m),bOf=m=>plots.find(p=>p.m==m).b;
+function hover(e){const r=cv.getBoundingClientRect();mv2.set((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1);RC.setFromCamera(mv2,cam);const h=RC.intersectObjects(pms)[0],tp=$('tip');hm=h&&!drag?h.object:null;if(!hm){tp.style.display='none';cv.style.cursor=drag?'grabbing':'grab';return}cv.style.cursor='pointer';tp.innerHTML=tipH(bOf(hm));tp.style.display='block';tp.style.left=Math.min(e.clientX+14,innerWidth-260)+'px';tp.style.top=Math.min(e.clientY+14,innerHeight-190)+'px'}
+cv.addEventListener('pointermove',hover);cv.addEventListener('pointerleave',()=>{hm=null;$('tip').style.display='none'});
+cv.addEventListener('click',e=>{if(Math.hypot(e.clientX-sx,e.clientY-sy)>5||!hm)return;const b=bOf(hm);setSel(sel==b?-1:b)});
+cv.onwheel=e=>{e.preventDefault();rad=cl(rad+e.deltaY*.01,7,24)};
+const cDry=new THREE.Color(0xc19a62),cWet=new THREE.Color(0x3a2616),cSat=new THREE.Color(0x2b3a44),hot=new THREE.Color(0xe9b47c),cool=new THREE.Color(0x8fb8dc),gry=new THREE.Color(0x74828f),sk=new THREE.Color();
+function frame(t){requestAnimationFrame(frame);t*=.001;const w=innerWidth,h=innerHeight;if(R.domElement.width!=w*R.getPixelRatio()){R.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix()}
+if(auto)th+=.0016;cam.position.set(rad*Math.sin(th)*Math.sin(ph2),rad*Math.cos(ph2),rad*Math.cos(th)*Math.sin(ph2));cam.lookAt(0,.3,0);
+const d=D[M==1?day:Math.min(N-1,sow+30)],wet=cl(d.gt/.5);gr+=(grT-gr)*.04;
+sk.copy(cool).lerp(hot,cl((d.tx-18)/22)).lerp(gry,cl(d.p/6)*.6);S.background.copy(sk);S.fog.color.copy(sk);sun.intensity=.5+cl(d.tx/45)*.8;sunB.material.color.setHex(d.tx>35?0xff9a3c:0xffd27a);
+const ef=[0,1,2].map(b=>{const e=E(b,d),k=blk[b];k.w+=(e.s-k.w)*.05;k.a+=((k.cov?1.8:.001)-k.a)*.08;cov[b].scale.x=k.a;cov[b].visible=k.a>.01;spr[b].visible=!!k.irr;pipe[b].material.color.setHex(k.irr?0x4aa3ff:0x777777);if(k.irr){const a=spr[b].geometry.attributes.position.array;for(let i=1;i<a.length;i+=3){a[i]-=.07;if(a[i]<.2)a[i]=1.6}spr[b].geometry.attributes.position.needsUpdate=true}
+const reqIrr = d.ir>=1.5&&d.gt<.4, reqCov = d.tx>=35||d.p>=9;
+const needsAction = (reqIrr && !k.irr) || (reqCov && !k.cov);
+warnSign[b].visible = needsAction;
+if(needsAction){ warnSign[b].position.y = Math.sin(t*5)*0.1; }
+return e});
+plots.forEach(p=>{const e=ef[p.b];p.m.material.color.copy(cDry).lerp(cWet,cl(e.ge/.5)).lerp(cSat,e.ge>.4?(e.ge-.4)*3:0);p.m.material.emissive.setHex(p.m===hm?0x1f4a1f:sel==p.b?0x123a12:0)});
+const sc=M==1?sched(0):sched(season);
+plots.forEach((p,pi)=>{const c=CR[sc[p.b]],kw=blk[p.b].w,g=Math.max(.001,c[2]*gr*(1-.4*kw));for(let j=0;j<per;j++){const i=pi*per+j;tmp.position.set(p.m.position.x+((j%4)-1.5)*.42,.15+g*.5,p.m.position.z+(((j/4)|0)-1.5)*.42);tmp.scale.set(1,g,1);tmp.rotation.z=Math.sin(t*1.5+ph[i])*.06*(1+d.ws/3)+kw*.6*(j%2?1:-1);tmp.updateMatrix();st.setMatrixAt(i,tmp.matrix);st.setColorAt(i,col.setHex(c[1]).offsetHSL(0,0,(ph[i]%.3)-.15).lerp(BR,kw*.8))}});
+st.instanceMatrix.needsUpdate=true;st.instanceColor.needsUpdate=true;
+const a=rg.attributes.position.array;for(let i=0;i<RN;i++){a[i*3+1]-=.25;if(a[i*3+1]<0)a[i*3+1]=9}rg.attributes.position.needsUpdate=true;rg.setDrawRange(0,d.p>0?Math.floor(RN*cl(d.p/10+.2)):0);R.render(S,cam)}
+// ---------- UI ----------
+const cd=()=>D[M==1?day:Math.min(N-1,sow+30)],tg=()=>sel<0?[0,1,2]:[sel];
+function setSel(k){sel=k;ui()}function act(y){const t=tg(),v=!t.every(b=>blk[b][y]);t.forEach(b=>blk[b][y]=v?1:0);ui()}
+function tipH(b){const d=cd(),e=E(b,d),k=blk[b],c=CR[(M==1?sched(0):sched(season))[b]];
+const rec=e.s>.3&&!k.irr&&!k.cov?'⚠️ إجهاد حراري/جفاف: شغّل الري الفجري أو غطِّ المحصول':k.irr&&d.gt>=.4?'🛑 تشبّع: أوقف الري':d.p>=9&&!k.cov?'🌧 مطر غزير: غطِّ التربة لتجنب الانجراف':'✅ الوضع مستقر';
+const g={w:`💧 احتياج الماء اليوم: <b>${d.ir.toFixed(1)} ملم</b>`,y:`📈 ${c[3]}`,d:'☀️ التغطية تخفّض الحرارة ~4° وتقلل التبخر'}[goal];
+return `<b style="color:#58eb4c">قطاع ${'ABC'[b]} — ${c[0]}</b><br>رطوبة التربة: <b>${e.ge.toFixed(2)}</b> • حرارة: <b>${e.tx.toFixed(0)}°</b><br>ري: <b>${k.irr?'يعمل 💦':'متوقف'}</b> • تغطية: <b>${k.cov?'مفعّلة':'لا'}</b><br>${g}<br>${rec}<br><small style="color:#9cb">اضغط لاختيار القطاع</small>`}
+function actH(){const d=cd(),t=tg(),I=t.every(b=>blk[b].irr),C=t.every(b=>blk[b].cov),rI=d.ir>=1.5&&d.gt<.4,rC=d.tx>=35||d.p>=9;
+return `<h3>🎮 تحكّم بالمزرعة (أو اضغط قطاع بالـ 3D)</h3><div class="g" style="flex-wrap:wrap;margin-bottom:6px">${[['الكل',-1],['A',0],['B',1],['C',2]].map(a=>`<button class="${sel==a[1]?'on':''}" onclick="setSel(${a[1]})">${a[0]}</button>`).join('')}</div><div class="g" style="flex-wrap:wrap"><button class="${I?'on':''}" onclick="act('irr')">${I?'🛑 إيقاف الري':'💦 تشغيل الري'}</button><button class="${C?'on':''}" onclick="act('cov')">${C?'🔓 كشف المحصول':'🧺 تغطية المحصول'}</button></div><div class="t">${rI==I?'✅':'⚠️'} الري: أفق يوصي بـ${rI?'التشغيل':'الإيقاف'} • ${rC==C?'✅':'⚠️'} التغطية: أفق يوصي بـ${rC?'التغطية':'الكشف'}</div>`}
+function ui(){const d=D[day];$("dd").value=new Date(Date.UTC(2022,8,1+day)).toISOString().slice(0,10);let h='';
+if(M==1){const pl=PLAN&&PLAN[day];grT=day<sow?0:cl((day-sow)/45);
+h=`<h3>القراءة الفضائية • ${dt(day)} 2022</h3><div class="d">${d.tx.toFixed(1)}° / ${d.tn.toFixed(1)}°</div><div id="st" style="background:${d.s[1]}">${d.s[0]}</div>
+<div class="m"><div>رطوبة السطح GWETTOP<b>${d.gt.toFixed(2)}</b></div><div>رطوبة الجذور GWETROOT<b>${d.gr.toFixed(2)}</b></div><div>مطر اليوم / التراكمي<b>${d.p} / ${d.cum.toFixed(1)} ملم</b></div><div>احتياج الري (Hargreaves)<b>${d.ir.toFixed(1)} ملم</b></div><div>رطوبة هواء / رياح<b>${Math.round(d.rh)}% / ${d.ws}</b></div><div>ملاءمة البذر<b>${d.sc}/100</b></div></div>
+<div class="t"><u>🛰 قرار اليوم</u>${day<sow?`أول بذر موصى به: <b>${dt(sow)}</b> (بعد تراكم ${D[sow].cum.toFixed(1)} ملم مع رطوبة سطح ≥0.19). قبله لا تبذر.`:'التربة جاهزة — المحصول ينمو في المجسّم 3D.'}</div>`+
+(pl?`<div class="t"><u>🌿 مناخات مصغّرة</u>${pl.micro_climate_swapping}</div><div class="t"><u>💧 ري موجّه</u>${pl.space_guided_irrigation}</div><div class="t"><u>🧱 تعافي التربة</u>${pl.soil_regeneration}</div>`:'')}
+else{grT=1;const sc=sched(season),F=season+1;
+h=`<h3>الموسم ${F} من 3 — تناوب 3 قطاعات</h3>`+sc.map((k,i)=>`<div class="t"><u>قطاع ${'ABC'[i]}: ${CR[k][0]}</u>${CR[k][3]} (${SH[k]>0?'+':''}${SH[k]} نقطة صحة تربة)</div>`).join('');
+let r=60,m=60;for(let s=0;s<=season;s++){r+=sched(s).reduce((a,k)=>a+SH[k],0)/3;m+=SH[cer()]}
+h+=`<div class="m"><div>صحة التربة مع التناوب<b style="color:#58eb4c">${r.toFixed(0)}</b></div><div>زراعة حبوب متكررة<b style="color:#ff6a3c">${m.toFixed(0)}</b></div></div><div class="t">كل قطاع يتبدّل محصوله كل موسم: بقوليات ← حبوب ← راحة. نموذج توضيحي لتأثير النيتروجين (قابل للمعايرة بتحليل تربة).</div>`}
+h+=`<div class="t" style="border:1px solid #58eb4c55">🎯 ${{w:'هدفك: توفير الماء — الري فقط عند عجز الرطوبة، والشعير/الحمص أولوية.',y:'هدفك: الإنتاجية — القمح بعد البقوليات للاستفادة من نيتروجينها.',d:'هدفك: مقاومة الجفاف — شعير + تغطية عضوية وبذر فور أول مطرة مؤثرة.'}[goal]}</div>`;$('info').innerHTML=actH()+h;roi();draw()}
+const dp=$('dr');dp.oninput=roi;function roi(){const a=+dp.value;$('dv').textContent=a;let mult=1.0;if(goal==='w')mult=1.25;if(goal==='d')mult=1.15;if(goal==='y')mult=0.9;const adjSav=Math.min(0.85,sav*mult);const m=(base-smart*(2-mult))*a;$('rw').textContent=Math.round(m) + ' m³';$('rm').textContent=Math.round(m*1.2) + ' $';$('rt').innerHTML=`استراتيجية موجهة لـ <b>${{w:'توفير المياه الأقصى',y:'تحقيق أقصى إنتاجية',d:'تعزيز الصمود ضد الجفاف'}[goal]}</b>: توفير نحو <b>${Math.round(adjSav*100)}%</b> مقارنة بالري التقليدي.`}
+function draw(){const c=$('ch'),x=c.getContext('2d'),W=c.width=c.clientWidth*2,H=c.height=c.clientHeight*2,T=44,B=H-8,h=B-T,X=i=>W-(i+.5)/N*W;x.clearRect(0,0,W,H);
+if(M==2){x.font='bold 26px Cairo';x.textAlign='center';[0,1,2].forEach(s=>{x.fillStyle=s==season?'#58eb4c':'#ffffff22';x.fillRect(W-(s+1)*W/3+6,0,W/3-12,H);x.fillStyle=s==season?'#07140a':'#9cb';x.fillText('الموسم '+(s+1),W-(s+.5)*W/3,H/2+8)});return}
+const ms=[0,30,61,91,N],mn=['September','October','November','December'];x.font='bold 22px Cairo';x.textAlign='center';
+mn.forEach((m,k)=>{const a=W-ms[k]/N*W,b=W-ms[k+1]/N*W;x.fillStyle=k%2?'#ffffff0a':'#ffffff14';x.fillRect(b,0,a-b,H);x.fillStyle='#cfe';x.fillText(m,(a+b)/2,28)});
+x.strokeStyle='#ffffff22';x.lineWidth=1;[0,.5,1].forEach(f=>{x.beginPath();x.moveTo(0,B-f*h);x.lineTo(W,B-f*h);x.stroke()});
+x.fillStyle='#58eb4c44';x.strokeStyle='#58eb4c';x.lineWidth=2;x.beginPath();x.moveTo(X(0),B);D.forEach((d,i)=>x.lineTo(X(i),B-d.sc/100*h));x.lineTo(X(N-1),B);x.fill();x.beginPath();D.forEach((d,i)=>{const y=B-d.sc/100*h;i?x.lineTo(X(i),y):x.moveTo(X(i),y)});x.stroke();
+x.fillStyle='#4aa3ff';D.forEach((d,i)=>{const bh=Math.min(1,d.p/16)*h;x.fillRect(X(i)-W/N*.35,B-bh,W/N*.7,bh)});
+x.strokeStyle='#ff8a3c';x.lineWidth=4;x.beginPath();D.forEach((d,i)=>{const y=B-cl((d.tx-10)/34)*h;i?x.lineTo(X(i),y):x.moveTo(X(i),y)});x.stroke();
+const mp=D.reduce((a,d,i)=>d.p>D[a].p?i:a,0),mt=D.reduce((a,d,i)=>d.tx>D[a].tx?i:a,0);x.font='bold 20px Cairo';x.fillStyle='#9fd0ff';x.fillText(D[mp].p+' mm',X(mp),B-D[mp].p/16*h-8);x.fillStyle='#ffb27a';x.fillText(D[mt].tx+'°C',X(mt),B-cl((D[mt].tx-10)/34)*h-8);
+x.setLineDash([8,6]);x.strokeStyle='#58eb4c';x.lineWidth=3;x.beginPath();x.moveTo(X(sow),T);x.lineTo(X(sow),B);x.stroke();x.setLineDash([]);x.fillStyle='#58eb4c';x.fillText('🌱 بذر',X(sow),T+22);
+x.fillStyle='#fff';x.fillRect(X(day)-2,T,4,h);const bub=(i,y,txt,bg)=>{x.font='bold 22px Cairo';const w=x.measureText(txt).width+24,cx=cl(X(i),w/2+4,W-w/2-4);x.fillStyle=bg;x.fillRect(cx-w/2,y,w,32);x.fillStyle='#07140a';x.fillText(txt,cx,y+23)};
+if(hv>=0&&hv!=day){const d=D[hv];bub(hv,T-6+h*.25,`${dt(hv)} • ${d.tx}°C • مطر ${d.p} • ملاءمة ${d.sc}`,'#ffd27a')}bub(day,6,dt(day),'#fff')}
+const ch=$('ch');let sc=false;function pick(e){const r=ch.getBoundingClientRect(),f=(e.clientX-r.left)/r.width;if(M==1)day=cl(Math.round((1-f)*(N-1)),0,N-1);else season=cl(Math.floor((1-f)*3),0,2);ui()}
+ch.onpointerdown=e=>{sc=true;pick(e)};ch.onpointermove=e=>{const r=ch.getBoundingClientRect();hv=cl(Math.round((1-(e.clientX-r.left)/r.width)*(N-1)),0,N-1);sc?pick(e):draw()};ch.onpointerleave=()=>{hv=-1;draw()};addEventListener('pointerup',()=>sc=false);
+let tm=null,hv=-1;function step(k){if(M==2)mode(1);day=cl(day+k,0,N-1);ui()}function setDate(v){const p=v.split('-').map(Number);if(p.length<3||!p[0])return;if(M==2)mode(1);day=cl(Math.round((Date.UTC(p[0],p[1]-1,p[2])-Date.UTC(2022,8,1))/864e5),0,N-1);ui()}
+const J=[['🌱 أول بذر',sow],['⛈ أقوى مطر',D.reduce((a,d,i)=>d.p>D[a].p?i:a,0)],['🔥 أشد حرارة',D.reduce((a,d,i)=>d.tx>D[a].tx?i:a,0)],['❄️ أبرد ليلة',D.reduce((a,d,i)=>d.tn<D[a].tn?i:a,0)]];$('jp').innerHTML=J.map((j,k)=>`<button onclick="step(0);day=${j[1]};if(M==2)mode(1);ui()">${j[0]}</button>`).join('');function play(){if(tm){clearInterval(tm);tm=null;$('pl').textContent='▶ تشغيل';return}$('pl').textContent='⏸ إيقاف';tm=setInterval(()=>{if(M==1){day=(day+1)%N}else season=(season+1)%3;ui()},M==1?140:1600)}
+function mode(m){M=m;$('m1').className=m==1?'on':'';$('m2').className=m==2?'on':'';$('leg').style.display=m==1?'':'none';if(tm){play();play()}if(m==2){gr=0}ui()}
+$('goals').onclick=e=>{const g=e.target.dataset.g;if(!g)return;goal=g;[...$('goals').children].forEach(b=>b.className=b.dataset.g==g?'on':'');ui()};
+addEventListener('resize',draw);roi();ui();requestAnimationFrame(frame);
+</script></body></html>
