@@ -5,7 +5,7 @@ An intelligent, data-driven agricultural decision-support web platform and 3D Di
 ---
 
 ## 🚀 Live Demo
-🌐 **[View Live Web Application](https://nasaofoiq-team.github.io/NasaOfoiq-project/)**
+🌐 **[View Live Web Application](https://nasa-ofoiq-team.github.io/NasaOfoiq-project/)**
 
 ---
 
