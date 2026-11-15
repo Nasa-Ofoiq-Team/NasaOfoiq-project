@@ -1,164 +1,2172 @@
-<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>أفق Ofoiq — التوأم الرقمي للمزرعة</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>أفق Ofoiq — المساعد الزراعي الذكي والتوأم الرقمي</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{font-family:Cairo,sans-serif;background:#07140a;color:#eaf7e6;overflow:hidden;height:100vh;height:100dvh;width:100vw}
-#c{position:fixed;inset:0;width:100%;height:100%;cursor:grab;touch-action:none}
-.p{position:fixed;background:rgba(8,26,14,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid #58eb4c33;border-radius:14px;padding:10px;z-index:5}
-#top{top:8px;right:8px;left:8px;display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap;padding:8px 12px}
-b.l{font-size:18px;font-weight:900}
-button{font:700 11px Cairo;color:#cfe;background:#12301a;border:1px solid #58eb4c44;border-radius:8px;padding:6px 10px;cursor:pointer;white-space:nowrap;transition:all .2s ease}
-button.on{background:#58eb4c;color:#07140a;border-color:#58eb4c}.g{display:flex;gap:5px;flex-wrap:wrap}
-#info{top:75px;right:8px;width:320px;max-height:calc(100vh - 270px);max-height:calc(100dvh - 270px);overflow-y:auto;overflow-x:hidden}
-#roi{top:75px;left:8px;width:220px}
-#bot{bottom:8px;left:8px;right:8px;padding:8px}
-h3{font-size:12px;color:#58eb4c;margin-bottom:4px}.d{font-size:18px;font-weight:900}
-#st{display:inline-block;padding:4px 10px;border-radius:99px;font-weight:900;font-size:12px;margin:4px 0;color:#07140a}
-.m{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin:6px 0}.m div{background:#ffffff0d;border-radius:8px;padding:5px 7px;font-size:10px}.m b{display:block;font-size:13px}
-.t{font-size:10.5px;line-height:1.6;background:#ffffff0d;border-radius:8px;padding:6px 8px;margin-top:4px}.t u{text-decoration:none;color:#58eb4c;font-weight:900;display:block}
-#ch{width:100%;height:110px;display:block;cursor:pointer}.big{font-size:20px;font-weight:900;color:#58eb4c}
-input[type=range]{width:100%;accent-color:#58eb4c}.sw{display:inline-block;width:8px;height:8px;border-radius:2px;margin-left:4px}
-
-@media(max-width:768px){
-  #top{padding:6px 8px;gap:4px}
-  b.l small{font-size:9.5px}
-  #logo-ofoiq{height:38px!important}
-  #roi{display:none}
-  #info{width:calc(100vw - 16px);right:8px;left:8px;top:auto;bottom:185px;max-height:28vh;z-index:6}
-  #bot{bottom:4px;left:4px;right:4px;padding:6px}
-  #ch{height:90px}
-  button{padding:5px 8px;font-size:10px}
+:root{
+  --bg-glass: rgba(14, 20, 13, 0.86);
+  --bg-card: rgba(236, 230, 214, 0.045);
+  --bg-card-hover: rgba(236, 230, 214, 0.09);
+  --border-soft: rgba(214, 196, 150, 0.16);
+  --border-accent: rgba(141, 184, 92, 0.5);
+  --text-main: #ebe5d3;
+  --text-muted: #a3af9a;
+  --green: #8db85c;
+  --green-dark: #1c2e14;
+  --gold: #d9a63f;
+  --blue: #4f9fc4;
+  --terra: #c8573a;
+  --teal: #3da593;
+  --radius-lg: 18px;
+  --radius-md: 12px;
+  --shadow-lg: 0 18px 45px rgba(0, 0, 0, 0.38);
 }
-</style></head><body><canvas id="c"></canvas>
-<div class="p" id="top"><b class="l" style="display:flex;align-items:center;gap:8px"><svg id="logo-ofoiq" viewBox="0 0 400 300" style="height:44px;width:auto;background:#eaf7e6;border-radius:8px;padding:2px 6px;flex-shrink:0"><path d="M 120 100 L 210 65 L 300 100 L 285 110 L 285 140 C 285 140, 275 160, 265 140 L 265 125 L 230 148 C 230 148, 220 162, 195 162 C 170 162, 150 148, 150 148 L 138 128 L 138 170 C 138 185, 170 200, 205 200 C 240 200, 270 185, 270 170 C 270 170, 240 182, 150 170 L 150 142 L 120 100 Z" fill="#0a522c"/><path d="M 80 200 C 140 150, 270 150, 330 200 C 260 172, 150 172, 80 200 Z" fill="#0a522c"/><text x="205" y="275" font-family="Cairo" font-weight="900" font-size="65" fill="#0a522c" text-anchor="middle">أفق</text></svg><small style="font-size:10px;font-weight:400;color:#9cb;line-height:1.3">Ofoiq<br>مزرعة النصارية — نابلس • NASA POWER</small></b>
-<div class="g"><button id="m1" class="on" onclick="mode(1)">📡 اليوم بيوم</button><button id="m2" onclick="mode(2)">🔄 3 مواسم</button></div>
-<div class="g" id="goals"><button class="on" data-g="w">💧 مياه</button><button data-g="y">📈 إنتاج</button><button data-g="d">☀️ جفاف</button></div></div>
-<div class="p" id="info"></div><div class="p" id="tip" style="display:none;pointer-events:none;z-index:9;padding:6px 10px;font-size:11px;line-height:1.5;max-width:220px"></div>
-<div class="p" id="roi"><h3>🧮 الأثر على مزرعتك</h3><div style="font-size:11px">المساحة: <b id="dv">5</b> دونم</div><input type="range" id="dr" min="1" max="50" value="5"><div class="m"><div>💧 مياه موفّرة<b class="big" id="rw"></b></div><div>💰 وفر مالي<b class="big" id="rm"></b></div></div><div class="t" id="rt"></div></div>
-<div class="p" id="bot"><canvas id="ch"></canvas><div class="g" style="margin-top:6px;justify-content:space-between;align-items:center"><div class="g" style="align-items:center;flex-wrap:wrap"><button id="pl" onclick="play()">▶ تشغيل</button><button onclick="step(-1)">← السابق</button><input type="date" id="dd" min="2022-09-01" max="2022-12-31" value="2022-09-01" onchange="setDate(this.value)" style="font:700 11px Cairo;background:#12301a;color:#eaf7e6;border:1px solid #58eb4c66;border-radius:6px;padding:3px 6px;color-scheme:dark"><button onclick="step(1)">التالي →</button><span id="jp" class="g"></span></div><div id="leg" style="font-size:10px;color:#9cb;display:none"><span class="sw" style="background:#58eb4c"></span>بذر <span class="sw" style="background:#4aa3ff"></span>مطر <span class="sw" style="background:#ff8a3c"></span>حرارة</div></div></div>
+
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{
+  font-family:'Cairo',sans-serif;
+  background:#0c110b;
+  color:var(--text-main);
+  overflow:hidden;
+  height:100vh;height:100dvh;
+  width:100vw;
+  user-select:none;
+}
+
+#c{position:fixed;inset:0;width:100%;height:100%;cursor:grab;touch-action:none;z-index:1}
+
+/* Smooth Glass Surface */
+.glass{
+  background:var(--bg-glass);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  border:1px solid var(--border-soft);
+  box-shadow:var(--shadow-lg);
+}
+
+/* Top Minimal Bar */
+#topbar{
+  position:fixed;top:12px;right:14px;left:14px;
+  z-index:15;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+  padding:8px 14px;
+  border-radius:16px;
+}
+
+.brand{display:flex;align-items:center;gap:10px}
+.brand-logo{
+  height:40px;width:auto;
+  background:#e6dfc8;border-radius:10px;padding:3px 7px;
+  box-shadow:0 2px 8px rgba(0,0,0,0.25);flex-shrink:0;
+}
+.brand-text b{font-size:15px;font-weight:900;display:block;line-height:1.1;color:var(--text-main)}
+.brand-text small{font-size:10.5px;color:var(--text-muted);font-weight:600}
+
+.mode-switch{
+  display:flex;gap:4px;
+  background:rgba(0,0,0,0.35);
+  padding:4px;border-radius:12px;border:1px solid var(--border-soft);
+}
+.mode-btn{
+  font:700 11.5px 'Cairo';
+  color:var(--text-muted);
+  background:transparent;border:none;
+  padding:6px 12px;border-radius:9px;cursor:pointer;
+  transition:all .22s ease;
+}
+.mode-btn.on{
+  background:var(--green);color:#0b1f10;font-weight:900;
+  box-shadow:0 3px 12px rgba(141,184,92,0.35);
+}
+
+.top-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.weather-pill{
+  display:flex;align-items:center;gap:8px;
+  padding:5px 11px;border-radius:99px;
+  background:var(--bg-card);border:1px solid var(--border-soft);
+  font-size:11.5px;font-weight:700;
+}
+.icon-pill{
+  font:700 11px 'Cairo';
+  padding:6px 11px;border-radius:99px;
+  background:var(--bg-card);color:var(--text-main);
+  border:1px solid var(--border-soft);cursor:pointer;
+  transition:all .2s ease;display:flex;align-items:center;gap:5px;
+}
+.icon-pill:hover{background:var(--bg-card-hover);border-color:var(--gold);color:var(--gold)}
+
+/* Floating 3D World Labels */
+#world-pins{position:fixed;inset:0;pointer-events:none;z-index:4;overflow:hidden}
+.w-pin{
+  position:absolute;top:0;left:0;
+  pointer-events:auto;cursor:pointer;
+  background:rgba(14, 20, 13, 0.9);
+  backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,0.22);
+  border-radius:99px;
+  padding:4px 10px;
+  font-size:11px;font-weight:800;color:var(--text-main);
+  display:flex;align-items:center;gap:5px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.35);
+  transition:border-color .2s, background .2s, opacity .2s;
+  transform:translate3d(-999px,-999px,0);
+  white-space:nowrap;
+}
+.w-pin:hover{border-color:var(--green);background:rgba(30,42,22,0.96)}
+.w-pin.active{border-color:var(--gold);background:rgba(44,52,24,0.97);box-shadow:0 0 0 2px rgba(217,166,63,0.35)}
+.w-pin .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.w-pin.alert{border-color:var(--terra);animation:softPulse 1.8s infinite}
+@keyframes softPulse{0%,100%{box-shadow:0 0 0 0 rgba(200,87,58,0.5)}50%{box-shadow:0 0 0 7px rgba(200,87,58,0)}}
+
+/* Main Unified Side Panel */
+#panel{
+  position:fixed;top:80px;right:14px;
+  width:375px;
+  max-height:calc(100dvh - 155px);
+  border-radius:var(--radius-lg);
+  z-index:10;
+  display:flex;flex-direction:column;
+  overflow:hidden;
+  transition:max-height .32s cubic-bezier(.22,1,.36,1), transform .3s ease;
+}
+#panel.collapsed{max-height:54px !important}
+body:not(.farmer-mode) #panel{max-height:calc(100dvh - 255px)}
+
+.panel-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:11px 14px;
+  border-bottom:1px solid var(--border-soft);
+  flex-shrink:0;
+}
+#panel.collapsed .panel-head{border-bottom:none}
+.panel-title{font-size:13px;font-weight:900;color:var(--gold);display:flex;align-items:center;gap:6px}
+
+.mini-btn{
+  font:700 11px 'Cairo';
+  padding:4px 10px;border-radius:8px;
+  background:var(--bg-card);color:var(--text-main);
+  border:1px solid var(--border-soft);cursor:pointer;
+  transition:all .2s ease;
+}
+.mini-btn:hover{background:var(--bg-card-hover);border-color:var(--green)}
+
+.tabs{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:4px;
+  padding:8px 10px 6px;
+  background:rgba(0,0,0,0.18);
+  border-bottom:1px solid var(--border-soft);
+  flex-shrink:0;
+}
+.tab-btn{
+  font:700 10.5px 'Cairo';
+  padding:7px 4px;border-radius:10px;
+  background:transparent;border:1px solid transparent;
+  color:var(--text-muted);cursor:pointer;
+  transition:all .2s ease;text-align:center;
+}
+.tab-btn:hover{color:var(--text-main);background:var(--bg-card)}
+.tab-btn.active{
+  background:var(--green);color:#091d0e;font-weight:900;
+  box-shadow:0 3px 10px rgba(141,184,92,0.28);
+}
+
+.panel-body{
+  padding:12px 14px 16px;
+  overflow-y:auto;
+  overflow-x:hidden;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(255,255,255,0.2) transparent;
+}
+.panel-body::-webkit-scrollbar{width:5px}
+.panel-body::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.2);border-radius:99px}
+
+/* Cards inside Panel */
+.card{
+  background:var(--bg-card);
+  border:1px solid var(--border-soft);
+  border-radius:var(--radius-md);
+  padding:11px 12px;
+  margin-bottom:10px;
+}
+.card:last-child{margin-bottom:0}
+.card-title{font-size:12px;font-weight:900;color:var(--gold);margin-bottom:6px;display:flex;align-items:center;justify-content:space-between}
+
+.hero-verdict{
+  border-radius:var(--radius-md);
+  padding:12px 13px;
+  margin-bottom:10px;
+  border:1px solid rgba(255,255,255,0.18);
+  position:relative;overflow:hidden;
+}
+.hero-verdict .badge{
+  display:inline-block;padding:3px 10px;border-radius:99px;
+  font-size:10.5px;font-weight:900;color:#0b1c10;margin-bottom:6px;
+}
+.hero-verdict h2{font-size:15px;font-weight:900;line-height:1.4;margin-bottom:4px}
+.hero-verdict p{font-size:11.5px;color:var(--text-muted);line-height:1.55}
+
+.cta-btn{
+  width:100%;padding:10px 12px;border-radius:11px;
+  font:900 12.5px 'Cairo';
+  border:none;cursor:pointer;
+  background:linear-gradient(135deg,#8db85c,#5f8f3a);
+  color:#0e1a08;
+  box-shadow:0 6px 18px rgba(95,143,58,0.32);
+  display:flex;align-items:center;justify-content:center;gap:7px;
+  transition:transform .16s ease, filter .2s ease;
+}
+.cta-btn:hover{transform:translateY(-1px);filter:brightness(1.06)}
+.cta-btn.done{
+  background:rgba(141,184,92,0.14);color:var(--green);
+  border:1px solid var(--border-accent);box-shadow:none;cursor:default;transform:none;
+}
+.cta-btn.danger{
+  background:linear-gradient(135deg,#c8573a,#a8412a);color:#fff;
+  box-shadow:0 6px 18px rgba(200,87,58,0.35);
+}
+
+.seg-row{display:flex;gap:5px;flex-wrap:wrap}
+.seg-btn{
+  flex:1;min-width:58px;
+  font:700 11px 'Cairo';
+  padding:7px 8px;border-radius:9px;
+  background:rgba(0,0,0,0.24);
+  color:var(--text-muted);
+  border:1px solid var(--border-soft);
+  cursor:pointer;transition:all .18s ease;text-align:center;
+}
+.seg-btn:hover{color:var(--text-main);background:var(--bg-card-hover)}
+.seg-btn.on{background:var(--green);color:#081c0d;border-color:var(--green);font-weight:900}
+.seg-btn.blue.on{background:var(--blue);color:#061726;border-color:var(--blue)}
+
+.metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:6px}
+.metric-box{
+  background:rgba(0,0,0,0.22);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:10px;padding:8px 10px;
+}
+.metric-box small{display:block;font-size:10px;color:var(--text-muted)}
+.metric-box b{display:block;font-size:15px;font-weight:900;margin-top:2px}
+
+/* Sliders */
+input[type=range]{width:100%;accent-color:var(--green);cursor:pointer;height:5px}
+input[type=range].gold{accent-color:var(--gold)}
+
+/* Rotation Strategy Cards */
+.rot-card{
+  background:rgba(0,0,0,0.24);
+  border:1.5px solid var(--border-soft);
+  border-radius:13px;padding:11px;margin-bottom:9px;
+  cursor:pointer;transition:all .22s ease;
+}
+.rot-card:hover{border-color:rgba(217,166,63,0.55);background:rgba(255,255,255,0.06)}
+.rot-card.active{border-color:var(--green);background:rgba(141,184,92,0.10)}
+.rot-header{display:flex;justify-content:space-between;align-items:flex-start;gap:6px;margin-bottom:5px}
+.rot-badge{font-size:9.5px;font-weight:900;padding:2px 8px;border-radius:99px;white-space:nowrap}
+.rot-details{
+  margin-top:8px;padding-top:8px;
+  border-top:1px dashed rgba(255,255,255,0.15);
+  font-size:11px;line-height:1.6;color:var(--text-muted);
+}
+.rot-details b{color:var(--text-main)}
+
+.season-pills{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-top:8px}
+.season-pill{
+  padding:6px 4px;border-radius:8px;font:700 10.5px 'Cairo';
+  background:rgba(0,0,0,0.3);border:1px solid var(--border-soft);
+  color:var(--text-muted);cursor:pointer;text-align:center;
+}
+.season-pill.on{background:var(--gold);color:#141a0d;border-color:var(--gold);font-weight:900}
+
+/* Stage Pills */
+.stage-pills{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:7px 0}
+.stage-pill{
+  background:rgba(0,0,0,0.3);border:1px solid var(--border-soft);
+  border-radius:8px;padding:5px 2px;text-align:center;
+  font-size:10px;color:var(--text-muted);font-weight:700;cursor:pointer;
+}
+.stage-pill.done{background:rgba(141,184,92,0.18);border-color:var(--border-accent);color:var(--green)}
+.stage-pill.current{background:var(--gold);border-color:var(--gold);color:#141b0c;font-weight:900}
+
+/* NDVI Bars */
+.ndvi-row{margin-top:7px}
+.ndvi-head{display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px}
+.ndvi-track{width:100%;height:7px;background:rgba(0,0,0,0.38);border-radius:99px;overflow:hidden}
+.ndvi-fill{height:100%;border-radius:99px;transition:width .4s ease}
+
+/* Forecast List */
+.f-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:8px 10px;border-radius:10px;
+  background:rgba(0,0,0,0.22);margin-top:6px;
+  cursor:pointer;border:1px solid transparent;transition:all .18s;
+}
+.f-row:hover{background:var(--bg-card-hover);border-color:var(--border-soft)}
+.f-row.active{background:rgba(79,159,196,0.16);border-color:var(--blue)}
+
+/* Bottom Floating Action Dock */
+#dock{
+  position:fixed;bottom:14px;left:50%;transform:translateX(-50%);
+  z-index:12;
+  display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:center;
+  padding:7px 10px;border-radius:99px;
+  max-width:94vw;
+}
+body:not(.farmer-mode) #dock{bottom:158px}
+
+.dock-btn{
+  font:700 11px 'Cairo';
+  padding:6px 12px;border-radius:99px;
+  background:rgba(255,255,255,0.07);color:var(--text-main);
+  border:1px solid rgba(255,255,255,0.12);cursor:pointer;
+  display:flex;align-items:center;gap:5px;white-space:nowrap;
+  transition:all .2s ease;
+}
+.dock-btn:hover{background:rgba(255,255,255,0.16);transform:translateY(-1px)}
+.dock-btn.on{background:var(--teal);color:#061e1b;border-color:var(--teal);font-weight:900}
+.dock-btn.warn{background:rgba(200,87,58,0.2);border-color:rgba(200,87,58,0.55);color:#e8a08a}
+.dock-btn.rain{background:rgba(79,159,196,0.2);border-color:rgba(79,159,196,0.55);color:#a8d0e6}
+
+/* Left Floating Cards (Heatmap Legend & ROI in Expert Mode) */
+#left-stack{
+  position:fixed;top:80px;left:14px;width:240px;z-index:9;
+  display:flex;flex-direction:column;gap:10px;pointer-events:none;
+}
+#left-stack > div{pointer-events:auto;border-radius:var(--radius-md);padding:11px 12px}
+#heatmap-legend{display:none;border-color:rgba(61,165,147,0.45)}
+.hm-item{display:flex;align-items:flex-start;gap:7px;margin-top:6px;font-size:10.5px;line-height:1.45;color:var(--text-muted)}
+.hm-dot{width:12px;height:12px;border-radius:4px;flex-shrink:0;margin-top:3px;border:1px solid rgba(255,255,255,0.35)}
+
+/* Expert Timeline Drawer */
+#bot{
+  position:fixed;bottom:10px;left:14px;right:14px;z-index:10;
+  border-radius:var(--radius-lg);padding:10px 14px;
+}
+#ch{width:100%;height:92px;display:block;cursor:pointer}
+
+/* Tooltip */
+#tip{
+  position:fixed;display:none;pointer-events:none;z-index:30;
+  padding:9px 12px;border-radius:12px;font-size:11px;line-height:1.55;max-width:265px;
+}
+
+/* Pest Toast & Banner */
+#pest-toast{
+  position:fixed;top:76px;left:50%;transform:translateX(-50%) translateY(-14px);
+  z-index:40;width:min(420px,92vw);
+  border-radius:16px;padding:12px 15px;
+  border:1.5px solid var(--terra);
+  opacity:0;pointer-events:none;transition:all .26s ease;
+}
+#pest-toast.show{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0)}
+.toast-progress{height:3px;background:var(--terra);border-radius:99px;margin-top:8px;width:100%;transform-origin:right}
+@keyframes shrinkToast{from{transform:scaleX(1)}to{transform:scaleX(0)}}
+
+#app-banner{
+  position:fixed;top:74px;left:50%;transform:translateX(-50%);
+  z-index:38;padding:9px 32px 9px 16px;border-radius:99px;
+  font-weight:800;font-size:11.5px;color:#fff;
+  box-shadow:0 8px 24px rgba(0,0,0,0.4);
+  display:none;max-width:90vw;text-align:center;
+}
+
+/* Modal (Glossary & Sensor Fusion Info) */
+#modal-backdrop{
+  position:fixed;inset:0;background:rgba(6,11,8,0.68);backdrop-filter:blur(6px);
+  z-index:50;display:none;align-items:center;justify-content:center;padding:16px;
+}
+#modal-backdrop.open{display:flex}
+.modal-box{
+  width:min(540px,96vw);max-height:85dvh;overflow-y:auto;
+  border-radius:20px;padding:18px 20px;
+}
+.glossary-item{
+  background:var(--bg-card);border:1px solid var(--border-soft);
+  border-radius:12px;padding:10px 12px;margin-top:8px;font-size:11.5px;line-height:1.65;
+}
+.glossary-item b{color:var(--gold);display:block;margin-bottom:2px;font-size:12.5px}
+
+.disclaimer-note{
+  background:rgba(217,166,63,0.10);
+  border:1px solid rgba(217,166,63,0.35);
+  border-radius:10px;padding:8px 10px;
+  font-size:10.5px;line-height:1.55;color:#ecd08a;margin-top:8px;
+}
+
+body.farmer-mode .expert-only{display:none !important}
+
+@media(max-width:780px){
+  #topbar{top:8px;right:8px;left:8px;padding:7px 10px;gap:6px}
+  .brand-logo{height:34px}
+  .brand-text b{font-size:13px}
+  .brand-text small{display:none}
+  .weather-pill{display:none}
+  #left-stack{display:none}
+  #panel{
+    width:calc(100vw - 16px);right:8px;left:8px;top:auto;bottom:62px;
+    max-height:46dvh;border-radius:18px;
+  }
+  #panel.collapsed{bottom:62px;max-height:48px !important}
+  body:not(.farmer-mode) #panel{bottom:188px;max-height:36dvh}
+  body:not(.farmer-mode) #panel.collapsed{bottom:188px}
+  #dock{bottom:8px;padding:5px 8px;gap:4px}
+  body:not(.farmer-mode) #dock{bottom:142px}
+  .dock-btn{padding:5px 9px;font-size:10px}
+  #bot{bottom:6px;left:6px;right:6px;padding:7px 9px}
+  #ch{height:68px}
+}
+
+/* ===== Ofoq dark farm theme: overrides ===== */
+body::after{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;background:radial-gradient(120% 90% at 50% 45%,transparent 45%,rgba(6,10,5,.6) 100%)}
+.glass{background:linear-gradient(180deg,rgba(27,36,22,.9),rgba(12,18,11,.92));box-shadow:var(--shadow-lg),inset 0 1px 0 rgba(236,230,214,.07)}
+.brand-logo{box-shadow:0 0 0 1px rgba(217,166,63,.4),0 4px 14px rgba(0,0,0,.45)}
+.tab-btn,.mode-btn,.seg-btn,.dock-btn,.mini-btn,.icon-pill,.season-pill,.stage-pill,.rot-card,.f-row{transition:all .3s cubic-bezier(.34,1.56,.64,1)}
+.tab-btn:active,.mode-btn:active,.seg-btn:active,.dock-btn:active,.mini-btn:active,.icon-pill:active,.season-pill:active{transform:scale(.94)}
+.tab-btn.active,.mode-btn.on,.seg-btn.on{background:linear-gradient(160deg,#a3c96e,#648f3c);color:#0e1a08;box-shadow:0 4px 14px rgba(95,143,58,.4),inset 0 1px 0 rgba(255,255,255,.25)}
+.seg-btn.blue.on{background:linear-gradient(160deg,#6db6d6,#3b86b0);box-shadow:0 4px 14px rgba(59,134,176,.4),inset 0 1px 0 rgba(255,255,255,.22)}
+.season-pill.on,.stage-pill.current{background:linear-gradient(160deg,#e6b954,#b88524);color:#1a1205;box-shadow:0 0 14px rgba(217,166,63,.4)}
+.dock-btn.on{background:linear-gradient(160deg,#52bba8,#2c8374);color:#06201b;box-shadow:0 4px 14px rgba(61,165,147,.4)}
+.dock-btn:hover,.mini-btn:hover,.icon-pill:hover{transform:translateY(-2px)}
+.rot-card:hover,.f-row:hover{transform:translateY(-2px)}
+.cta-btn{background:linear-gradient(160deg,#a3c96e,#5f8f3a);box-shadow:0 8px 20px rgba(60,100,35,.4),inset 0 1px 0 rgba(255,255,255,.28);position:relative;overflow:hidden;transition:transform .3s cubic-bezier(.34,1.56,.64,1),filter .2s,box-shadow .3s}
+.cta-btn::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.3) 50%,transparent 65%);transform:translateX(120%);transition:transform .8s ease}
+.cta-btn:hover::after{transform:translateX(-120%)}
+.cta-btn:active{transform:scale(.97)}
+.cta-btn.done::after{display:none}
+.cta-btn.danger{background:linear-gradient(160deg,#d8694a,#a8412a);box-shadow:0 8px 20px rgba(168,65,42,.4),inset 0 1px 0 rgba(255,255,255,.2)}
+.w-pin::after{content:"";position:absolute;left:50%;bottom:-6px;width:2px;height:6px;background:rgba(235,229,211,.35);transform:translateX(-50%)}
+.panel-body.swap{animation:swapIn .38s cubic-bezier(.22,1,.36,1)}
+@keyframes swapIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes dropIn{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:none}}
+@keyframes riseIn{from{opacity:0;transform:translateY(22px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes dockIn{from{opacity:0;transform:translate(-50%,26px)}to{opacity:1;transform:translate(-50%,0)}}
+#topbar{animation:dropIn .7s cubic-bezier(.22,1,.36,1) both}
+#panel{animation:riseIn .8s .15s cubic-bezier(.22,1,.36,1) both}
+#dock{animation:dockIn .8s .3s cubic-bezier(.22,1,.36,1) both}
+button:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.01ms!important}}
+
+/* ===== hover light + dock-like neighbours + tidy data ===== */
+.brand-logo{height:46px;width:auto;padding:4px 9px}
+@media(max-width:780px){.brand-logo{height:38px}}
+.tab-btn,.mode-btn,.seg-btn,.dock-btn,.mini-btn,.icon-pill,.season-pill,.stage-pill,.cta-btn,.rot-card,.f-row,.card{position:relative;overflow:hidden}
+.tab-btn,.mode-btn,.seg-btn,.cta-btn{--g:141,184,92}
+.dock-btn{--g:61,165,147}
+.seg-btn.blue,.dock-btn.rain,.f-row{--g:79,159,196}
+.dock-btn.warn,.cta-btn.danger{--g:200,87,58}
+.mini-btn,.icon-pill,.season-pill,.stage-pill,.rot-card,.card{--g:217,166,63}
+.tab-btn::before,.mode-btn::before,.seg-btn::before,.dock-btn::before,.mini-btn::before,.icon-pill::before,.season-pill::before,.stage-pill::before,.cta-btn::before,.rot-card::before,.f-row::before,.card::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(130px circle at var(--mx,50%) var(--my,50%),rgba(var(--g),.45),transparent 70%)}
+.tab-btn:hover::before,.mode-btn:hover::before,.seg-btn:hover::before,.dock-btn:hover::before,.mini-btn:hover::before,.icon-pill:hover::before,.season-pill:hover::before,.stage-pill:hover::before,.cta-btn:hover::before,.rot-card:hover::before,.f-row:hover::before{opacity:1}
+.card::before{background:radial-gradient(220px circle at var(--mx,50%) var(--my,50%),rgba(var(--g),.09),transparent 70%)}
+.card:hover::before{opacity:1}
+.tab-btn:hover,.mode-btn:hover,.seg-btn:hover,.dock-btn:hover,.mini-btn:hover,.icon-pill:hover,.season-pill:hover,.stage-pill:hover,.rot-card:hover,.f-row:hover{border-color:rgba(var(--g),.65);box-shadow:0 0 18px rgba(var(--g),.28)}
+.magi,.magi:hover{transform:translateY(var(--ty,0px)) scale(var(--s,1))}
+.magi:active{transform:translateY(var(--ty,0px)) scale(calc(var(--s,1)*.94))}
+.magi{transition:transform .18s cubic-bezier(.22,1,.36,1),background .25s,border-color .25s,box-shadow .25s,color .2s}
+#panel{width:392px}
+.panel-body{padding:14px 16px 18px}
+.card{padding:13px 14px;margin-bottom:12px}
+.card-title{margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid rgba(214,196,150,.1)}
+.hero-verdict{padding:14px;margin-bottom:12px}
+.metric-grid{gap:9px;margin-top:10px}
+.metric-box{padding:10px 11px}
+.f-row{padding:9px 11px;margin-top:7px}
+.ndvi-row{margin-top:11px}
+.stage-pills{gap:6px;margin:10px 0}
+.seg-row{gap:6px}
+.rot-card{padding:12px;margin-bottom:10px}
+@keyframes cardIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.panel-body.swap>*{animation:cardIn .45s cubic-bezier(.22,1,.36,1) both}
+.panel-body.swap>*:nth-child(2){animation-delay:.06s}.panel-body.swap>*:nth-child(3){animation-delay:.12s}
+.panel-body.swap>*:nth-child(4){animation-delay:.18s}.panel-body.swap>*:nth-child(5){animation-delay:.24s}.panel-body.swap>*:nth-child(6){animation-delay:.3s}
+</style>
+</head>
+<body class="farmer-mode">
+
+<canvas id="c"></canvas>
+
+<!-- 3D Projected World Labels -->
+<div id="world-pins"></div>
+
+<!-- Pest Toast Notification -->
+<div id="pest-toast" class="glass"></div>
+
+<!-- Feedback Banner -->
+<div id="app-banner"></div>
+
+<!-- Top Bar -->
+<header id="topbar" class="glass">
+  <div class="brand">
+    <img class="brand-logo" alt="أفق" src="data:image/png;base64,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">
+    <div class="brand-text">
+      <b>أفق Ofoiq</b>
+      <small>مزرعة النصارية • نابلس</small>
+    </div>
+  </div>
+
+  <div class="mode-switch">
+    <button id="btn-farmer" class="mode-btn on" onclick="setViewMode('farmer')">👨‍🌾 واجهة المزارع</button>
+    <button id="btn-expert" class="mode-btn" onclick="setViewMode('expert')">🔬 وضع الخبير والمحاكاة</button>
+  </div>
+
+  <div class="top-actions">
+    <div class="weather-pill" id="top-weather">☀️ --°C • رطوبة --%</div>
+    <button class="icon-pill" onclick="openModal('glossary')">📖 دليل بسيط</button>
+  </div>
+</header>
+
+<!-- Left Floating Stack (Expert ROI + Heatmap Legend) -->
+<div id="left-stack">
+  <div class="glass expert-only" id="roi">
+    <div class="card-title">🧮 الأثر على مزرعتك <b id="dv" style="color:var(--green)">5 دونم</b></div>
+    <input type="range" id="dr" min="1" max="50" value="5">
+    <div class="metric-grid">
+      <div class="metric-box"><small>💧 مياه موفّرة</small><b id="rw" style="color:var(--blue)"></b></div>
+      <div class="metric-box"><small>💰 وفر مالي</small><b id="rm" style="color:var(--green)"></b></div>
+    </div>
+    <div id="rt" style="font-size:10.5px;color:var(--text-muted);margin-top:6px;line-height:1.5"></div>
+  </div>
+
+  <div class="glass" id="heatmap-legend">
+    <div class="card-title" style="color:var(--teal)">🗺️ خريطة رطوبة وحرارة التربة</div>
+    <div class="hm-item"><span class="hm-dot" style="background:#b83e2c"></span><div><b>أطراف جافة:</b> تفقد الماء أسرع بـ 30% بفعل الرياح — زد نقاط التنقيط بالأطراف.</div></div>
+    <div class="hm-item"><span class="hm-dot" style="background:#7a5634"></span><div><b>رطوبة متوازنة:</b> حالة مثالية لنمو الجذور.</div></div>
+    <div class="hm-item"><span class="hm-dot" style="background:#1f2d34"></span><div><b>قلب الحوض رطب:</b> يحتفظ بالماء أطول — خفّف الري لتفادي التعفن.</div></div>
+  </div>
+</div>
+
+<!-- Main Right Smart Panel -->
+<aside id="panel" class="glass"></aside>
+
+<!-- Tooltip for 3D Hover -->
+<div id="tip" class="glass"></div>
+
+<!-- Bottom Floating Dock -->
+<div id="dock" class="glass">
+  <button class="dock-btn" onclick="resetCamera()">🎯 نظرة شاملة</button>
+  <button class="dock-btn" onclick="togglePins()" id="btn-pins">🏷️ إخفاء العلامات</button>
+  <button class="dock-btn" id="btn-heatmap" onclick="toggleHeatmap()">🗺️ خريطة التربة</button>
+  <button class="dock-btn warn" onclick="triggerPestToast(true)">🦠 فحص الآفات</button>
+  <button class="dock-btn warn expert-only" onclick="triggerCrisis('dry')">🔥 محاكاة موجة حر</button>
+  <button class="dock-btn rain expert-only" onclick="triggerCrisis('rain')">🌧️ محاكاة مطر غزير</button>
+</div>
+
+<!-- Expert Bottom Timeline -->
+<div class="glass expert-only" id="bot">
+  <canvas id="ch"></canvas>
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-top:6px">
+    <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">
+      <button class="mini-btn" id="pl" onclick="play()">▶ تشغيل</button>
+      <button class="mini-btn" onclick="step(-1)">← السابق</button>
+      <input type="date" id="dd" min="2022-09-01" max="2026-11-21" onchange="setDate(this.value)" style="font:700 11px Cairo;background:rgba(0,0,0,0.35);color:var(--text-main);border:1px solid var(--border-soft);border-radius:8px;padding:3px 7px;color-scheme:dark">
+      <button class="mini-btn" onclick="step(1)">التالي →</button>
+      <span id="jp"></span>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px">
+      <button class="mini-btn" id="m1" onclick="mode(1)">📡 اليوم بيوم</button>
+      <button class="mini-btn" id="m2" onclick="mode(2)">🔄 3 مواسم</button>
+      <span id="chart-scope-label" style="font-size:10.5px;color:var(--blue);font-weight:700"></span>
+    </div>
+  </div>
+</div>
+
+<!-- Educational & Sensor Fusion Modal -->
+<div id="modal-backdrop" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box glass">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <h3 style="color:var(--gold);font-size:15px;font-weight:900">📖 دليل أفق المبسط — كيف نقرأ أرضك؟</h3>
+      <button class="mini-btn" onclick="closeModal()">✕ إغلاق</button>
+    </div>
+    <p style="font-size:11.5px;color:var(--text-muted);line-height:1.6">
+      تعتمد منصة <b>أفق</b> في نسختها الحالية على بيانات <b>NASA POWER (v2.10.3)</b> اليومية للنصارية (15 يوليو – 11 نوفمبر 2026) مع معادلة <b>Hargreaves-Samani</b> لحساب التبخر-نتح المرجعي (ET₀) والنقص المائي. أما بيانات الأقمار المكانية (Sentinel-2، SMAP، ECOSTRESS، GLDAS، GAEZ) والحساس الأرضي فهي <b>تكاملات مستقبلية ومحاكاة استرشادية</b>.
+    </p>
+    <div class="glossary-item">
+      <b>🛰️ مؤشر الخضرة (NDVI) — "محاكاة استرشادية لتباين القطاعات"</b>
+      يقيس مدى اخضرار المحصول من الفضاء (Sentinel-2 / Landsat). ونظراً لأن بيانات NASA POWER الحالية تغطي نقطة واحدة بدقة مكانية خشنة، فإن قيم NDVI المعروضة حالياً هي <b>نموذج محاكاة استرشادي</b> لحين ربط صور الأقمار الصناعية عالية الدقة.
+    </div>
+    <div class="glossary-item">
+      <b>💧 رطوبة السطح (GWETTOP) والتبخر-نتح (Hargreaves-Samani ET₀)</b>
+      نعتمد على رطوبة الطبقة السطحية <b>GWETTOP</b> من NASA POWER (مع استبعاد GWETROOT مؤقتاً بسبب انقطاعها في 1 أكتوبر وقيد التحقق مع SMAP وGLDAS). ويُحسب الفاقد المائي اليومي بمعادلة <b>Hargreaves-Samani</b> لموازنة الهطول والري.
+    </div>
+    <div class="glossary-item">
+      <b>🌡️ درجة حرارة السطح (ECOSTRESS) ومؤشر الجفاف</b>
+      تُظهر حرارة أوراق النبات والتربة؛ فالنبات العطشان ترتفع حرارته كالإنسان المصاب بالحمى، مما يساعدنا على إطلاق "تنبيه الري الفجري" أو التغطية.
+    </div>
+    <div class="glossary-item">
+      <b>📡 الفرق بين القمر الصناعي والحساس الأرضي (Sensor Fusion)</b>
+      القمر الصناعي يمنحنا صورة شاملة للمزرعة ومواسمها الماضية (دقة 10م – 1كم)، بينما الحساس الأرضي في زاوية الحقل يقيس رطوبة وحرارة التربة الدقيقة لحظياً. دمجهما معاً يقلل الخطأ ويرفع دقة التوصية.
+    </div>
+    <div class="disclaimer-note">
+      ⚠️ <b>تذكير مهم:</b> أفق أداة مساعدة لدعم قرارك وكشف الأنماط الخفية؛ لكنها <b>لا تحل محل خبرتك كمزارع</b> أو معاينة المهندس الزراعي لنوع تربتك وسوقك المحلي.
+    </div>
+  </div>
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-const DATA=[[41.47,24.76,31.4,56,2.85,0.09,0.45,0.0],[41.5,24.44,31.24,56,2.87,0.09,0.45,0.0],[41.01,24.48,30.98,57,2.96,0.09,0.45,0.0],[40.11,23.91,30.27,56,3.39,0.09,0.45,0.0],[39.24,22.97,29.44,57,2.94,0.09,0.45,0.0],[36.39,22.8,28.41,59,3.23,0.1,0.45,0.28],[36.7,22.89,28.96,55,2.92,0.1,0.45,0.01],[38.46,22.5,29.52,53,2.7,0.1,0.45,0.0],[39.96,21.78,29.36,51,3.35,0.1,0.45,0.0],[39.33,21.57,28.88,53,3.04,0.1,0.45,0.0],[38.87,21.14,28.32,54,2.6,0.1,0.45,0.0],[37.6,20.59,27.66,54,2.52,0.1,0.45,0.0],[36.74,22.35,28.15,60,3.07,0.1,0.45,0.0],[35.42,22.58,27.46,55,3.36,0.1,0.45,0.0],[35.74,20.59,27.25,50,2.49,0.1,0.45,0.0],[38.51,20.21,28.35,51,2.85,0.1,0.45,0.0],[39.31,20.77,28.41,57,2.87,0.1,0.45,0.0],[36.8,21.59,28.17,61,2.97,0.1,0.45,0.0],[35.44,22.1,27.57,59,3.36,0.1,0.45,0.0],[35.04,21.13,27.03,59,3.38,0.1,0.45,0.0],[33.01,20.61,25.86,56,3.55,0.1,0.45,0.0],[34.15,20.13,26.19,50,2.79,0.1,0.45,0.0],[36.55,21.74,27.97,43,2.51,0.1,0.45,0.0],[37.83,21.55,28.63,38,2.83,0.1,0.45,0.0],[38.19,22.71,29.26,32,2.76,0.1,0.45,0.0],[39.47,23.54,29.92,27,2.42,0.1,0.45,0.0],[37.72,22.34,28.43,37,2.82,0.1,0.45,0.0],[35.0,20.39,26.45,48,2.92,0.1,0.45,0.0],[37.71,19.87,27.47,53,3.54,0.1,0.45,0.0],[39.49,20.79,28.99,49,3.06,0.1,0.45,0.0],[39.33,23.79,29.98,43,2.81,0.09,0.45,0.0],[37.19,22.35,28.41,59,2.32,0.09,0.45,0.0],[36.65,20.82,27.95,57,2.74,0.09,0.45,0.0],[36.61,21.6,27.75,59,2.53,0.09,0.45,0.0],[36.22,21.18,27.01,58,2.52,0.09,0.45,0.0],[35.55,19.74,26.25,58,2.16,0.09,0.45,0.0],[33.65,20.28,25.66,58,3.06,0.09,0.45,0.0],[31.77,19.35,24.53,55,3.06,0.09,0.45,0.0],[31.69,20.26,24.59,53,2.43,0.09,0.45,0.0],[31.11,18.0,23.73,54,2.06,0.09,0.45,0.0],[33.36,17.64,24.67,58,2.74,0.09,0.45,0.0],[33.16,18.52,24.84,57,2.44,0.09,0.45,0.0],[31.38,18.9,24.08,62,2.74,0.09,0.45,0.0],[31.15,17.13,23.63,62,2.17,0.09,0.45,0.0],[31.59,20.09,24.7,54,1.48,0.09,0.45,0.0],[34.7,19.1,26.2,38,2.79,0.09,0.45,0.0],[32.94,21.18,25.68,48,2.65,0.09,0.45,0.0],[31.46,18.85,24.43,60,2.22,0.09,0.45,0.0],[32.63,18.96,24.66,56,2.56,0.09,0.45,0.0],[31.4,18.46,24.15,59,2.71,0.11,0.45,1.38],[29.57,19.94,24.04,62,2.15,0.19,0.46,1.17],[30.31,18.39,23.36,65,2.36,0.2,0.46,0.05],[31.34,17.67,23.61,60,2.56,0.2,0.46,0.0],[30.27,18.09,23.4,63,1.97,0.2,0.46,0.01],[30.49,18.71,24.08,49,5.73,0.19,0.46,0.77],[31.6,20.93,25.06,49,3.56,0.23,0.46,0.31],[30.85,18.57,23.65,57,2.33,0.23,0.46,0.0],[31.51,17.07,23.61,50,1.77,0.22,0.46,0.0],[33.21,19.35,25.07,38,2.67,0.22,0.46,0.0],[30.92,18.24,23.83,49,2.62,0.21,0.46,0.0],[29.66,18.64,23.0,60,2.16,0.21,0.46,0.0],[28.3,16.45,21.46,63,2.24,0.21,0.46,0.2],[27.08,15.92,20.47,68,2.53,0.21,0.46,0.05],[27.72,16.04,20.74,65,1.59,0.21,0.46,0.0],[28.24,16.04,20.74,54,2.02,0.21,0.46,0.0],[30.29,16.08,21.89,43,2.29,0.2,0.46,0.0],[31.09,16.17,23.08,45,2.63,0.2,0.46,0.0],[27.08,16.98,20.89,58,2.59,0.2,0.46,0.0],[24.69,15.3,19.2,67,3.15,0.31,0.47,4.72],[24.1,14.83,18.58,74,1.95,0.4,0.47,2.06],[25.31,13.91,18.42,66,1.86,0.4,0.47,0.07],[27.88,13.88,19.31,53,2.46,0.39,0.47,0.0],[28.35,13.46,20.13,44,3.38,0.37,0.47,0.0],[29.46,16.69,22.27,51,4.24,0.35,0.47,0.01],[28.07,18.4,22.07,62,2.81,0.35,0.47,0.54],[25.88,17.07,20.51,65,2.81,0.35,0.47,0.1],[23.91,15.2,18.62,64,2.64,0.34,0.47,0.04],[24.11,14.04,18.2,64,1.93,0.33,0.46,0.0],[25.66,13.1,18.56,51,2.1,0.32,0.46,0.0],[27.29,13.47,19.4,45,3.5,0.31,0.46,0.0],[27.26,12.51,18.67,39,5.15,0.29,0.46,0.0],[29.67,13.45,20.98,40,4.67,0.28,0.46,0.0],[26.62,15.43,19.71,59,2.91,0.28,0.46,0.02],[27.31,12.2,19.4,57,2.22,0.28,0.46,0.28],[23.33,14.35,18.58,66,2.79,0.31,0.46,1.91],[20.74,11.32,15.58,77,4.55,0.48,0.48,15.13],[21.94,12.78,16.45,72,3.09,0.53,0.5,4.0],[23.09,10.91,16.73,64,4.02,0.48,0.5,0.0],[23.46,13.35,18.28,58,4.02,0.48,0.5,0.0],[23.36,14.14,17.74,68,2.49,0.5,0.49,2.78],[22.8,11.02,16.46,72,1.99,0.48,0.5,0.22],[24.39,10.66,16.62,59,2.41,0.48,0.5,0.09],[24.42,10.29,16.3,58,3.05,0.48,0.49,0.19],[23.67,10.33,15.61,59,3.86,0.48,0.49,0.04],[23.93,10.48,16.61,58,2.95,0.47,0.49,0.0],[23.33,9.85,15.51,64,2.53,0.47,0.49,0.0],[20.88,11.55,15.7,74,1.5,0.48,0.49,0.69],[21.59,10.4,15.96,73,1.84,0.48,0.49,0.0],[23.31,10.04,15.89,64,2.09,0.47,0.49,0.0],[23.03,11.43,16.17,64,1.99,0.47,0.49,0.0],[23.75,10.14,16.38,58,2.24,0.47,0.49,0.0],[25.21,9.86,16.3,55,3.43,0.47,0.48,0.0],[24.08,13.18,17.82,45,1.96,0.47,0.48,0.0],[23.7,13.55,17.62,56,1.9,0.47,0.48,0.0],[21.42,13.32,16.73,73,1.8,0.47,0.48,0.09],[23.31,13.43,17.34,69,1.58,0.47,0.48,0.1],[24.83,11.56,17.53,58,2.42,0.46,0.48,0.0],[24.88,11.52,16.83,59,3.99,0.45,0.48,0.0],[24.33,10.7,15.87,55,4.26,0.45,0.48,0.0],[24.24,9.04,15.13,51,4.29,0.43,0.47,0.0],[23.89,9.23,15.13,56,2.83,0.42,0.47,0.0],[21.31,10.37,15.12,73,1.78,0.43,0.47,0.69],[20.89,9.73,14.78,71,2.49,0.43,0.47,0.18],[20.14,9.53,13.66,63,3.9,0.44,0.47,0.92],[19.01,9.0,13.31,80,2.17,0.46,0.48,2.57],[16.73,9.28,12.81,85,2.36,0.49,0.48,1.78],[15.98,7.97,11.3,89,3.97,0.54,0.49,9.05],[18.21,6.47,11.46,78,3.05,0.49,0.5,0.21],[18.71,8.2,13.0,74,1.02,0.48,0.5,0.04],[19.67,6.19,11.89,66,3.45,0.48,0.49,0.0],[18.81,6.02,11.37,63,4.95,0.48,0.49,0.0],[19.96,6.51,12.17,65,4.75,0.48,0.49,0.0]];
-const $=i=>document.getElementById(i),cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
-const D=DATA.map(r=>({tx:r[0],tn:r[1],t:r[2],rh:r[3],ws:r[4],gt:r[5],gr:r[6],p:r[7]})),N=D.length;
-let cum=0,sow=N-1,base=0,smart=0;
-function stat(d){if(d.p>=9)return['⚠️ خطر انجراف — لا تحرث، ثبّت التربة','#4aa3ff'];if(d.gt>=.4)return['💧 تشبّع — أوقف الري وصرّف المياه','#4aa3ff'];if(d.tx>=35&&d.gt<.15)return['🔥 إجهاد حراري وجفاف — ري فجري + تغطية','#ff6a3c'];if(d.gt>=.19&&d.tx<=31)return['✅ نافذة بذر مثالية','#58eb4c'];if(d.gt<.15)return['⏳ جفاف — انتظر المطر وجهّز الأرض','#f0b43c'];return['🌤 ظروف مقبولة — راقب الرطوبة','#c8e06a']}
-D.forEach((d,i)=>{
-  cum+=d.p;d.cum=cum;const Ra=9.5+4.5*Math.cos((244+i-172)*6.283/365);
-  d.et=.0023*Ra*(d.t+17.8)*Math.sqrt(Math.max(d.tx-d.tn,1))*.8;
-  d.ir=d.gt>=.4?0:Math.max(0,d.et-d.p);base+=d.et;smart+=d.ir;
-  d.sc=Math.round(100*(.4*(1-cl(Math.abs(d.t-18)/14))+.4*cl(d.gt/.22)*(d.gt>.45?.6:1)+.2*(d.p>9?0:1)));
-  // حساب مؤشر مرونة المحصول (Crop Resilience Index - CRI)
-  const p7 = D.slice(Math.max(0, i-6), i+1).reduce((a,b)=>a+b.p, 0);
-  d.cri = Math.round(cl(0.35 * cl(p7/25) + 0.25 * (1 - cl((d.tx-15)/25)) + 0.20 * cl(d.gt/0.3) + 0.20 * cl(d.gr/0.45)) * 100);
-  d.s=stat(d);if(sow==N-1&&d.cum>=5&&d.gt>=.19)sow=i
+// =========================================================================
+// 1. CORE DATA & AGRICULTURAL MODEL (Preserved & Structured)
+// =========================================================================
+const DATA=[[40.3,21.78,30.03,45.07,2.64,0.12,0.45,0.0],[39.86,21.95,29.75,48.5,2.72,0.12,0.45,0.0],[39.5,21.94,29.86,45.98,2.87,0.11,0.45,0.0],[40.29,22.85,31.19,38.31,2.24,0.11,0.45,0.0],[40.89,24.62,31.94,31.67,2.89,0.11,0.45,0.0],[40.45,24.33,31.45,38.23,2.73,0.11,0.45,0.0],[40.23,23.55,30.89,44.06,2.87,0.11,0.45,0.0],[41.42,23.43,31.45,47.84,2.99,0.11,0.45,0.0],[40.99,23.51,31.36,43.09,3.09,0.11,0.45,0.0],[38.65,23.57,30.01,51.59,3.83,0.11,0.45,0.0],[39.58,21.87,30.05,42.61,3.48,0.11,0.45,0.0],[37.5,21.96,28.96,44.35,3.54,0.11,0.45,0.0],[38.52,20.17,28.46,47.25,3.04,0.11,0.45,0.0],[39.18,21.48,29.28,48.21,3.07,0.11,0.45,0.0],[40.58,21.74,30.37,47.61,2.19,0.11,0.45,0.0],[41.66,22.58,31.23,45.75,2.54,0.1,0.45,0.0],[42.04,23.94,32.12,36.34,2.39,0.1,0.45,0.0],[43.04,24.43,32.72,34.02,2.75,0.1,0.45,0.0],[42.99,23.97,32.84,36.44,3.76,0.1,0.45,0.0],[42.65,23.78,31.92,38.33,3.84,0.1,0.45,0.0],[41.61,22.42,30.56,44.95,2.62,0.1,0.45,0.0],[42.07,22.4,30.73,43.78,2.61,0.1,0.45,0.0],[39.96,22.05,29.65,51.12,2.85,0.1,0.45,0.0],[39.19,22.99,29.73,54.45,2.82,0.1,0.45,0.0],[39.97,23.74,30.7,55.13,2.62,0.1,0.45,0.0],[40.76,23.99,31.18,48.67,3.13,0.1,0.45,0.0],[41.74,22.71,31.79,41.68,2.8,0.1,0.45,0.0],[41.56,23.42,31.87,41.43,3.37,0.1,0.45,0.0],[40.36,24.26,31.86,38.12,2.97,0.1,0.45,0.0],[39.63,23.4,30.87,42.87,3.09,0.1,0.45,0.0],[38.2,23.88,30.2,54.64,3.31,0.1,0.45,0.0],[40.07,24.73,31.62,47.6,2.63,0.1,0.45,0.0],[39.82,25.3,31.24,43.65,2.67,0.09,0.45,0.0],[37.84,23.37,29.36,55.15,3.29,0.09,0.45,0.0],[37.51,22.27,28.82,51.72,2.81,0.09,0.45,0.0],[39.25,21.46,29.28,48.89,3.01,0.09,0.45,0.0],[41.13,21.22,30.31,51.56,2.71,0.09,0.45,0.0],[42.67,23.86,31.84,45.12,2.37,0.09,0.45,0.0],[40.13,24.5,31.04,54.8,2.73,0.09,0.45,0.0],[40.17,23.89,30.73,53.0,2.85,0.09,0.45,0.0],[40.53,23.21,30.56,45.64,2.27,0.09,0.45,0.0],[40.57,23.65,30.76,41.06,2.32,0.09,0.45,0.0],[41.47,23.36,31.08,45.86,2.26,0.09,0.45,0.0],[41.16,23.23,31.14,48.77,2.28,0.09,0.45,0.0],[40.68,23.5,30.65,49.86,2.42,0.09,0.45,0.0],[39.46,23.16,30.24,50.57,4.49,0.09,0.45,0.0],[35.53,23.98,28.85,51.44,3.91,0.09,0.45,0.01],[36.82,23.67,29.47,52.83,2.91,0.09,0.45,0.0],[38.16,22.86,29.58,51.62,2.6,0.09,0.45,0.0],[40.35,22.57,30.24,50.7,2.63,0.09,0.45,0.0],[39.31,23.34,29.69,53.05,2.71,0.09,0.45,0.0],[38.19,22.98,29.36,46.68,2.2,0.09,0.45,0.0],[38.63,22.88,29.49,41.79,2.5,0.09,0.45,0.0],[36.94,22.23,28.5,54.15,3.11,0.09,0.45,0.0],[38.9,22.49,29.76,51.97,1.78,0.09,0.45,0.0],[39.3,22.53,29.69,50.83,2.6,0.09,0.45,0.0],[39.05,21.81,29.21,39.67,2.78,0.09,0.45,0.0],[38.08,21.53,28.69,40.26,2.56,0.09,0.45,0.0],[37.67,21.6,28.46,54.56,2.21,0.09,0.45,0.0],[38.51,21.33,28.71,53.7,2.3,0.09,0.45,0.0],[39.27,22.17,29.26,57.73,2.74,0.09,0.45,0.0],[39.84,22.48,29.5,51.69,2.11,0.09,0.45,0.0],[39.85,22.06,29.37,44.1,1.83,0.09,0.45,0.0],[40.39,21.94,29.58,42.27,2.01,0.09,0.45,0.0],[38.79,21.76,29.51,40.08,2.37,0.09,0.45,0.0],[34.14,22.72,27.84,52.11,4.41,0.09,0.45,0.0],[34.92,22.78,27.82,52.93,2.55,0.09,0.45,0.0],[35.56,21.37,27.55,53.04,2.39,0.09,0.45,0.0],[36.34,20.95,27.38,56.79,2.89,0.09,0.45,0.0],[35.93,22.17,27.69,56.79,2.57,0.09,0.45,0.0],[35.63,22.27,27.44,55.04,2.57,0.09,0.45,0.0],[35.27,20.87,26.95,55.05,2.7,0.09,0.45,0.0],[35.13,21.38,26.67,57.95,3.59,0.09,0.45,0.0],[34.33,20.0,26.2,55.02,3.14,0.09,0.45,0.0],[34.42,21.01,26.5,48.63,2.42,0.09,0.45,0.0],[34.52,22.37,27.17,47.18,3.49,0.09,0.45,0.0],[31.38,21.27,25.58,55.38,3.06,0.09,0.45,0.0],[32.96,21.47,25.95,55.98,2.72,0.09,0.45,0.0],[30.06,19.84,23.91,56.76,2.14,0.2,0.31,0.08],[29.92,18.99,23.99,53.11,2.36,0.19,0.3,0.07],[31.52,19.88,25.12,47.46,2.13,0.19,0.3,0.04],[32.54,20.27,25.2,45.95,2.48,0.18,0.3,0.0],[30.22,20.07,24.11,52.47,1.95,0.18,0.3,0.0],[28.74,20.1,23.49,53.15,2.12,0.19,0.3,0.44],[29.89,18.29,23.72,52.46,1.22,0.19,0.3,0.0],[33.1,19.44,25.36,51.26,1.81,0.19,0.3,0.48],[32.6,20.0,25.44,60.99,1.83,0.21,0.3,0.66],[32.85,20.59,25.98,61.91,1.42,0.26,0.31,3.19],[32.11,22.13,26.57,58.76,1.14,0.34,0.31,2.03],[31.38,20.91,25.53,63.37,1.64,0.35,0.32,4.02],[30.3,19.69,24.58,60.81,1.22,0.34,0.32,0.0],[31.3,21.49,25.56,50.29,1.77,0.29,0.32,0.09],[28.59,20.19,23.32,55.18,2.54,0.28,0.32,0.12],[28.0,18.65,22.57,52.21,1.98,0.27,0.32,0.01],[28.3,18.53,22.49,61.26,1.89,0.26,0.32,0.25],[28.26,18.1,22.3,62.65,1.74,0.25,0.31,0.08],[27.51,17.64,21.53,61.78,1.72,0.25,0.31,0.01],[27.31,16.48,21.29,55.71,1.57,0.24,0.31,0.0],[29.32,17.68,22.76,60.71,1.56,0.23,0.31,0.0],[32.43,18.26,25.25,44.73,1.25,0.22,0.31,0.0],[33.61,18.27,25.79,34.86,2.94,0.21,0.31,0.0],[32.83,19.87,25.62,42.86,2.12,0.21,0.31,0.76],[31.8,20.2,24.91,56.77,1.4,0.24,0.31,0.81],[32.75,19.67,25.06,57.8,1.45,0.27,0.31,1.68],[27.44,20.09,23.03,72.96,1.07,0.35,0.32,3.83],[28.7,19.89,23.25,57.33,1.67,0.34,0.32,0.36],[27.37,17.73,21.93,50.46,2.67,0.3,0.32,0.04],[26.17,17.16,20.73,60.92,1.84,0.28,0.32,0.09],[26.87,16.18,20.91,59.31,1.43,0.27,0.32,0.0],[28.64,17.34,21.86,56.7,1.27,0.26,0.32,0.0],[32.16,18.27,25.0,41.09,1.83,0.24,0.32,0.0],[29.77,18.94,23.81,42.77,2.04,0.23,0.32,0.0],[27.87,16.88,21.58,58.66,1.53,0.22,0.32,0.0],[26.39,17.66,21.03,53.72,1.42,0.22,0.32,0.0],[24.17,16.21,19.56,68.68,1.98,0.3,0.32,5.47],[21.88,14.32,17.26,75.75,2.86,0.41,0.34,6.95],[22.24,12.88,16.91,70.86,2.86,0.37,0.34,1.35],[20.9,11.89,15.85,54.48,1.43,0.32,0.34,0.0],[22.79,7.92,14.96,36.72,1.98,0.3,0.34,0.0],[22.24,11.83,16.43,48.48,1.25,0.28,0.34,0.0]];
+const $ = id => document.getElementById(id);
+const cl = (x, a=0, b=1) => Math.max(a, Math.min(b, x));
+const CURRENT_YEAR = new Date().getFullYear();
+
+function stat(d){
+  if(d.p >= 9) return ['⚠️ خطر انجراف — لا تحرث، غطِّ التربة','#4f9fc4','أمطار غزيرة متوقعة قد تجرف التربة المكشوفة.'];
+  if(d.gt >= .4) return ['💧 التربة مشبعة — أوقف الري تماماً','#4f9fc4','رطوبة الجذور كافية جداً، الري الآن قد يسبب تعفناً.'];
+  if(d.tx >= 35 && d.gt < .15) return ['🔥 حرّ وجفاف — ري فجري وتغطية','#c8573a','الحرارة مرتفعة والتربة جافة؛ يُنصح بالري قبل شروق الشمس وتفعيل الحماية.'];
+  if(d.gt >= .19 && d.tx <= 31) return ['✅ ظروف مثالية للبذر والنمو','#8db85c','توازن ممتاز بين حرارة الجو ورطوبة التربة.'];
+  if(d.gt < .15) return ['⏳ التربة جافة — جهّز الأرض للري','#d9a63f','الرطوبة منخفضة؛ راجع توصية المحبس قبل فتح المياه.'];
+  return ['🌤️ أجواء مستقرة — راقب الرطوبة','#a9c66a','الوضع متوازن ولا توجد مخاطر جوية حادة اليوم.'];
+}
+
+function computeSectorNDVI(i, d, sw, isForecast) {
+  if (isForecast) {
+    return { A: 0.56, B: 0.36, C: 0.58, anomaly: '⚠️ رصد فضائي: تراجع اخضرار قطاع B (احتمال انسداد منقّط أو إصابة موضعية)' };
+  }
+  const prog = i < sw ? 0.12 : cl(0.16 + ((i - sw) / 72) * 0.62, 0.14, 0.78);
+  const ndviA = Number(cl(prog + Math.sin(i * 0.14) * 0.025, 0.11, 0.82).toFixed(2));
+  const ndviC = Number(cl(prog + 0.02 + Math.cos(i * 0.11) * 0.02, 0.11, 0.84).toFixed(2));
+  const pestDrop = (i >= 62 && i <= 88) ? 0.15 : 0.015;
+  const ndviB = Number(cl(prog - pestDrop + Math.sin(i * 0.18) * 0.02, 0.10, 0.80).toFixed(2));
+  const avg = (ndviA + ndviB + ndviC) / 3;
+  let anomaly = null;
+  if (avg - ndviB >= 0.11) anomaly = '⚠️ رصد Sentinel-2: انخفاض اخضرار قطاع B مقارنة بجيرانه';
+  return { A: ndviA, B: ndviB, C: ndviC, anomaly };
+}
+
+function processDataset(arr, startDoy, isForecast = false) {
+  let c = 0, sw = arr.length - 1, b = 0, sm = 0;
+  arr.forEach((d, i) => {
+    c += d.p; d.cum = c;
+    const Ra = 9.5 + 4.5 * Math.cos((startDoy + i - 172) * 6.283 / 365);
+    d.et = .0023 * Ra * (d.t + 17.8) * Math.sqrt(Math.max(d.tx - d.tn, 1)) * .8;
+    d.ir = d.gt >= .4 ? 0 : Math.max(0, d.et - d.p);
+    b += d.et; sm += d.ir;
+    d.sc = Math.round(100 * (.4 * (1 - cl(Math.abs(d.t - 18) / 14)) + .4 * cl(d.gt / .22) * (d.gt > .45 ? .6 : 1) + .2 * (d.p > 9 ? 0 : 1)));
+    const p7 = arr.slice(Math.max(0, i - 6), i + 1).reduce((a, x) => a + x.p, 0);
+    d.cri = Math.round(cl(0.35 * cl(p7 / 25) + 0.25 * (1 - cl((d.tx - 15) / 25)) + 0.40 * cl(d.gt / 0.3)) * 100);
+    d.s = stat(d);
+    if (sw == arr.length - 1 && d.cum >= 5 && d.gt >= .19) sw = i;
+  });
+
+  let cumGdd = isForecast ? 480 : 0;
+  arr.forEach((d, i) => {
+    const dailyGdd = Math.max(0, ((d.tx + d.tn) / 2) - 5.0);
+    if (isForecast || i >= sw) cumGdd += dailyGdd;
+    d.dailyGdd = Number(dailyGdd.toFixed(1));
+    d.gdd = Math.round(cumGdd);
+    d.ndvi = computeSectorNDVI(i, d, sw, isForecast);
+  });
+  return { sow: sw, base: b, smart: sm };
+}
+
+const YEAR_ARCHIVE = {};
+function buildYearDataset(year, rawRows) {
+  const arr = rawRows.map((r, i) => {
+    const dObj = new Date(year, 6, 15 + i);
+    const iso = new Date(Date.UTC(year, 6, 15 + i)).toISOString().slice(0, 10);
+    return {
+      tx: r[0], tn: r[1], t: r[2], rh: r[3], ws: r[4], gt: r[5], gr: r[6], p: r[7],
+      is_forecast: false, year, iso_date: iso,
+      custom_date: dObj.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' }),
+      short_date: dObj.toLocaleDateString('ar-EG', { day: 'numeric', month: 'short' })
+    };
+  });
+  return { data: arr, stats: processDataset(arr, 196, false) };
+}
+YEAR_ARCHIVE[2026] = buildYearDataset(2026, DATA);
+
+function getPastYearDataset(year) {
+  if (YEAR_ARCHIVE[year]) return YEAR_ARCHIVE[year];
+  const safeYear = Math.min(year, CURRENT_YEAR - 1);
+  if (YEAR_ARCHIVE[safeYear]) return YEAR_ARCHIVE[safeYear];
+  const shift = (safeYear - 2022) * 0.35;
+  const syntheticRows = DATA.map((r, i) => {
+    const rainFactor = ((safeYear + i) % 5 === 0) ? 1.25 : 0.85;
+    return [
+      Number((r[0] + shift).toFixed(2)),
+      Number((r[1] + shift * 0.8).toFixed(2)),
+      Number((r[2] + shift * 0.9).toFixed(2)),
+      r[3], r[4], r[5], r[6], Number((r[7] * rainFactor).toFixed(2))
+    ];
+  });
+  YEAR_ARCHIVE[safeYear] = buildYearDataset(safeYear, syntheticRows);
+  return YEAR_ARCHIVE[safeYear];
+}
+
+// App State
+let FORECAST_D = [], forecastStats = { sow: 0, base: 10, smart: 5 };
+let activeScope = 'hist', activeYear = 2026;
+let D = YEAR_ARCHIVE[2026].data, N = D.length, sow = YEAR_ARCHIVE[2026].stats.sow;
+const sav = 1 - YEAR_ARCHIVE[2026].stats.smart / YEAR_ARCHIVE[2026].stats.base;
+
+let heatmapActive = false, viewMode = 'farmer', activeTab = 'today', panelCollapsed = false, showPins = true;
+let PLAN = null, day = 0, M = 1, goal = 'w', waterConstraint = 'med', gr = 0, grT = 0, season = 0, farmArea = 5;
+let manualGddPct = null, rotationStrategy = 'balanced'; // 'existing' | 'balanced' | 'drought'
+
+// Crops Definition
+const CR = {
+  L: ['🌱 بقوليات (عدس/فول)', 0x6aa84f, 0.88, 'تُثبّت النيتروجين وتُخصّب التربة'],
+  W: ['🌾 قمح بلدي', 0xd4a63c, 1.22, 'عائد جيد ويحتاج تربة غنية'],
+  B: ['🌾 شعير مقاوم', 0xb8924a, 1.08, 'يتحمل قلة المياه والملوحة'],
+  C: ['🍀 حمص / غطاء نباتي', 0x4a9f8e, 0.78, 'يكسر دورة الآفات ويحمي من الانجراف']
+};
+const SH = { L: 12, W: -8, B: -6, C: 4 };
+
+const STRATEGIES = [
+  {
+    id: 'balanced',
+    title: 'خطة أفق المتوازنة (الموصى بها)',
+    badge: '⭐ توازن التربة والمياه',
+    badgeColor: '#8db85c',
+    getCrops: s => [['L','W','C'],['W','C','L'],['C','L','W']][s],
+    why: 'تعاقب ذكي بين البقوليات والقمح ومحصول الغطاء؛ بحيث يجهز كل محصول الأرض للمحصول التالي.',
+    evidence: 'تحليل NASA POWER (120 يوماً) ومعادلة Hargreaves-Samani للنقص المائي يؤكدان الحاجة لكسر الجفاف الصيفي (87 يوماً)، مع تكامل مستقبلي لبيانات SMAP وSentinel-2.',
+    benefits: 'كسر دورة صدأ القمح والديدان، تثبيت نيتروجين طبيعي يقلل الأسمدة، وحماية الحقل من الانجراف.',
+    gaps: 'تحتاج للتحقق من ملوحة التربة محلياً وتوفر بذور العدس/الحمص المعتمدة في منطقتك.'
+  },
+  {
+    id: 'drought',
+    title: 'خطة الصمود ضد الجفاف والدخل الإضافي',
+    badge: '☀️ لشحّ المياه',
+    badgeColor: '#d9a63f',
+    getCrops: s => [['B','L','C'],['C','B','L'],['L','C','B']][s],
+    why: 'تستبدل القمح عالي الاستهلاك بالشعير المقاوم مع تكثيف الغطاء النباتي لحفظ رطوبة التربة.',
+    evidence: 'قراءات NASA POWER (31 يوماً ≥ 40°C ومجموع أمطار 32.92 ملم حتى 11 نوفمبر) تؤكد تفوق الشعير المقاوم للجفاف، بانتظار دمج ECOSTRESS وGPM.',
+    benefits: 'أقل استهلاك مائي، تحمل موجات الحر، وإضافة دخل تكميلي من العلف والبقوليات.',
+    gaps: 'تتطلب مراجعة أسعار الشعير والبقوليات في سوق نابلس المحلي لضمان الجدوى التسويقية.'
+  },
+  {
+    id: 'existing',
+    title: 'النظام التقليدي (زراعة حبوب متكررة)',
+    badge: '⚠️ للمقارنة فقط',
+    badgeColor: '#c8573a',
+    getCrops: () => ['W','W','W'],
+    why: 'يمثل الزراعة الأحادية المتكررة للحبوب موسماً بعد آخر دون راحة أو تبديل.',
+    evidence: 'السجل التاريخي يكشف هبوط صحة التربة (-8 نقاط/موسم) وتراجع الرطوبة وتضاعف مخاطر الأصداء.',
+    benefits: 'اعتياد المزارع وسهولة تسويق القمح بالمدى القصير فقط.',
+    gaps: 'المخاطرة عالية باستنزاف التربة وظهور آفات متوطنة — يُنصح بالتحول التدريجي لخطة أفق.'
+  }
+];
+
+function getActiveSchedule(s) {
+  const strat = STRATEGIES.find(x => x.id === rotationStrategy) || STRATEGIES[0];
+  return strat.getCrops(s);
+}
+
+// =========================================================================
+// 2. THREE.JS REALISTIC INTERACTIVE 3D DIGITAL TWIN
+// =========================================================================
+const R = new THREE.WebGLRenderer({ canvas: $('c'), antialias: true, powerPreference: 'high-performance' });
+R.setPixelRatio(Math.min(devicePixelRatio, 2));
+R.shadowMap.enabled = true;
+R.shadowMap.type = THREE.PCFSoftShadowMap;
+R.toneMapping = THREE.ACESFilmicToneMapping;
+R.toneMappingExposure = 0.96;
+
+const S = new THREE.Scene();
+const cam = new THREE.PerspectiveCamera(44, 1, 0.1, 250);
+S.fog = new THREE.FogExp2(0x6f8a99, 0.017);
+S.background = new THREE.Color(0x6f8a99);
+
+const hemiLight = new THREE.HemisphereLight(0xc8dbe4, 0x3a2e1d, 0.6);
+S.add(hemiLight);
+
+const sun = new THREE.DirectionalLight(0xffdca8, 1.25);
+sun.position.set(11, 17, 9);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048);
+sun.shadow.camera.near = 2; sun.shadow.camera.far = 48;
+const dCam = 10;
+sun.shadow.camera.left = -dCam; sun.shadow.camera.right = dCam;
+sun.shadow.camera.top = dCam; sun.shadow.camera.bottom = -dCam;
+sun.shadow.bias = -0.0005;
+S.add(sun);
+
+const sunMesh = new THREE.Mesh(new THREE.SphereGeometry(1.15, 20, 20), new THREE.MeshBasicMaterial({ color: 0xf2c46d }));
+sunMesh.position.set(-15, 15, -24);
+S.add(sunMesh);
+
+// Procedural Soil Texture
+function createSoilTextures() {
+  const size = 256;
+  const colCanvas = document.createElement('canvas'); colCanvas.width = colCanvas.height = size;
+  const ctx = colCanvas.getContext('2d');
+  const bumpCanvas = document.createElement('canvas'); bumpCanvas.width = bumpCanvas.height = size;
+  const bctx = bumpCanvas.getContext('2d');
+
+  ctx.fillStyle = '#74583a'; ctx.fillRect(0, 0, size, size);
+  bctx.fillStyle = '#808080'; bctx.fillRect(0, 0, size, size);
+
+  for (let i = 0; i < 4500; i++) {
+    const x = Math.random() * size, y = Math.random() * size, r = Math.random() * 2.2 + 0.5, sh = Math.random();
+    ctx.fillStyle = sh > 0.65 ? 'rgba(65,45,25,0.34)' : sh > 0.3 ? 'rgba(175,140,95,0.28)' : 'rgba(110,85,55,0.28)';
+    ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+    const bv = Math.floor(90 + sh * 130);
+    bctx.fillStyle = `rgb(${bv},${bv},${bv})`;
+    bctx.beginPath(); bctx.arc(x, y, r, 0, Math.PI * 2); bctx.fill();
+  }
+  const map = new THREE.CanvasTexture(colCanvas), bump = new THREE.CanvasTexture(bumpCanvas);
+  [map, bump].forEach(t => { t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(3, 3); });
+  return { map, bump };
+}
+const soilTex = createSoilTextures();
+
+// Nablus Terraced Terrain
+const terrainGeo = new THREE.PlaneGeometry(115, 115, 72, 72);
+terrainGeo.rotateX(-Math.PI / 2);
+const tPos = terrainGeo.attributes.position, tCol = new Float32Array(tPos.count * 3);
+const cValley = new THREE.Color(0x44532b), cHill = new THREE.Color(0x566439), cLimestone = new THREE.Color(0x857e68);
+
+for (let i = 0; i < tPos.count; i++) {
+  const x = tPos.getX(i), z = tPos.getZ(i), dist = Math.hypot(x, z);
+  let y = -0.18;
+  if (dist > 9.2) {
+    const hf = cl((dist - 9.2) / 28, 0, 1);
+    y += (Math.sin(x * 0.11) * Math.cos(z * 0.11) * 3.2 + Math.sin(x * 0.24 + z * 0.2) * 1.1 + 2.9) * hf * hf;
+  }
+  tPos.setY(i, y);
+  const c = cValley.clone().lerp(cHill, cl(y / 3.5)).lerp(cLimestone, cl((y - 2.4) / 3));
+  tCol[i * 3] = c.r; tCol[i * 3 + 1] = c.g; tCol[i * 3 + 2] = c.b;
+}
+terrainGeo.setAttribute('color', new THREE.BufferAttribute(tCol, 3));
+terrainGeo.computeVertexNormals();
+const terrain = new THREE.Mesh(terrainGeo, new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.95 }));
+terrain.receiveShadow = true;
+S.add(terrain);
+
+// Palestinian Limestone Terrace Border Wall (سلاسل حجرية)
+const stoneMat = new THREE.MeshStandardMaterial({ color: 0x9a927d, roughness: 0.92 });
+[[-4.9, 0, 0.35, 9.2], [5.1, 0, 0.35, 9.2], [0.1, -4.65, 10.2, 0.35], [0.1, 4.65, 10.2, 0.35]].forEach(w => {
+  const wall = new THREE.Mesh(new THREE.BoxGeometry(w[2], 0.32, w[3]), stoneMat);
+  wall.position.set(w[0], -0.02, w[1]);
+  wall.castShadow = true; wall.receiveShadow = true;
+  S.add(wall);
 });
-const sav=1-smart/base;let PLAN=null,day=0,M=1,goal='w',gr=0,grT=0,season=0;
-fetch('data.json').then(r=>r.text()).then(t=>{PLAN=JSON.parse(t.replace(/\}\s*\n(\s*)\{/g,'},\n$1{')).daily_data.map(r=>r.resilient_action_plan);ui()}).catch(()=>{});
-const dt=i=>new Date(2022,8,1+i).toLocaleDateString('en-US',{day:'numeric',month:'long'});
-const CR={L:['🌱 بقوليات (عدس/فول)',0x58eb4c,.8,'تثبّت النيتروجين'],W:['🌾 قمح',0xe3c04d,1.3,'تستهلك النيتروجين'],B:['🌾 شعير',0xd9b25a,1.1,'تستهلك النيتروجين بكفاءة مائية'],C:['🌻 حمص / محاصيل راحة',0x7fd1c7,.7,'كسر دورة الآفات']};
-const cer=()=>goal=='y'?'W':'B',sched=s=>[['L',cer(),'C'],[cer(),'C','L'],['C','L',cer()]][s];
-const SH={L:12,W:-8,B:-8,C:2};
-// ---------- 3D ----------
-const R=new THREE.WebGLRenderer({canvas:$('c'),antialias:true});R.setPixelRatio(Math.min(devicePixelRatio,2));
-const S=new THREE.Scene(),cam=new THREE.PerspectiveCamera(48,1,.1,200);S.fog=new THREE.Fog(0x9ec5e8,16,45);S.background=new THREE.Color(0x9ec5e8);
-const sun=new THREE.DirectionalLight(0xffffff,1);sun.position.set(6,10,4);S.add(sun,new THREE.HemisphereLight(0xcfe8ff,0x4a3a22,.7));
-const gnd=new THREE.Mesh(new THREE.CircleGeometry(30,48),new THREE.MeshLambertMaterial({color:0x5a6b3a}));gnd.rotation.x=-1.5708;gnd.position.y=-.2;S.add(gnd);
-const sunB=new THREE.Mesh(new THREE.SphereGeometry(.9,16,16),new THREE.MeshBasicMaterial({color:0xffd27a}));sunB.position.set(-9,9,-14);S.add(sunB);
-const plots=[],geo=new THREE.BoxGeometry(1.9,.3,1.9);
-for(let b=0;b<3;b++)for(let k=0;k<4;k++){const m=new THREE.Mesh(geo,new THREE.MeshLambertMaterial({color:0xc19a62}));m.position.set((k-1.5)*2.1,0,(b-1)*2.5);S.add(m);plots.push({m,b})}
-const spr=[],cov=[],pipe=[],warnSign=[];
-function createWarnMesh(){
+
+// Olive Trees
+function addOliveTree(x, z, scale = 1) {
   const g = new THREE.Group();
-  const m1 = new THREE.Mesh(new THREE.CylinderGeometry(.08,.08,.6,8), new THREE.MeshBasicMaterial({color: 0xff3333}));
-  m1.position.y = 2.4;
-  const m2 = new THREE.Mesh(new THREE.SphereGeometry(.1,8,8), new THREE.MeshBasicMaterial({color: 0xff3333}));
+  const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.08 * scale, 0.14 * scale, 0.9 * scale, 7), new THREE.MeshStandardMaterial({ color: 0x4d3a27, roughness: 0.9 }));
+  trunk.position.y = 0.45 * scale; trunk.castShadow = true; g.add(trunk);
+  const crownMat = new THREE.MeshStandardMaterial({ color: 0x4b6137, roughness: 0.85 });
+  [[0, 1.1, 0, 0.65], [-0.35, 0.95, 0.2, 0.48], [0.35, 1.0, -0.2, 0.5]].forEach(p => {
+    const leaf = new THREE.Mesh(new THREE.DodecahedronGeometry(p[3] * scale, 1), crownMat);
+    leaf.position.set(p[0] * scale, p[1] * scale, p[2] * scale);
+    leaf.scale.set(1.2, 0.85, 1.1); leaf.castShadow = true; g.add(leaf);
+  });
+  g.position.set(x, -0.1, z); S.add(g);
+}
+[[-7.4, -5.0, 1.1], [7.8, -4.6, 1.2], [-7.8, 4.8, 1.0], [7.6, 5.0, 1.15], [-2.5, -6.5, 0.95], [3.2, -6.3, 1.05]].forEach(t => addOliveTree(t[0], t[1], t[2]));
+
+// Interactive Farm Cistern / Water Tank (خزان مياه المزرعة)
+const tankGroup = new THREE.Group();
+const tankShell = new THREE.Mesh(
+  new THREE.CylinderGeometry(0.75, 0.78, 1.35, 20),
+  new THREE.MeshStandardMaterial({ color: 0xd8dfd8, roughness: 0.4, metalness: 0.15, transparent: true, opacity: 0.42 })
+);
+tankShell.position.y = 0.68; tankShell.castShadow = true;
+const tankWater = new THREE.Mesh(
+  new THREE.CylinderGeometry(0.68, 0.68, 1.15, 18),
+  new THREE.MeshStandardMaterial({ color: 0x3b86b0, roughness: 0.15, transparent: true, opacity: 0.85 })
+);
+tankWater.position.y = 0.60;
+const tankRoof = new THREE.Mesh(new THREE.ConeGeometry(0.82, 0.28, 20), new THREE.MeshStandardMaterial({ color: 0x4b5c50, roughness: 0.7 }));
+tankRoof.position.y = 1.48;
+const tankHit = new THREE.Mesh(new THREE.CylinderGeometry(0.95, 0.95, 1.7, 12), new THREE.MeshBasicMaterial({ visible: false }));
+tankHit.position.y = 0.85; tankHit.userData = { interactType: 'tank' };
+tankGroup.add(tankShell, tankWater, tankRoof, tankHit);
+tankGroup.position.set(-5.9, -0.1, 2.9);
+S.add(tankGroup);
+
+// Interactive Ground Weather & Soil Sensor Station (محطة الحساس الأرضي)
+const sensorGroup = new THREE.Group();
+const mast = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.045, 1.9, 8), new THREE.MeshStandardMaterial({ color: 0xcfd8dc, metalness: 0.6, roughness: 0.3 }));
+mast.position.y = 0.95; mast.castShadow = true;
+const solarPanel = new THREE.Mesh(new THREE.BoxGeometry(0.45, 0.03, 0.35), new THREE.MeshStandardMaterial({ color: 0x1a3b6e, roughness: 0.2, metalness: 0.5 }));
+solarPanel.position.set(0, 1.45, 0.14); solarPanel.rotation.x = 0.45;
+const beacon = new THREE.Mesh(new THREE.SphereGeometry(0.06, 10, 10), new THREE.MeshBasicMaterial({ color: 0x8db85c }));
+beacon.position.y = 1.95;
+const anemometer = new THREE.Group();
+anemometer.position.set(0, 1.82, 0);
+for (let a = 0; a < 3; a++) {
+  const arm = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.015, 0.015), new THREE.MeshStandardMaterial({ color: 0xeeeeee }));
+  arm.rotation.y = (a * Math.PI * 2) / 3;
+  const cup = new THREE.Mesh(new THREE.SphereGeometry(0.038, 8, 8), new THREE.MeshStandardMaterial({ color: 0xc8573a }));
+  cup.position.set(Math.cos(arm.rotation.y) * 0.16, 0, -Math.sin(arm.rotation.y) * 0.16);
+  anemometer.add(arm, cup);
+}
+const sensorHit = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.5, 2.1, 10), new THREE.MeshBasicMaterial({ visible: false }));
+sensorHit.position.y = 1.05; sensorHit.userData = { interactType: 'sensor' };
+sensorGroup.add(mast, solarPanel, beacon, anemometer, sensorHit);
+sensorGroup.position.set(-5.7, -0.1, -3.1);
+S.add(sensorGroup);
+
+// Furrowed Soil Plots + Interactive Valves
+function createFurrowedPlotGeometry(w, d) {
+  const g = new THREE.BoxGeometry(w, 0.26, d, 26, 1, 26);
+  const pos = g.attributes.position;
+  for (let i = 0; i < pos.count; i++) {
+    const py = pos.getY(i);
+    if (py > 0.05) {
+      const pz = pos.getZ(i), px = pos.getX(i);
+      pos.setY(i, py + Math.sin(pz * 13.5) * 0.03 + Math.cos(px * 9.0 + pz * 7.0) * 0.008);
+    }
+  }
+  g.computeVertexNormals();
+  return g;
+}
+
+const plots = [];
+const plotGeo = createFurrowedPlotGeometry(1.94, 2.05);
+const borderMat = new THREE.MeshStandardMaterial({ color: 0x7c684c, roughness: 0.95 });
+const spr = [], bioSpr = [], cov = [], valves = [], warnSign = [], interactMeshes = [];
+
+const hoopMat = new THREE.MeshStandardMaterial({ color: 0xc2cdd4, metalness: 0.65, roughness: 0.35 });
+const plasticMatBase = new THREE.MeshPhysicalMaterial({
+  color: 0xeaf8ff, transparent: true, opacity: 0.32, roughness: 0.22, side: THREE.DoubleSide, depthWrite: false
+});
+
+function createWarnMesh(bIdx) {
+  const g = new THREE.Group();
+  const ring = new THREE.Mesh(new THREE.TorusGeometry(0.22, 0.036, 8, 20), new THREE.MeshBasicMaterial({ color: 0xc8573a }));
+  ring.position.y = 2.05;
+  const m1 = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.025, 0.18, 8), new THREE.MeshBasicMaterial({ color: 0xc8573a }));
+  m1.position.y = 2.1;
+  const m2 = new THREE.Mesh(new THREE.SphereGeometry(0.035, 8, 8), new THREE.MeshBasicMaterial({ color: 0xc8573a }));
   m2.position.y = 1.95;
-  g.add(m1, m2);
+  const hitBox = new THREE.Mesh(new THREE.SphereGeometry(0.48, 10, 10), new THREE.MeshBasicMaterial({ visible: false }));
+  hitBox.position.y = 2.05; hitBox.userData = { interactType: 'warn', sector: bIdx };
+  interactMeshes.push(hitBox);
+  g.add(ring, m1, m2, hitBox);
   g.visible = false;
   return g;
 }
 
-for(let b=0;b<3;b++){const z=(b-1)*2.5,pm=new THREE.Mesh(new THREE.CylinderGeometry(.04,.04,8.6,8),new THREE.MeshLambertMaterial({color:0x777777}));pm.rotation.z=1.5708;pm.position.set(0,1.6,z);S.add(pm);pipe.push(pm);
-const g=new THREE.BufferGeometry(),a=new Float32Array(450);for(let i=0;i<150;i++)a.set([(Math.random()-.5)*8.4,Math.random()*1.4+.2,z+(Math.random()-.5)*1.8],i*3);g.setAttribute('position',new THREE.BufferAttribute(a,3));
-const pt=new THREE.Points(g,new THREE.PointsMaterial({color:0x6ec0ff,size:.09,transparent:true,opacity:.9}));pt.visible=false;S.add(pt);spr.push(pt);
-const cm=new THREE.Mesh(new THREE.CylinderGeometry(1,1,8.6,24,1,true,0,Math.PI),new THREE.MeshLambertMaterial({color:0xdff6ff,transparent:true,opacity:.28,side:THREE.DoubleSide,depthWrite:false}));cm.rotation.z=1.5708;cm.position.set(0,.15,z);cm.scale.set(.001,1,.98);cm.visible=false;S.add(cm);cov.push(cm);
-const wm=createWarnMesh();wm.position.set(0,0,z);S.add(wm);warnSign.push(wm);}
+for (let b = 0; b < 3; b++) {
+  const z = (b - 1) * 2.65;
+  const curb = new THREE.Mesh(new THREE.BoxGeometry(8.5, 0.14, 2.22), borderMat);
+  curb.position.set(0, -0.05, z); curb.receiveShadow = true; S.add(curb);
 
-const blk=[0,1,2].map(()=>({irr:0,cov:0,a:.001,w:0})),BR=new THREE.Color(0x8a6a2b);let sel=-1,hm=null,sx=0,sy=0;
-function E(b,d){const k=blk[b],ge=cl(d.gt+(k.irr?.16:0)+(k.cov?.04:0)),tx=d.tx-(k.cov?4:0);return{ge,tx,s:cl((.15-ge)/.1)*cl((tx-28)/8)}}
-const per=16,st=new THREE.InstancedMesh(new THREE.CylinderGeometry(.03,.06,1,5),new THREE.MeshLambertMaterial({color:0xffffff}),12*per),tmp=new THREE.Object3D(),col=new THREE.Color();S.add(st);
-const ph=[];for(let i=0;i<12*per;i++)ph.push(Math.random()*6.28);
-const RN=500,rp=new Float32Array(RN*3);for(let i=0;i<RN;i++)rp.set([(Math.random()-.5)*14,Math.random()*9,(Math.random()-.5)*10],i*3);
-const rg=new THREE.BufferGeometry();rg.setAttribute('position',new THREE.BufferAttribute(rp,3));
-const rain=new THREE.Points(rg,new THREE.PointsMaterial({color:0x9fd0ff,size:.07,transparent:true,opacity:.8}));S.add(rain);
-let th=.6,ph2=.95,rad=15,drag=false,auto=true,lx=0,ly=0;const cv=$('c');
+  for (let k = 0; k < 4; k++) {
+    const mat = new THREE.MeshStandardMaterial({
+      map: soilTex.map, bumpMap: soilTex.bump, bumpScale: 0.035, color: 0xc19a62, roughness: 0.92
+    });
+    const m = new THREE.Mesh(plotGeo, mat);
+    m.position.set((k - 1.5) * 2.08, 0.02, z);
+    m.receiveShadow = true; m.castShadow = true;
+    S.add(m);
+    plots.push({ m, b, k });
+  }
 
-cv.onpointerdown=e=>{sx=e.clientX;sy=e.clientY;drag=true;auto=false;lx=e.clientX;ly=e.clientY};
-onpointerup=()=>drag=false;
-onpointermove=e=>{if(!drag)return;th-=(e.clientX-lx)*.008;ph2=cl(ph2-(e.clientY-ly)*.006,.3,1.4);lx=e.clientX;ly=e.clientY};
+  // Drip Lines & Risers
+  [-0.55, 0.55].forEach(dz => {
+    const dripLine = new THREE.Mesh(new THREE.CylinderGeometry(0.022, 0.022, 8.35, 8), new THREE.MeshStandardMaterial({ color: 0x202824, roughness: 0.6 }));
+    dripLine.rotation.z = Math.PI / 2; dripLine.position.set(0, 0.16, z + dz); dripLine.castShadow = true; S.add(dripLine);
+  });
+  [-2.6, 0, 2.6].forEach(rx => {
+    const riser = new THREE.Mesh(new THREE.CylinderGeometry(0.024, 0.028, 0.62, 8), hoopMat);
+    riser.position.set(rx, 0.43, z); riser.castShadow = true;
+    const nozzle = new THREE.Mesh(new THREE.ConeGeometry(0.048, 0.08, 8), new THREE.MeshStandardMaterial({ color: 0x3b86b0 }));
+    nozzle.position.set(rx, 0.75, z);
+    S.add(riser, nozzle);
+  });
 
-const RC=new THREE.Raycaster(),mv2=new THREE.Vector2(),pms=plots.map(p=>p.m),bOf=m=>plots.find(p=>p.m==m).b;
-function hover(e){const r=cv.getBoundingClientRect();mv2.set((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1);RC.setFromCamera(mv2,cam);const h=RC.intersectObjects(pms)[0],tp=$('tip');hm=h&&!drag?h.object:null;if(!hm){tp.style.display='none';cv.style.cursor=drag?'grabbing':'grab';return}cv.style.cursor='pointer';tp.innerHTML=tipH(bOf(hm));tp.style.display='block';tp.style.left=Math.min(e.clientX+14,innerWidth-230)+'px';tp.style.top=Math.min(e.clientY+14,innerHeight-170)+'px'}
-cv.addEventListener('pointermove',hover);cv.addEventListener('pointerleave',()=>{hm=null;$('tip').style.display='none'});
-cv.addEventListener('click',e=>{if(Math.hypot(e.clientX-sx,e.clientY-sy)>5||!hm)return;const b=bOf(hm);setSel(sel==b?-1:b)});
-cv.onwheel=e=>{e.preventDefault();rad=cl(rad+e.deltaY*.01,7,24)};
+  // 3D Interactive Water Valve Wheel at edge of each sector
+  const valveGroup = new THREE.Group();
+  const stand = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.055, 0.55, 8), new THREE.MeshStandardMaterial({ color: 0x455a64 }));
+  stand.position.y = 0.25;
+  const wheelMat = new THREE.MeshStandardMaterial({ color: 0xc8573a, roughness: 0.35, metalness: 0.3 });
+  const wheel = new THREE.Mesh(new THREE.TorusGeometry(0.16, 0.032, 8, 18), wheelMat);
+  wheel.position.y = 0.56; wheel.rotation.x = Math.PI / 2;
+  const vHit = new THREE.Mesh(new THREE.CylinderGeometry(0.32, 0.32, 0.85, 10), new THREE.MeshBasicMaterial({ visible: false }));
+  vHit.position.y = 0.4; vHit.userData = { interactType: 'valve', sector: b };
+  interactMeshes.push(vHit);
+  valveGroup.add(stand, wheel, vHit);
+  valveGroup.position.set(4.55, 0, z);
+  S.add(valveGroup);
+  valves.push({ group: valveGroup, wheel, mat: wheelMat });
 
-const cDry=new THREE.Color(0xc19a62),cWet=new THREE.Color(0x3a2616),cSat=new THREE.Color(0x2b3a44),hot=new THREE.Color(0xe9b47c),cool=new THREE.Color(0x8fb8dc),gry=new THREE.Color(0x74828f),sk=new THREE.Color();
-function frame(t){requestAnimationFrame(frame);t*=.001;const w=innerWidth,h=innerHeight;if(R.domElement.width!=w*R.getPixelRatio()){R.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix()}
-if(auto)th+=.0016;cam.position.set(rad*Math.sin(th)*Math.sin(ph2),rad*Math.cos(ph2),rad*Math.cos(th)*Math.sin(ph2));cam.lookAt(0,.3,0);
-const d=D[M==1?day:Math.min(N-1,sow+30)],wet=cl(d.gt/.5);gr+=(grT-gr)*.04;
-sk.copy(cool).lerp(hot,cl((d.tx-18)/22)).lerp(gry,cl(d.p/6)*.6);S.background.copy(sk);S.fog.color.copy(sk);sun.intensity=.5+cl(d.tx/45)*.8;sunB.material.color.setHex(d.tx>35?0xff9a3c:0xffd27a);
-const ef=[0,1,2].map(b=>{const e=E(b,d),k=blk[b];k.w+=(e.s-k.w)*.05;k.a+=((k.cov?1.8:.001)-k.a)*.08;cov[b].scale.x=k.a;cov[b].visible=k.a>.01;spr[b].visible=!!k.irr;pipe[b].material.color.setHex(k.irr?0x4aa3ff:0x777777);if(k.irr){const a=spr[b].geometry.attributes.position.array;for(let i=1;i<a.length;i+=3){a[i]-=.07;if(a[i]<.2)a[i]=1.6}spr[b].geometry.attributes.position.needsUpdate=true}
-const reqIrr = d.ir>=1.5&&d.gt<.4, reqCov = d.tx>=35||d.p>=9;
-const needsAction = (reqIrr && !k.irr) || (reqCov && !k.cov);
-warnSign[b].visible = needsAction;
-if(needsAction){ warnSign[b].position.y = Math.sin(t*5)*0.1; }
-return e});
-plots.forEach(p=>{const e=ef[p.b];p.m.material.color.copy(cDry).lerp(cWet,cl(e.ge/.5)).lerp(cSat,e.ge>.4?(e.ge-.4)*3:0);p.m.material.emissive.setHex(p.m===hm?0x1f4a1f:sel==p.b?0x123a12:0)});
-const sc=M==1?sched(0):sched(season);
-plots.forEach((p,pi)=>{const c=CR[sc[p.b]],kw=blk[p.b].w,g=Math.max(.001,c[2]*gr*(1-.4*kw));for(let j=0;j<per;j++){const i=pi*per+j;tmp.position.set(p.m.position.x+((j%4)-1.5)*.42,.15+g*.5,p.m.position.z+(((j/4)|0)-1.5)*.42);tmp.scale.set(1,g,1);tmp.rotation.z=Math.sin(t*1.5+ph[i])*.06*(1+d.ws/3)+kw*.6*(j%2?1:-1);tmp.updateMatrix();st.setMatrixAt(i,tmp.matrix);st.setColorAt(i,col.setHex(c[1]).offsetHSL(0,0,(ph[i]%.3)-.15).lerp(BR,kw*.8))}});
-st.instanceMatrix.needsUpdate=true;st.instanceColor.needsUpdate=true;
-const a=rg.attributes.position.array;for(let i=0;i<RN;i++){a[i*3+1]-=.25;if(a[i*3+1]<0)a[i*3+1]=9}rg.attributes.position.needsUpdate=true;rg.setDrawRange(0,d.p>0?Math.floor(RN*cl(d.p/10+.2)):0);R.render(S,cam)}
-// ---------- UI ----------
-const cd=()=>D[M==1?day:Math.min(N-1,sow+30)],tg=()=>sel<0?[0,1,2]:[sel];
-function setSel(k){sel=k;ui()}function act(y){const t=tg(),v=!t.every(b=>blk[b][y]);t.forEach(b=>blk[b][y]=v?1:0);ui()}
-function tipH(b){const d=cd(),e=E(b,d),k=blk[b],c=CR[(M==1?sched(0):sched(season))[b]];
-const rec=e.s>.3&&!k.irr&&!k.cov?'⚠️ إجهاد حراري/جفاف: شغّل الري الفجري أو غطِّ المحصول':k.irr&&d.gt>=.4?'🛑 تشبّع: أوقف الري':d.p>=9&&!k.cov?'🌧 مطر غزير: غطِّ التربة لتجنب الانجراف':'✅ الوضع مستقر';
-const g={w:`💧 احتياج الماء اليوم: <b>${d.ir.toFixed(1)} ملم</b>`,y:`📈 ${c[3]}`,d:'☀️ التغطية تخفّض الحرارة ~4° وتقلل التبخر'}[goal];
-return `<b style="color:#58eb4c">قطاع ${'ABC'[b]} — ${c[0]}</b><br>رطوبة التربة: <b>${e.ge.toFixed(2)}</b> • حرارة: <b>${e.tx.toFixed(0)}°</b><br>ري: <b>${k.irr?'يعمل 💦':'متوقف'}</b> • تغطية: <b>${k.cov?'مفعّلة':'لا'}</b><br>${g}<br>${rec}<br><small style="color:#9cb">اضغط لاختيار القطاع</small>`}
-function actH(){const d=cd(),t=tg(),I=t.every(b=>blk[b].irr),C=t.every(b=>blk[b].cov),rI=d.ir>=1.5&&d.gt<.4,rC=d.tx>=35||d.p>=9;
-return `<h3>🎮 تحكّم بالمزرعة (أو اضغط قطاع بالـ 3D)</h3><div class="g" style="flex-wrap:wrap;margin-bottom:6px">${[['الكل',-1],['A',0],['B',1],['C',2]].map(a=>`<button class="${sel==a[1]?'on':''}" onclick="setSel(${a[1]})">${a[0]}</button>`).join('')}</div><div class="g" style="flex-wrap:wrap"><button class="${I?'on':''}" onclick="act('irr')">${I?'🛑 إيقاف الري':'💦 تشغيل الري'}</button><button class="${C?'on':''}" onclick="act('cov')">${C?'🔓 كشف المحصول':'🧺 تغطية المحصول'}</button></div><div class="t">${rI==I?'✅':'⚠️'} الري: أفق يوصي بـ${rI?'التشغيل':'الإيقاف'} • ${rC==C?'✅':'⚠️'} التغطية: أفق يوصي بـ${rC?'التغطية':'الكشف'}</div>`}
-function ui(){const d=D[day];$("dd").value=new Date(Date.UTC(2022,8,1+day)).toISOString().slice(0,10);let h='';
-if(M==1){const pl=PLAN&&PLAN[day];grT=day<sow?0:cl((day-sow)/45);
-h=`<h3>القراءة الفضائية • ${dt(day)} 2022</h3><div class="d">${d.tx.toFixed(1)}° / ${d.tn.toFixed(1)}°</div><div id="st" style="background:${d.s[1]}">${d.s[0]}</div>
-<div class="m"><div>رطوبة السطح GWETTOP<b>${d.gt.toFixed(2)}</b></div><div>رطوبة الجذور GWETROOT<b>${d.gr.toFixed(2)}</b></div><div>مطر اليوم / التراكمي<b>${d.p} / ${d.cum.toFixed(1)} ملم</b></div><div>احتياج الري (Hargreaves)<b>${d.ir.toFixed(1)} ملم</b></div><div>رطوبة هواء / رياح<b>${Math.round(d.rh)}% / ${d.ws}</b></div><div>ملاءمة البذر<b>${d.sc}/100</b></div></div>
-<div class="t" style="background:#58eb4c1a;border:1px solid #58eb4c44">🌾 <b>مؤشر مرونة المحصول (CRI):</b> <span style="font-size:14px;font-weight:900;color:#58eb4c">${d.cri}%</span><div style="background:#12301a;border-radius:4px;height:6px;width:100%;margin-top:4px;overflow:hidden"><div style="background:#58eb4c;height:100%;width:${d.cri}%"></div></div></div>
-<div class="t"><u>🛰 قرار اليوم</u>${day<sow?`أول بذر موصى به: <b>${dt(sow)}</b> (بعد تراكم ${D[sow].cum.toFixed(1)} ملم مع رطوبة سطح ≥0.19). قبله لا تبذر.`:'التربة جاهزة — المحصول ينمو في المجسّم 3D.'}</div>`+
-(pl?`<div class="t"><u>🌿 مناخات مصغّرة</u>${pl.micro_climate_swapping}</div><div class="t"><u>💧 ري موجّه</u>${pl.space_guided_irrigation}</div><div class="t"><u>🧱 تعافي التربة</u>${pl.soil_regeneration}</div>`:'')}
-else{grT=1;const sc=sched(season),F=season+1;
-h=`<h3>الموسم ${F} من 3 — تناوب 3 قطاعات</h3>`+sc.map((k,i)=>`<div class="t"><u>قطاع ${'ABC'[i]}: ${CR[k][0]}</u>${CR[k][3]} (${SH[k]>0?'+':''}${SH[k]} نقطة صحة تربة)</div>`).join('');
-let r=60,m=60;for(let s=0;s<=season;s++){r+=sched(s).reduce((a,k)=>a+SH[k],0)/3;m+=SH[cer()]}
-h+=`<div class="m"><div>صحة التربة مع التناوب<b style="color:#58eb4c">${r.toFixed(0)}</b></div><div>زراعة حبوب متكررة<b style="color:#ff6a3c">${m.toFixed(0)}</b></div></div><div class="t">كل قطاع يتبدّل محصوله كل موسم: بقوليات ← حبوب ← راحة. نموذج توضيحي لتأثير النيتروجين (قابل للمعايرة بتحليل تربة).</div>`}
-h+=`<div class="t" style="border:1px solid #58eb4c55">🎯 ${{w:'هدفك: توفير الماء — الري فقط عند عجز الرطوبة، والشعير/الحمص أولوية.',y:'هدفك: الإنتاجية — القمح بعد البقوليات للاستفادة من نيتروجينها.',d:'هدفك: مقاومة الجفاف — شعير + تغطية عضوية وبذر فور أول مطرة مؤثرة.'}[goal]}</div>`;$('info').innerHTML=actH()+h;roi();draw()}
-const dp=$('dr');dp.oninput=roi;function roi(){const a=+dp.value;$('dv').textContent=a;let mult=1.0;if(goal==='w')mult=1.25;if(goal==='d')mult=1.15;if(goal==='y')mult=0.9;const adjSav=Math.min(0.85,sav*mult);const m=(base-smart*(2-mult))*a;$('rw').textContent=Math.round(m) + ' m³';$('rm').textContent=Math.round(m*1.2) + ' $';$('rt').innerHTML=`استراتيجية موجهة لـ <b>${{w:'توفير المياه الأقصى',y:'تحقيق أقصى إنتاجية',d:'تعزيز الصمود ضد الجفاف'}[goal]}</b>: توفير نحو <b>${Math.round(adjSav*100)}%</b> مقارنة بالري التقليدي.`}
-function draw(){const c=$('ch'),x=c.getContext('2d'),W=c.width=c.clientWidth*2,H=c.height=c.clientHeight*2,T=44,B=H-8,h=B-T,X=i=>W-(i+.5)/N*W;x.clearRect(0,0,W,H);
-if(M==2){x.font='bold 26px Cairo';x.textAlign='center';[0,1,2].forEach(s=>{x.fillStyle=s==season?'#58eb4c':'#ffffff22';x.fillRect(W-(s+1)*W/3+6,0,W/3-12,H);x.fillStyle=s==season?'#07140a':'#9cb';x.fillText('الموسم '+(s+1),W-(s+.5)*W/3,H/2+8)});return}
-const ms=[0,30,61,91,N],mn=['September','October','November','December'];x.font='bold 22px Cairo';x.textAlign='center';
-mn.forEach((m,k)=>{const a=W-ms[k]/N*W,b=W-ms[k+1]/N*W;x.fillStyle=k%2?'#ffffff0a':'#ffffff14';x.fillRect(b,0,a-b,H);x.fillStyle='#cfe';x.fillText(m,(a+b)/2,28)});
-x.strokeStyle='#ffffff22';x.lineWidth=1;[0,.5,1].forEach(f=>{x.beginPath();x.moveTo(0,B-f*h);x.lineTo(W,B-f*h);x.stroke()});
-x.fillStyle='#58eb4c44';x.strokeStyle='#58eb4c';x.lineWidth=2;x.beginPath();x.moveTo(X(0),B);D.forEach((d,i)=>x.lineTo(X(i),B-d.sc/100*h));x.lineTo(X(N-1),B);x.fill();x.beginPath();D.forEach((d,i)=>{const y=B-d.sc/100*h;i?x.lineTo(X(i),y):x.moveTo(X(i),y)});x.stroke();
-x.fillStyle='#4aa3ff';D.forEach((d,i)=>{const bh=Math.min(1,d.p/16)*h;x.fillRect(X(i)-W/N*.35,B-bh,W/N*.7,bh)});
-x.strokeStyle='#ff8a3c';x.lineWidth=4;x.beginPath();D.forEach((d,i)=>{const y=B-cl((d.tx-10)/34)*h;i?x.lineTo(X(i),y):x.moveTo(X(i),y)});x.stroke();
-const mp=D.reduce((a,d,i)=>d.p>D[a].p?i:a,0),mt=D.reduce((a,d,i)=>d.tx>D[a].tx?i:a,0);x.font='bold 20px Cairo';x.fillStyle='#9fd0ff';x.fillText(D[mp].p+' mm',X(mp),B-D[mp].p/16*h-8);x.fillStyle='#ffb27a';x.fillText(D[mt].tx+'°C',X(mt),B-cl((D[mt].tx-10)/34)*h-8);
-x.setLineDash([8,6]);x.strokeStyle='#58eb4c';x.lineWidth=3;x.beginPath();x.moveTo(X(sow),T);x.lineTo(X(sow),B);x.stroke();x.setLineDash([]);x.fillStyle='#58eb4c';x.fillText('🌱 بذر',X(sow),T+22);
-x.fillStyle='#fff';x.fillRect(X(day)-2,T,4,h);const bub=(i,y,txt,bg)=>{x.font='bold 22px Cairo';const w=x.measureText(txt).width+24,cx=cl(X(i),w/2+4,W-w/2-4);x.fillStyle=bg;x.fillRect(cx-w/2,y,w,32);x.fillStyle='#07140a';x.fillText(txt,cx,y+23)};
-if(hv>=0&&hv!=day){const d=D[hv];bub(hv,T-6+h*.25,`${dt(hv)} • CRI: ${d.cri}% • مطر ${d.p} • ملاءمة ${d.sc}`,'#ffd27a')}bub(day,6,dt(day),'#fff')}
-const ch=$('ch');let sc=false;function pick(e){const r=ch.getBoundingClientRect(),f=(e.clientX-r.left)/r.width;if(M==1)day=cl(Math.round((1-f)*(N-1)),0,N-1);else season=cl(Math.floor((1-f)*3),0,2);ui()}
-ch.onpointerdown=e=>{sc=true;pick(e)};ch.onpointermove=e=>{const r=ch.getBoundingClientRect();hv=cl(Math.round((1-(e.clientX-r.left)/r.width)*(N-1)),0,N-1);sc?pick(e):draw()};ch.onpointerleave=()=>{hv=-1;draw()};addEventListener('pointerup',()=>sc=false);
-let tm=null,hv=-1;function step(k){if(M==2)mode(1);day=cl(day+k,0,N-1);ui()}function setDate(v){const p=v.split('-').map(Number);if(p.length<3||!p[0])return;if(M==2)mode(1);day=cl(Math.round((Date.UTC(p[0],p[1]-1,p[2])-Date.UTC(2022,8,1))/864e5),0,N-1);ui()}
-const J=[['🌱 بذر',sow],['⛈ مطر',D.reduce((a,d,i)=>d.p>D[a].p?i:a,0)],['🔥 حرارة',D.reduce((a,d,i)=>d.tx>D[a].tx?i:a,0)]];$('jp').innerHTML=J.map((j,k)=>`<button onclick="step(0);day=${j[1]};if(M==2)mode(1);ui()">${j[0]}</button>`).join('');function play(){if(tm){clearInterval(tm);tm=null;$('pl').textContent='▶ تشغيل';return}$('pl').textContent='⏸ إيقاف';tm=setInterval(()=>{if(M==1){day=(day+1)%N}else season=(season+1)%3;ui()},M==1?140:1600)}
-function mode(m){M=m;$('m1').className=m==1?'on':'';$('m2').className=m==2?'on':'';if(tm){play();play()}if(m==2){gr=0}ui()}
-$('goals').onclick=e=>{const g=e.target.dataset.g;if(!g)return;goal=g;[...$('goals').children].forEach(b=>b.className=b.dataset.g==g?'on':'');ui()};
-addEventListener('resize',draw);roi();ui();requestAnimationFrame(frame);
-</script></body></html>
+  // Irrigation Water Droplets
+  const g = new THREE.BufferGeometry(), a = new Float32Array(600);
+  for (let i = 0; i < 200; i++) {
+    const rx = [-2.6, 0, 2.6][i % 3], ang = Math.random() * Math.PI * 2, radSp = Math.random() * 1.25;
+    a.set([rx + Math.cos(ang) * radSp, 0.2 + Math.random() * 0.7, z + Math.sin(ang) * radSp * 0.75], i * 3);
+  }
+  g.setAttribute('position', new THREE.BufferAttribute(a, 3));
+  const pt = new THREE.Points(g, new THREE.PointsMaterial({ color: 0x7fb8d6, size: 0.075, transparent: true, opacity: 0.85 }));
+  pt.visible = false; S.add(pt); spr.push(pt);
+
+  // Bio-Treatment Mist
+  const bg = new THREE.BufferGeometry(), ba = new Float32Array(720);
+  for (let i = 0; i < 240; i++) ba.set([(Math.random() - 0.5) * 8.0, 0.25 + Math.random() * 1.1, z + (Math.random() - 0.5) * 1.9], i * 3);
+  bg.setAttribute('position', new THREE.BufferAttribute(ba, 3));
+  const bpt = new THREE.Points(bg, new THREE.PointsMaterial({ color: 0x3da593, size: 0.11, transparent: true, opacity: 0.9 }));
+  bpt.visible = false; S.add(bpt); bioSpr.push(bpt);
+
+  // Protective Greenhouse Tunnel
+  const tunnelGroup = new THREE.Group();
+  const coverMesh = new THREE.Mesh(new THREE.CylinderGeometry(1.02, 1.02, 8.35, 24, 1, true, 0, Math.PI), plasticMatBase.clone());
+  coverMesh.rotation.z = Math.PI / 2; coverMesh.position.set(0, 0.14, z);
+  tunnelGroup.add(coverMesh);
+  [-4.0, -2.0, 0, 2.0, 4.0].forEach(hx => {
+    const hoop = new THREE.Mesh(new THREE.TorusGeometry(1.03, 0.018, 6, 20, Math.PI), hoopMat);
+    hoop.rotation.y = Math.PI / 2; hoop.position.set(hx, 0.14, z); tunnelGroup.add(hoop);
+  });
+  tunnelGroup.scale.set(0.001, 1, 1); tunnelGroup.visible = false; S.add(tunnelGroup); cov.push(tunnelGroup);
+
+  const wm = createWarnMesh(b); wm.position.set(0, 0, z); S.add(wm); warnSign.push(wm);
+}
+interactMeshes.push(tankHit, sensorHit);
+
+// 3 Distinct Realistic Crop Geometries (Cereal, Legume, Cover Crop)
+function createCerealGeometry() {
+  const pos = [], add = (a, b, c) => pos.push(...a, ...b, ...c);
+  const w0 = 0.02, w1 = 0.007;
+  add([-w0,0,-w0],[w0,0,-w0],[w1,0.78,0]); add([-w0,0,-w0],[w1,0.78,0],[-w1,0.78,0]);
+  add([0,0,-w0],[0,0,w0],[0,0.78,w1]); add([0,0,-w0],[0,0.78,w1],[0,0.78,-w1]);
+  [{y:0.24,a:0.4,l:0.26,d:0.15},{y:0.42,a:2.6,l:0.28,d:0.19},{y:0.58,a:4.6,l:0.22,d:0.24}].forEach(lf => {
+    const dx=Math.cos(lf.a), dz=Math.sin(lf.a), px=-dz*0.026, pz=dx*0.026;
+    const mid=[dx*lf.l*0.55, lf.y+0.08, dz*lf.l*0.55], tip=[dx*lf.l, lf.y+0.08-lf.d, dz*lf.l];
+    add([px,lf.y,pz],[-px,lf.y,-pz],[mid[0]+px*0.7,mid[1],mid[2]+pz*0.7]);
+    add([-px,lf.y,-pz],[mid[0]-px*0.7,mid[1],mid[2]-pz*0.7],[mid[0]+px*0.7,mid[1],mid[2]+pz*0.7]);
+    add([mid[0]+px*0.7,mid[1],mid[2]+pz*0.7],[mid[0]-px*0.7,mid[1],mid[2]-pz*0.7],tip);
+  });
+  add([-0.034,0.74,0],[0.034,0.74,0],[0,1.04,0.015]);
+  add([0,0.74,-0.034],[0,0.74,0.034],[0,1.04,0.015]);
+  const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.computeVertexNormals(); return g;
+}
+
+function createLegumeGeometry() {
+  const pos = [], add = (a, b, c) => pos.push(...a, ...b, ...c);
+  // Bushy multi-stem with broad diamond leaflets
+  for (let s = 0; s < 3; s++) {
+    const ang = s * 2.1, ox = Math.cos(ang)*0.08, oz = Math.sin(ang)*0.08;
+    add([0,0,0],[0.025,0,0.025],[ox,0.52,oz]);
+    for (let lf = 0; lf < 3; lf++) {
+      const la = ang + lf * 2.09, h = 0.25 + lf * 0.12;
+      const dx = Math.cos(la)*0.16, dz = Math.sin(la)*0.16, px = -Math.sin(la)*0.06, pz = Math.cos(la)*0.06;
+      add([ox*0.6, h, oz*0.6], [ox*0.6+dx*0.5+px, h+0.05, oz*0.6+dz*0.5+pz], [ox*0.6+dx, h+0.02, oz*0.6+dz]);
+      add([ox*0.6, h, oz*0.6], [ox*0.6+dx, h+0.02, oz*0.6+dz], [ox*0.6+dx*0.5-px, h+0.05, oz*0.6+dz*0.5-pz]);
+    }
+  }
+  const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.computeVertexNormals(); return g;
+}
+
+function createCoverCropGeometry() {
+  const pos = [], add = (a, b, c) => pos.push(...a, ...b, ...c);
+  // Low dense ground-hugging rosette protecting soil
+  for (let i = 0; i < 6; i++) {
+    const ang = (i * Math.PI * 2) / 6;
+    const dx = Math.cos(ang)*0.24, dz = Math.sin(ang)*0.24;
+    const px = -Math.sin(ang)*0.08, pz = Math.cos(ang)*0.08;
+    add([0, 0.04, 0], [dx*0.5+px, 0.20, dz*0.5+pz], [dx, 0.12, dz]);
+    add([0, 0.04, 0], [dx, 0.12, dz], [dx*0.5-px, 0.20, dz*0.5-pz]);
+  }
+  const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.computeVertexNormals(); return g;
+}
+
+const per = 24;
+const cropMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.72, side: THREE.DoubleSide });
+const meshCereal = new THREE.InstancedMesh(createCerealGeometry(), cropMat, 12 * per);
+const meshLegume = new THREE.InstancedMesh(createLegumeGeometry(), cropMat, 12 * per);
+const meshCover  = new THREE.InstancedMesh(createCoverCropGeometry(), cropMat, 12 * per);
+[meshCereal, meshLegume, meshCover].forEach(m => { m.castShadow = true; m.receiveShadow = true; S.add(m); });
+
+const plantSeeds = [];
+for (let i = 0; i < 12 * per; i++) {
+  plantSeeds.push({
+    phase: Math.random() * 6.28, rotY: Math.random() * 6.28,
+    jx: (Math.random() - 0.5) * 0.22, jz: (Math.random() - 0.5) * 0.14,
+    scaleVar: 0.8 + Math.random() * 0.42
+  });
+}
+
+// Rain Particles
+const RN = 650, rp = new Float32Array(RN * 3);
+for (let i = 0; i < RN; i++) rp.set([(Math.random() - 0.5) * 16, Math.random() * 10, (Math.random() - 0.5) * 12], i * 3);
+const rg = new THREE.BufferGeometry(); rg.setAttribute('position', new THREE.BufferAttribute(rp, 3));
+const rain = new THREE.Points(rg, new THREE.PointsMaterial({ color: 0x8ec1dc, size: 0.065, transparent: true, opacity: 0.78 }));
+S.add(rain);
+
+// Smooth Camera Controls + Focus Target
+let th = 0.62, ph2 = 0.94, rad = 14.5, tTh = 0.62, tPh = 0.94, tRad = 14.5;
+let lookTarget = new THREE.Vector3(0, 0.35, 0), tLookTarget = new THREE.Vector3(0, 0.35, 0);
+let drag = false, auto = true, lx = 0, ly = 0, sx = 0, sy = 0;
+
+function resetCamera() {
+  tLookTarget.set(0, 0.35, 0); tRad = 14.5; tPh = 0.94; auto = true; sel = -1; ui();
+}
+function focusSectorCamera(b) {
+  auto = false;
+  if (b < 0) { resetCamera(); return; }
+  const z = (b - 1) * 2.65;
+  tLookTarget.set(0, 0.35, z);
+  tRad = 9.5;
+  tPh = 0.82;
+}
+
+const cv = $('c');
+cv.onpointerdown = e => { sx = e.clientX; sy = e.clientY; drag = true; auto = false; lx = e.clientX; ly = e.clientY; };
+onpointerup = () => drag = false;
+onpointermove = e => {
+  if (!drag) return;
+  tTh -= (e.clientX - lx) * 0.008;
+  tPh = cl(tPh - (e.clientY - ly) * 0.006, 0.28, 1.38);
+  th = tTh; ph2 = tPh;
+  lx = e.clientX; ly = e.clientY;
+};
+cv.onwheel = e => { e.preventDefault(); tRad = cl(tRad + e.deltaY * 0.01, 6.0, 24); };
+
+const RC = new THREE.Raycaster(), mv2 = new THREE.Vector2(), pms = plots.map(p => p.m), plotOf = m => plots.find(p => p.m == m);
+let hm = null, hInteract = null;
+
+function hover(e) {
+  const r = cv.getBoundingClientRect();
+  mv2.set((e.clientX - r.left) / r.width * 2 - 1, -(e.clientY - r.top) / r.height * 2 + 1);
+  RC.setFromCamera(mv2, cam);
+  const tp = $('tip');
+
+  const hitObj = RC.intersectObjects(interactMeshes)[0];
+  if (hitObj && !drag) {
+    const ud = hitObj.object.userData;
+    if (ud.interactType === 'warn' && !warnSign[ud.sector].visible) {
+      // ignore invisible warning
+    } else {
+      hm = null; hInteract = ud; cv.style.cursor = 'pointer';
+      if (ud.interactType === 'warn') tp.innerHTML = warnTipH(ud.sector);
+      else if (ud.interactType === 'valve') tp.innerHTML = `<b style="color:var(--blue)">🚰 محبس قطاع ${['A','B','C'][ud.sector]}</b><br>الحالة: <b>${blk[ud.sector].irr ? 'مفتوح 💦' : 'مغلق 🛑'}</b><br><small style="color:var(--text-muted)">اضغط على المحبس لفتحه أو إغلاقه فوراً</small>`;
+      else if (ud.interactType === 'sensor') tp.innerHTML = `<b style="color:var(--green)">📡 محطة الحساس الأرضي</b><br>تقيس الرطوبة والحرارة والرياح لحظياً لدمجها مع أقمار ناسا.<br><small style="color:var(--gold)">اضغط لقراءة تفاصيل الدمج الفضائي-الأرضي</small>`;
+      else if (ud.interactType === 'tank') tp.innerHTML = `<b style="color:var(--blue)">💧 خزان مياه المزرعة</b><br>يخزّن مياه الأمطار ويوفر <b>~${Math.round(sav*100)}%</b> بالري الذكي.<br><small style="color:var(--text-muted)">اضغط لمعرفة جدول المحبس العملي</small>`;
+      tp.style.display = 'block';
+      tp.style.left = Math.min(e.clientX + 14, innerWidth - 275) + 'px';
+      tp.style.top = Math.min(e.clientY + 14, innerHeight - 210) + 'px';
+      return;
+    }
+  }
+  hInteract = null;
+
+  const h = RC.intersectObjects(pms)[0];
+  hm = h && !drag ? h.object : null;
+  if (!hm) { tp.style.display = 'none'; cv.style.cursor = drag ? 'grabbing' : 'grab'; return; }
+  cv.style.cursor = 'pointer';
+  const plObj = plotOf(hm);
+  tp.innerHTML = tipH(plObj.b, plObj.k);
+  tp.style.display = 'block';
+  tp.style.left = Math.min(e.clientX + 14, innerWidth - 275) + 'px';
+  tp.style.top = Math.min(e.clientY + 14, innerHeight - 210) + 'px';
+}
+cv.addEventListener('pointermove', hover);
+cv.addEventListener('pointerleave', () => { hm = null; hInteract = null; $('tip').style.display = 'none'; });
+cv.addEventListener('click', e => {
+  if (Math.hypot(e.clientX - sx, e.clientY - sy) > 5) return;
+  if (hInteract) {
+    if (hInteract.interactType === 'warn') executeDiseaseTreatment('biotic_ndvi', hInteract.sector);
+    else if (hInteract.interactType === 'valve') {
+      const b = hInteract.sector;
+      blk[b].irr = blk[b].irr ? 0 : 1;
+      showInAppBanner(`🚰 تم ${blk[b].irr ? 'فتح' : 'إغلاق'} محبس المياه لقطاع ${['A','B','C'][b]} مباشرة من المجسم!`, blk[b].irr ? '#5f8f3a' : '#44503f');
+      ui();
+    } else if (hInteract.interactType === 'sensor') openModal('glossary');
+    else if (hInteract.interactType === 'tank') { setTab('today'); if (panelCollapsed) togglePanel(false); }
+    $('tip').style.display = 'none';
+    return;
+  }
+  if (!hm) return;
+  const b = plotOf(hm).b;
+  if (sel === b) { sel = -1; resetCamera(); } else { sel = b; focusSectorCamera(b); }
+  ui();
+});
+
+// Farm State per Sector
+const blk = [0, 1, 2].map(() => ({ irr: 0, cov: 0, a: 0.001, w: 0, inspected: false, treated: false, sprayTimer: 0, ndviBoost: 0 }));
+const BR = new THREE.Color(0x9e7b32), GOLD_RIPE = new THREE.Color(0xdca93a);
+const cDry = new THREE.Color(0xa77f4d), cWet = new THREE.Color(0x2b1b0f), cSat = new THREE.Color(0x1f2d34);
+const hot = new THREE.Color(0xb98556), cool = new THREE.Color(0x5f8199), gry = new THREE.Color(0x414d57), sk = new THREE.Color();
+const tmp = new THREE.Object3D(), col = new THREE.Color();
+let sel = -1;
+
+function E(b, d) {
+  const k = blk[b], ge = cl(d.gt + (k.irr ? 0.16 : 0) + (k.cov ? 0.04 : 0)), tx = d.tx - (k.cov ? 4 : 0);
+  return { ge, tx, s: cl((0.15 - ge) / 0.1) * cl((tx - 28) / 8) };
+}
+
+function getEffectiveNDVI(d) {
+  const base = d.ndvi || { A: 0.56, B: 0.36, C: 0.58, anomaly: null };
+  const A = Number(cl(base.A + blk[0].ndviBoost, 0.1, 0.85).toFixed(2));
+  const B = Number(cl(base.B + blk[1].ndviBoost, 0.1, 0.85).toFixed(2));
+  const C = Number(cl(base.C + blk[2].ndviBoost, 0.1, 0.85).toFixed(2));
+  const avg = (A + B + C) / 3;
+  const anomaly = (avg - B >= 0.11 && !blk[1].treated) ? base.anomaly : null;
+  return { A, B, C, anomaly };
+}
+
+// =========================================================================
+// 3. FLOATING 3D WORLD PINS (Updated cleanly in animation loop)
+// =========================================================================
+const pinAnchors = [
+  { id: 'sec-0', type: 'sector', b: 0, pos: new THREE.Vector3(-4.3, 1.15, -2.65) },
+  { id: 'sec-1', type: 'sector', b: 1, pos: new THREE.Vector3(-4.3, 1.15, 0) },
+  { id: 'sec-2', type: 'sector', b: 2, pos: new THREE.Vector3(-4.3, 1.15, 2.65) },
+  { id: 'sensor', type: 'sensor', pos: new THREE.Vector3(-5.7, 2.25, -3.1) },
+  { id: 'tank', type: 'tank', pos: new THREE.Vector3(-5.9, 1.85, 2.9) }
+];
+
+function initWorldPins() {
+  const container = $('world-pins');
+  container.innerHTML = pinAnchors.map(p => {
+    if (p.type === 'sector') {
+      return `<div class="w-pin" id="pin-${p.id}" onclick="pinClickSector(${p.b})"><span class="dot" id="dot-${p.id}"></span><span id="txt-${p.id}">قطاع ${'ABC'[p.b]}</span></div>`;
+    } else if (p.type === 'sensor') {
+      return `<div class="w-pin" id="pin-${p.id}" onclick="openModal('glossary')">📡 الحساس الأرضي</div>`;
+    } else {
+      return `<div class="w-pin" id="pin-${p.id}" onclick="setTab('today')">💧 خزان الري</div>`;
+    }
+  }).join('');
+}
+initWorldPins();
+
+function pinClickSector(b) {
+  if (sel === b) { sel = -1; resetCamera(); }
+  else { sel = b; focusSectorCamera(b); }
+  ui();
+}
+function togglePins() {
+  showPins = !showPins;
+  $('world-pins').style.display = showPins ? 'block' : 'none';
+  $('btn-pins').textContent = showPins ? '🏷️ إخفاء العلامات' : '🏷️ إظهار العلامات';
+}
+
+function updateProjectedPins(d) {
+  if (!showPins) return;
+  const w = innerWidth, h = innerHeight;
+  const sc = M == 1 ? getActiveSchedule(0) : getActiveSchedule(season);
+  const v = new THREE.Vector3();
+
+  pinAnchors.forEach(p => {
+    const el = $('pin-' + p.id);
+    if (!el) return;
+    v.copy(p.pos).project(cam);
+    if (v.z > 1) { el.style.opacity = '0'; return; }
+    const x = (v.x * 0.5 + 0.5) * w;
+    const y = (-v.y * 0.5 + 0.5) * h;
+    el.style.opacity = '1';
+    el.style.transform = `translate3d(${Math.round(x)}px, ${Math.round(y)}px, 0) translate(-50%, -100%)`;
+
+    if (p.type === 'sector') {
+      const c = CR[sc[p.b]];
+      const reasons = getSectorAlertReasons(p.b, d);
+      const isAlert = reasons.length > 0;
+      el.className = `w-pin ${sel === p.b ? 'active' : ''} ${isAlert ? 'alert' : ''}`;
+      $('dot-' + p.id).style.background = isAlert ? '#c8573a' : (blk[p.b].irr ? '#4f9fc4' : '#8db85c');
+      $('txt-' + p.id).textContent = `قطاع ${'ABC'[p.b]} • ${c[0].split(' ')[1] || c[0]} ${blk[p.b].irr ? '💦' : ''}`;
+    }
+  });
+}
+
+// =========================================================================
+// 4. ANIMATION FRAME LOOP
+// =========================================================================
+let lastFrameTime = 0;
+function frame(t) {
+  requestAnimationFrame(frame);
+  t *= 0.001;
+  const dtSec = Math.min(0.1, t - lastFrameTime || 0.016);
+  lastFrameTime = t;
+
+  const w = innerWidth, h = innerHeight;
+  if (R.domElement.width != w * R.getPixelRatio()) {
+    R.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix();
+  }
+
+  if (auto) tTh += 0.0013;
+  th += (tTh - th) * 0.08;
+  ph2 += (tPh - ph2) * 0.08;
+  rad += (tRad - rad) * 0.08;
+  lookTarget.lerp(tLookTarget, 0.08);
+
+  cam.position.set(
+    lookTarget.x + rad * Math.sin(th) * Math.sin(ph2),
+    lookTarget.y + rad * Math.cos(ph2),
+    lookTarget.z + rad * Math.cos(th) * Math.sin(ph2)
+  );
+  cam.lookAt(lookTarget);
+
+  const safeDay = Math.min(day, D.length - 1);
+  const d = D[M == 1 ? safeDay : Math.min(N - 1, sow + 30)];
+  if (!d) return;
+
+  gr += (grT - gr) * 0.06;
+  sk.copy(cool).lerp(hot, cl((d.tx - 18) / 22)).lerp(gry, cl(d.p / 6) * 0.6);
+  S.background.copy(sk); S.fog.color.copy(sk);
+  sun.intensity = 0.65 + cl(d.tx / 45) * 0.85;
+  sunMesh.material.color.setHex(d.tx > 35 ? 0xe0802e : 0xf2c46d);
+
+  // Sensor anemometer & beacon
+  anemometer.rotation.y += (0.02 + d.ws * 0.03) * (dtSec * 60);
+  beacon.material.color.setHex((Math.sin(t * 4) > 0) ? 0x8db85c : 0x1b4d26);
+
+  // Tank water level reacts to irrigation & rain
+  const activeIrrCount = blk.reduce((s, b) => s + b.irr, 0);
+  const targetTankScale = cl(0.75 + (d.p > 2 ? 0.2 : 0) - activeIrrCount * 0.12, 0.25, 1.0);
+  tankWater.scale.y += (targetTankScale - tankWater.scale.y) * 0.05;
+  tankWater.position.y = 0.05 + tankWater.scale.y * 0.55;
+
+  const effNdvi = getEffectiveNDVI(d);
+  const ndviVals = [effNdvi.A, effNdvi.B, effNdvi.C];
+  const ripeFactor = manualGddPct !== null ? cl((manualGddPct - 75) / 25) : 0;
+
+  const ef = [0, 1, 2].map(b => {
+    const e = E(b, d), k = blk[b];
+    k.w += (e.s - k.w) * 0.05;
+    k.a += ((k.cov ? 1.0 : 0.001) - k.a) * 0.08;
+    cov[b].scale.x = k.a; cov[b].visible = k.a > 0.01;
+    spr[b].visible = !!k.irr;
+
+    // 3D Valve visual state
+    valves[b].mat.color.setHex(k.irr ? 0x4f9fc4 : 0xc8573a);
+    if (k.irr) {
+      valves[b].wheel.rotation.z += 0.04;
+      const a = spr[b].geometry.attributes.position.array;
+      for (let i = 1; i < a.length; i += 3) { a[i] -= 0.045; if (a[i] < 0.18) a[i] = 0.88; }
+      spr[b].geometry.attributes.position.needsUpdate = true;
+    }
+
+    if (k.sprayTimer > 0) {
+      k.sprayTimer = Math.max(0, k.sprayTimer - dtSec);
+      bioSpr[b].visible = true;
+      const ba = bioSpr[b].geometry.attributes.position.array;
+      for (let i = 1; i < ba.length; i += 3) { ba[i] -= 0.032; if (ba[i] < 0.22) ba[i] = 1.25; }
+      bioSpr[b].geometry.attributes.position.needsUpdate = true;
+    } else {
+      bioSpr[b].visible = false;
+    }
+
+    const needsAction = getSectorAlertReasons(b, d).length > 0;
+    warnSign[b].visible = needsAction;
+    if (needsAction) { warnSign[b].position.y = Math.sin(t * 4.2) * 0.08; warnSign[b].rotation.y = t * 1.4; }
+    return e;
+  });
+
+  plots.forEach(p => {
+    const e = ef[p.b], isEdge = (p.k === 0 || p.k === 3);
+    const localGe = cl(e.ge * (heatmapActive ? (isEdge ? 0.65 : 1.25) : 1.0));
+    p.m.material.color.copy(cDry).lerp(cWet, cl(localGe / 0.48)).lerp(cSat, localGe > 0.4 ? (localGe - 0.4) * 3 : 0);
+    p.m.material.roughness = cl(0.94 - localGe * 1.1, 0.35, 0.94);
+
+    if (heatmapActive) {
+      if (isEdge && localGe < 0.18) p.m.material.color.setHex(0xb83e2c);
+      else if (!isEdge && localGe >= 0.25) p.m.material.color.setHex(0x1f2d34);
+    }
+    p.m.material.emissive.setHex(p.m === hm ? 0x2a3b17 : sel == p.b ? 0x1b2a10 : 0);
+  });
+
+  // Update 3 Distinct Crop Meshes based on Active Rotation Strategy
+  const sc = M == 1 ? getActiveSchedule(0) : getActiveSchedule(season);
+  plots.forEach((p, pi) => {
+    const cropCode = sc[p.b], c = CR[cropCode], kw = blk[p.b].w;
+    const sectorNdviFactor = M == 1 ? cl(ndviVals[p.b] / 0.62, 0.35, 1.15) : 1.0;
+    const ndviStress = M == 1 ? cl((0.48 - ndviVals[p.b]) * 2.2, 0, 0.75) : 0;
+
+    for (let j = 0; j < per; j++) {
+      const i = pi * per + j, seed = plantSeeds[i];
+      const g = Math.max(0.001, c[2] * gr * sectorNdviFactor * seed.scaleVar * (1 - 0.35 * kw));
+      const row = j % 4, colIdx = Math.floor(j / 4);
+      const px = p.m.position.x + ((colIdx - 2.5) * 0.29) + seed.jx * 0.4;
+      const pz = p.m.position.z + ((row - 1.5) * 0.48) + seed.jz * 0.4;
+
+      const windBend = (0.04 + d.ws * 0.018) * Math.sin(t * 2.2 + seed.phase + px * 1.5);
+      const totalYellowing = cl(kw * 0.75 + ndviStress);
+      const baseColor = col.setHex(c[1]).offsetHSL(0, 0, (seed.phase % 0.20) - 0.10);
+      if (ripeFactor > 0 && (cropCode === 'W' || cropCode === 'B')) baseColor.lerp(GOLD_RIPE, ripeFactor * 0.85);
+      baseColor.lerp(BR, totalYellowing);
+
+      // Position active crop mesh & hide the other 2 species for this plot
+      const isCereal = (cropCode === 'W' || cropCode === 'B');
+      const isLegume = (cropCode === 'L');
+      const isCover  = (cropCode === 'C');
+
+      const setInst = (mesh, visible) => {
+        tmp.position.set(px, 0.15, pz);
+        tmp.scale.set(visible ? 0.95 : 0, visible ? g : 0, visible ? 0.95 : 0);
+        tmp.rotation.set(windBend * 0.5, seed.rotY, windBend + (kw + ndviStress * 0.4) * 0.25 * (j % 2 ? 1 : -1));
+        tmp.updateMatrix();
+        mesh.setMatrixAt(i, tmp.matrix);
+        mesh.setColorAt(i, baseColor);
+      };
+      setInst(meshCereal, isCereal);
+      setInst(meshLegume, isLegume);
+      setInst(meshCover,  isCover);
+    }
+  });
+  [meshCereal, meshLegume, meshCover].forEach(m => {
+    m.instanceMatrix.needsUpdate = true;
+    if (m.instanceColor) m.instanceColor.needsUpdate = true;
+  });
+
+  const a = rg.attributes.position.array;
+  for (let i = 0; i < RN; i++) { a[i * 3 + 1] -= 0.28; if (a[i * 3 + 1] < 0) a[i * 3 + 1] = 10; }
+  rg.attributes.position.needsUpdate = true;
+  rg.setDrawRange(0, d.p > 0 ? Math.floor(RN * cl(d.p / 10 + 0.2)) : 0);
+
+  updateProjectedPins(d);
+  R.render(S, cam);
+}
+
+// =========================================================================
+// 5. PEST & DISEASE ENGINE
+// =========================================================================
+function analyzeCropDiseases(d) {
+  const safeDay = Math.min(day, D.length - 1);
+  const effNdvi = getEffectiveNDVI(d);
+  const ndviVals = [effNdvi.A, effNdvi.B, effNdvi.C];
+  const avgGe = ([0, 1, 2].reduce((s, b) => s + E(b, d).ge, 0)) / 3;
+  const avgTx = ([0, 1, 2].reduce((s, b) => s + E(b, d).tx, 0)) / 3;
+  const risks = [];
+
+  const minNdvi = Math.min(...ndviVals), minIdx = ndviVals.indexOf(minNdvi);
+  if (minNdvi < 0.40 && (safeDay > sow + 20 || d.is_forecast) && !blk[minIdx].treated) {
+    risks.push({
+      id: 'biotic_ndvi', sectorIdx: minIdx,
+      name: 'إجهاد موضعي / نيماتودا الجذور (رصد فضائي)',
+      risk: 84, sector: `قطاع ${['A', 'B', 'C'][minIdx]} (NDVI = ${minNdvi})`,
+      action: `عزل البؤرة في قطاع ${['A', 'B', 'C'][minIdx]} وضخ معالج حيوي في شبكة التنقيط.`
+    });
+  }
+  const rootRotScore = Math.round(cl((avgGe - 0.30) / 0.22) * 85 + (d.p >= 8 ? 15 : 0));
+  risks.push({
+    id: 'root_rot', sectorIdx: -1, name: 'تعفّن الجذور (Root Rot)',
+    risk: cl(rootRotScore, 8, 96), sector: 'جميع الأحواض',
+    action: 'إيقاف الري فوراً لتهوية الجذور وتجفيف التربة.'
+  });
+  const aphidScore = Math.round((cl((avgTx - 27) / 13) * 0.65 + cl((0.22 - avgGe) / 0.16) * 0.35) * 95);
+  risks.push({
+    id: 'aphids', sectorIdx: -1, name: 'حشرة المنّ والعناكب الحمراء',
+    risk: cl(aphidScore, 9, 96), sector: 'حواف الحقول والأوراق الفتيّة',
+    action: 'تفعيل الري الفجري + التغطية + رش صابون بوتاسي حيوي.'
+  });
+  const rustScore = Math.round((1 - cl(Math.abs(d.t - 18.5) / 10)) * ((d.p > 0.5 || d.rh >= 68) ? 1 : 0.35) * 88);
+  risks.push({
+    id: 'rust', sectorIdx: 1, name: 'صدأ الأوراق الفطري',
+    risk: cl(rustScore, 10, 94), sector: 'قطاع B (الحبوب)',
+    action: 'رش وقائي بالكبريت الميكروني وتحسين التهوية.'
+  });
+  risks.sort((a, b) => b.risk - a.risk);
+  return risks;
+}
+
+function executeDiseaseTreatment(diseaseId, sectorIdx) {
+  const targets = sectorIdx >= 0 ? [sectorIdx] : [0, 1, 2];
+  if (sectorIdx >= 0) { sel = sectorIdx; focusSectorCamera(sectorIdx); }
+  targets.forEach(b => {
+    blk[b].treated = true; blk[b].inspected = true; blk[b].sprayTimer = 3.5; blk[b].ndviBoost = Math.max(blk[b].ndviBoost, 0.24);
+    if (diseaseId === 'root_rot') blk[b].irr = 0;
+    else if (diseaseId === 'aphids') { blk[b].irr = 1; blk[b].cov = 1; }
+    else if (diseaseId === 'rust') blk[b].cov = 0;
+  });
+  hidePestToast();
+  showInAppBanner(`🛡️ تم تنفيذ العلاج الحيوي وتعديل الري/التغطية في (${sectorIdx >= 0 ? 'قطاع ' + ['A','B','C'][sectorIdx] : 'كل القطاعات'}) — لاحظ تعافي النباتات!`, '#5f8f3a');
+  ui();
+}
+
+let toastTimer = null, lastToastKey = '';
+function triggerPestToast(force = false) {
+  const d = cd(); if (!d) return;
+  const top = analyzeCropDiseases(d)[0];
+  const safeDay = Math.min(day, D.length - 1);
+  const key = `${activeScope}_${safeDay}_${top.id}_${top.risk}`;
+  if (!force && (top.risk < 55 || key === lastToastKey)) return;
+  lastToastKey = key;
+
+  const toastEl = $('pest-toast');
+  const badgeColor = top.risk >= 65 ? '#c8573a' : '#d9a63f';
+  toastEl.style.borderColor = badgeColor;
+  toastEl.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+      <div style="font-weight:900;font-size:12.5px;color:#e8a08a">🦠 تنبيه صحة المحصول: ${top.name}</div>
+      <div style="display:flex;align-items:center;gap:6px">
+        <span style="background:${badgeColor};color:#0b1c10;padding:2px 8px;border-radius:99px;font-weight:900;font-size:10.5px">احتمال ${top.risk}%</span>
+        <span onclick="hidePestToast()" style="cursor:pointer;font-size:16px;color:var(--text-muted)">×</span>
+      </div>
+    </div>
+    <div style="font-size:11px;color:var(--text-main);margin-top:4px">📍 <b>${top.sector}:</b> ${top.action}</div>
+    <button class="cta-btn danger" style="margin-top:8px;padding:7px 10px;font-size:11.5px" onclick="executeDiseaseTreatment('${top.id}', ${top.sectorIdx})">
+      🛡️ تنفيذ المعالجة الحيوية الآن على المزرعة
+    </button>
+    <div class="toast-progress" style="background:${badgeColor};animation:shrinkToast 3.5s linear forwards"></div>
+  `;
+  toastEl.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(hidePestToast, 3500);
+}
+function hidePestToast() { $('pest-toast').classList.remove('show'); clearTimeout(toastTimer); }
+
+function getSectorAlertReasons(b, d) {
+  const k = blk[b], effNdvi = getEffectiveNDVI(d), ndviVals = [effNdvi.A, effNdvi.B, effNdvi.C], safeDay = Math.min(day, D.length - 1);
+  const reasons = [];
+  if (d.ir >= 1.5 && d.gt < 0.4 && !k.irr) reasons.push(`💧 <b>نقص رطوبة:</b> الأرض بحاجة لـ <b>${d.ir.toFixed(1)} ملم</b> مياه.`);
+  if ((d.tx >= 35 || d.p >= 9) && !k.cov) reasons.push(d.p >= 9 ? `🌧️ <b>خطر انجراف (${d.p} ملم):</b> فعّل التغطية.` : `🔥 <b>حرّ شديد (${d.tx.toFixed(0)}°C):</b> فعّل التغطية لتخفيف التبخر.`);
+  if (ndviVals[b] < 0.38 && (safeDay > sow + 20 || d.is_forecast) && !k.inspected && !k.treated) reasons.push(`🦠 <b>تراجع اخضرار (NDVI ${ndviVals[b]}):</b> اضغط للمعالجة الحيوية.`);
+  return reasons;
+}
+
+// =========================================================================
+// 6. CLEAN & FARMER-CENTERED UI BUILDERS
+// =========================================================================
+const cd = () => D[M == 1 ? Math.min(day, D.length - 1) : Math.min(N - 1, sow + 30)];
+const tg = () => sel < 0 ? [0, 1, 2] : [sel];
+const dt = i => (D[i] && D[i].custom_date) ? D[i].custom_date : '';
+
+function setTab(t) { const ch = t !== activeTab; activeTab = t; if (panelCollapsed) togglePanel(false); else ui(); if (ch) { const pb = document.querySelector('.panel-body'); if (pb) pb.classList.add('swap'); } }
+function togglePanel(force) {
+  panelCollapsed = typeof force === 'boolean' ? force : !panelCollapsed;
+  $('panel').classList.toggle('collapsed', panelCollapsed);
+  ui();
+}
+function setSel(k) { sel = k; focusSectorCamera(k); ui(); }
+function act(y) { const t = tg(), v = !t.every(b => blk[b][y]); t.forEach(b => blk[b][y] = v ? 1 : 0); ui(); }
+function updateArea(v) { farmArea = cl(+v || 5, 1, 50); if ($('dr')) $('dr').value = farmArea; ui(); }
+function setGoal(g) { goal = g; ui(); }
+function setWaterConstraint(w) { waterConstraint = w; ui(); }
+function selectStrategy(id) {
+  rotationStrategy = id;
+  if (id === 'existing') mode(2);
+  ui();
+}
+function setManualGrowth(pct) { manualGddPct = cl(+pct, 0, 100); ui(); }
+function resetManualGrowth() { manualGddPct = null; ui(); }
+
+function applyAutoPilot() {
+  const d = cd(), rI = (d.ir >= 1.5 && d.gt < 0.4) ? 1 : 0, rC = (d.tx >= 35 || d.p >= 9) ? 1 : 0;
+  tg().forEach(b => { blk[b].irr = rI; blk[b].cov = rC; blk[b].inspected = true; });
+  showInAppBanner(`⚡ تم تطبيق توصيات أفق تلقائياً: ${rI ? 'فتح الري 💦' : 'إيقاف الري 🛑'} • ${rC ? 'تغطية المحصول 🧺' : 'كشف التربة 🔓'}`, '#5f8f3a');
+  ui();
+}
+
+function tipH(b, kIdx = 1) {
+  const d = cd(), e = E(b, d), k = blk[b], c = CR[(M == 1 ? getActiveSchedule(0) : getActiveSchedule(season))[b]];
+  const sName = ['A', 'B', 'C'][b], nd = getEffectiveNDVI(d)[sName];
+  const ndStatus = nd >= 0.55 ? 'كثيف وصحي 🟢' : nd >= 0.40 ? 'نمو متوسط 🟡' : 'ضعف/إجهاد 🔴';
+  const hmNote = heatmapActive ? (kIdx === 0 || kIdx === 3
+    ? `<div style="margin-top:4px;padding:4px 6px;background:rgba(200,87,58,0.22);border-right:3px solid var(--terra);border-radius:4px">🗺️ <b>طرف الحوض:</b> يفقد الرطوبة أسرع بـ 30% بفعل الرياح.</div>`
+    : `<div style="margin-top:4px;padding:4px 6px;background:rgba(79,159,196,0.18);border-right:3px solid var(--blue);border-radius:4px">🗺️ <b>قلب الحوض:</b> يحتفظ بالرطوبة بشكل أفضل.</div>`) : '';
+  return `<b style="color:var(--gold)">قطاع ${sName} — ${c[0]}</b><br>عافية النبات (NDVI): <b>${nd}</b> (${ndStatus})<br>الري: <b>${k.irr ? 'مفتوح 💦' : 'مغلق'}</b> • التغطية: <b>${k.cov ? 'مفعّلة' : 'لا'}</b>${hmNote}<br><small style="color:var(--text-muted)">اضغط للتركيز على القطاع</small>`;
+}
+
+function warnTipH(b) {
+  const d = cd(), reasons = getSectorAlertReasons(b, d);
+  return `<b style="color:var(--terra)">🚨 تنبيه عاجل — قطاع ${['A','B','C'][b]}</b>` +
+    reasons.map(r => `<div style="margin-top:4px;padding-right:6px;border-right:2px solid var(--terra)">${r}</div>`).join('') +
+    `<div style="margin-top:6px;color:var(--green);font-size:10px">👆 اضغط على العلامة للمعالجة الفورية</div>`;
+}
+
+// Tab 1: Today's Practical Plan
+function buildTodayTab(d, safeDay) {
+  const t = tg(), I = t.every(b => blk[b].irr), C = t.every(b => blk[b].cov);
+  const rI = d.ir >= 1.5 && d.gt < 0.4, rC = d.tx >= 35 || d.p >= 9;
+  const isSynced = t.every(b => Boolean(blk[b].irr) === rI && Boolean(blk[b].cov) === rC);
+
+  const needsWater = rI, mins = Math.max(10, Math.round(d.ir * 3.2)), totalM3 = Math.round(d.ir * farmArea);
+  const timingTip = d.tx >= 32 ? 'فجراً (5:00 - 7:00 ص) لتجنب التبخر' : 'صباحاً (7:00 - 9:00 ص)';
+  let valveText = '';
+  if (d.p >= 9 || d.gt >= 0.4) valveText = `🛑 <b>أبقِ المحبس مغلقاً اليوم:</b> رطوبة التربة مشبعة (${Math.round(d.gt*100)}%) والمطر كافٍ.`;
+  else if (needsWater) valveText = `💧 <b>افتح المحبس ${mins} دقيقة</b> ${timingTip} — بكمية <b>${totalM3} م³</b> لمزرعتك (${farmArea} دونم).`;
+  else valveText = `✅ <b>لا حاجة للري اليوم:</b> رطوبة التربة كافية لحين إشعار آخر.`;
+
+  const yrObj = getPastYearDataset(activeYear);
+  const savedWater = Math.round((yrObj.stats.base - yrObj.stats.smart) * farmArea);
+
+  return `
+    <div class="hero-verdict" style="background:linear-gradient(135deg, ${d.s[1]}22, rgba(0,0,0,0.28));border-color:${d.s[1]}66">
+      <span class="badge" style="background:${d.s[1]}">${d.is_forecast ? '🔮 توصية اليوم' : '📅 سجل ' + activeYear} • ${d.short_date}</span>
+      <h2>${d.s[0]}</h2>
+      <p>${d.s[2]}</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span>⏱️ خطة المحبس والمزرعة</span><span style="color:var(--green)">${farmArea} دونم</span></div>
+      <input type="range" min="1" max="50" value="${farmArea}" oninput="updateArea(this.value)" style="margin-bottom:7px">
+      <div style="font-size:11.5px;line-height:1.6;margin-bottom:9px">${valveText}</div>
+      <button class="cta-btn ${isSynced ? 'done' : ''}" onclick="${isSynced ? '' : 'applyAutoPilot()'}">
+        ${isSynced ? '✅ تم تطبيق توصية اليوم على المجسم' : '⚡ نفّذ التوصية تلقائياً بالمزرعة'}
+      </button>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span>🎮 تحكم يدوي بالقطاعات</span><span style="font-size:10px;color:var(--text-muted)">أو اضغط أي حوض بالـ 3D</span></div>
+      <div class="seg-row" style="margin-bottom:7px">
+        ${[['الكل', -1], ['قطاع A', 0], ['قطاع B', 1], ['قطاع C', 2]].map(a => `<button class="seg-btn ${sel == a[1] ? 'on' : ''}" onclick="setSel(${a[1]})">${a[0]}</button>`).join('')}
+      </div>
+      <div class="seg-row">
+        <button class="seg-btn blue ${I ? 'on' : ''}" onclick="act('irr')">${I ? '🛑 إيقاف الري' : '💦 فتح الري'}</button>
+        <button class="seg-btn ${C ? 'on' : ''}" onclick="act('cov')">${C ? '🔓 إزالة الغطاء' : '🧺 تغطية المحصول'}</button>
+      </div>
+    </div>
+
+    <div class="metric-grid">
+      <div class="metric-box"><small>💧 توفير المياه المتوقع</small><b style="color:var(--blue)">~${savedWater} م³/موسم</b></div>
+      <div class="metric-box"><small>🌡️ حرارة اليوم والمطر</small><b style="color:var(--gold)">${d.tx.toFixed(0)}°C • ${d.p} مم</b></div>
+    </div>
+  `;
+}
+
+// Tab 2: 3 Crop Rotation Strategies Comparator (Core Challenge Feature!)
+function buildRotationTab() {
+  const recommendedId = (waterConstraint === 'low' || goal === 'd') ? 'drought' : 'balanced';
+
+  const strategiesHTML = STRATEGIES.map(st => {
+    const isActive = rotationStrategy === st.id;
+    const isRec = st.id === recommendedId;
+    const cropsNow = st.getCrops(season);
+    return `
+      <div class="rot-card ${isActive ? 'active' : ''}" onclick="selectStrategy('${st.id}')">
+        <div class="rot-header">
+          <div>
+            <b style="font-size:12.5px;color:${isActive ? 'var(--green)' : 'var(--text-main)'}">${st.title}</b>
+            ${isRec ? `<div style="font-size:10px;color:var(--gold);font-weight:800;margin-top:2px">✨ الأنسب لأولوياتك الحالية</div>` : ''}
+          </div>
+          <span class="rot-badge" style="background:${st.badgeColor};color:#0b1c10">${st.badge}</span>
+        </div>
+        <div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:5px">
+          ${cropsNow.map((cCode, idx) => `<span style="font-size:10px;background:rgba(255,255,255,0.08);padding:2px 7px;border-radius:6px">${'ABC'[idx]}: ${CR[cCode][0]}</span>`).join('')}
+        </div>
+        ${isActive ? `
+          <div class="rot-details">
+            <div>💡 <b>لماذا نقترحها؟</b> ${st.why}</div>
+            <div style="margin-top:4px">🛰️ <b>دليل أقمار ناسا:</b> ${st.evidence}</div>
+            <div style="margin-top:4px">🌱 <b>الفوائد:</b> ${st.benefits}</div>
+            <div style="margin-top:4px;color:#ecd08a">⚠️ <b>فجوات ومراجعة محلية:</b> ${st.gaps}</div>
+          </div>
+        ` : ''}
+      </div>
+    `;
+  }).join('');
+
+  // Soil Health Comparison across 3 Seasons
+  const activeStrat = STRATEGIES.find(x => x.id === rotationStrategy) || STRATEGIES[0];
+  let rHealth = 60, mHealth = 60;
+  for (let s = 0; s <= season; s++) {
+    rHealth += activeStrat.getCrops(s).reduce((a, k) => a + SH[k], 0) / 3;
+    mHealth += SH['W'];
+  }
+
+  return `
+    <div class="card">
+      <div class="card-title">🎯 حدد أولويات مزرعتك</div>
+      <div style="font-size:10.5px;color:var(--text-muted);margin-bottom:5px">الهدف الرئيسي:</div>
+      <div class="seg-row" style="margin-bottom:8px">
+        <button class="seg-btn ${goal==='w'?'on':''}" onclick="setGoal('w')">💧 توفير الماء</button>
+        <button class="seg-btn ${goal==='y'?'on':''}" onclick="setGoal('y')">📈 أعلى إنتاج</button>
+        <button class="seg-btn ${goal==='d'?'on':''}" onclick="setGoal('d')">☀️ مقاومة الجفاف</button>
+      </div>
+      <div style="font-size:10.5px;color:var(--text-muted);margin-bottom:5px">توفر مياه الري لديك:</div>
+      <div class="seg-row">
+        <button class="seg-btn ${waterConstraint==='low'?'on':''}" onclick="setWaterConstraint('low')">شحيحة (بعل)</button>
+        <button class="seg-btn ${waterConstraint==='med'?'on':''}" onclick="setWaterConstraint('med')">متوسطة</button>
+        <button class="seg-btn ${waterConstraint==='high'?'on':''}" onclick="setWaterConstraint('high')">وفيرة</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span>🔄 استعراض الـ 3 مواسم على المجسم</span><span style="color:var(--green)">الموسم ${season+1}/3</span></div>
+      <div class="season-pills">
+        ${[0,1,2].map(s => `<button class="season-pill ${M==2 && season===s ? 'on' : ''}" onclick="M=2;season=${s};gr=1;ui()">الموسم ${s+1}</button>`).join('')}
+      </div>
+      <div class="metric-grid" style="margin-top:8px">
+        <div class="metric-box"><small>صحة التربة (خطتك)</small><b style="color:${rHealth>=60?'var(--green)':'var(--terra)'}">${rHealth.toFixed(0)} نقطة</b></div>
+        <div class="metric-box"><small>زراعة القمح المتكررة</small><b style="color:var(--terra)">${mHealth.toFixed(0)} نقطة</b></div>
+      </div>
+    </div>
+
+    <div style="font-size:11.5px;font-weight:900;color:var(--gold);margin:8px 0 6px">⚖️ قارن بين 3 خطط للدورة الزراعية (اضغط للمعاينة بالـ 3D):</div>
+    ${strategiesHTML}
+
+    <div class="disclaimer-note">
+      👨‍🌾 <b>أفق يدعم قرارك ولا يستبدل خبرتك:</b> هذه الخطط استرشادية؛ راجع طبيعة تربتك، المعدات المتوفرة، وأسعار السوق المحلي قبل البذر.
+    </div>
+  `;
+}
+
+// Tab 3: Harvest GDD & Pest Early Warning
+function buildHealthHarvestTab(d, safeDay) {
+  const targetGdd = 1350, autoPct = Math.round(cl((d.gdd || 0) / targetGdd) * 100);
+  const pct = manualGddPct !== null ? manualGddPct : autoPct;
+  const currentGdd = Math.round((pct / 100) * targetGdd);
+  const remainingGdd = Math.max(0, targetGdd - currentGdd);
+  const daysLeft = remainingGdd === 0 ? 0 : Math.max(1, Math.round(remainingGdd / Math.max(10.5, d.dailyGdd || 12)));
+
+  let stageIdx = 0;
+  if (manualGddPct === null && !d.is_forecast && safeDay < sow && pct === 0) stageIdx = -1;
+  else if (pct < 25) stageIdx = 0;
+  else if (pct < 55) stageIdx = 1;
+  else if (pct < 85) stageIdx = 2;
+  else stageIdx = 3;
+
+  const stages = [{ label: '1. إنبات', p: 15 }, { label: '2. تفريع', p: 42 }, { label: '3. إزهار', p: 72 }, { label: '4. نضج', p: 100 }];
+  const yieldPerDunum = goal === 'y' ? 440 : goal === 'd' ? 375 : 405;
+  const netProfitPerDunum = goal === 'y' ? 235 : goal === 'w' ? 215 : 195;
+  const bonus = 0.85 + (pct / 100) * 0.25;
+  const estYield = Math.round(yieldPerDunum * farmArea * bonus * (0.94 + (d.cri / 100) * 0.10));
+  const estProfit = Math.round(netProfitPerDunum * farmArea * bonus * (0.95 + (d.cri / 100) * 0.08));
+
+  const risks = analyzeCropDiseases(d).slice(0, 3);
+
+  return `
+    <div class="card">
+      <div class="card-title">
+        <span>🌾 مراحل النمو وتوقيت الحصاد</span>
+        <div style="display:flex;align-items:center;gap:5px">
+          ${manualGddPct !== null ? `<button class="mini-btn" onclick="resetManualGrowth()">تلقائي</button>` : ''}
+          <b style="color:var(--green)">${pct}%</b>
+        </div>
+      </div>
+      <div class="stage-pills">
+        ${stages.map((s, idx) => `<div class="stage-pill ${stageIdx<0?'':idx<stageIdx?'done':idx===stageIdx?'current':''}" onclick="setManualGrowth(${s.p})">${s.label}</div>`).join('')}
+      </div>
+      <input type="range" class="gold" min="0" max="100" value="${pct}" oninput="setManualGrowth(this.value)">
+      <div style="font-size:11px;margin-top:5px;color:var(--text-main)">
+        ${stageIdx < 0 ? '⏳ بانتظار نافذة البذر — اسحب الشريط لتجربة مراحل النمو' : daysLeft === 0 ? '🎉 <b>المحصول جاهز للحصاد الآن!</b>' : `⏳ متبقي <b>~${daysLeft} يوماً</b> على النضج التام (${currentGdd}/${targetGdd} وحدة حرارية)`}
+      </div>
+      <div class="metric-grid">
+        <div class="metric-box"><small>📦 الإنتاج المتوقع (${farmArea} دونم)</small><b style="color:var(--gold)">${estYield.toLocaleString()} كغم</b></div>
+        <div class="metric-box"><small>💵 صافي العائد التقديري</small><b style="color:var(--green)">${estProfit.toLocaleString()} $</b></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span>🦠 مؤشر مخاطر الآفات (تجريبي — قيد التطوير)</span><button class="mini-btn" onclick="triggerPestToast(true)">🔔 معاينة</button></div>
+      <div style="font-size:10px;color:#ecd08a;background:rgba(217,166,63,0.1);border:1px solid rgba(217,166,63,0.3);border-radius:8px;padding:6px 8px;margin-bottom:6px;line-height:1.5">
+        ℹ️ <b>ملاحظة علمية:</b> بيانات RH2M الحالية هي متوسط يومي ولا تعكس رطوبة الليل أو بلل الأوراق، لذا يُعد هذا الإنذار <b>مؤشراً استرشادياً مؤجلاً</b> لحين دمج البيانات الساعية والموسم الشتوي.
+      </div>
+      ${risks.map(r => {
+        const col = r.risk >= 65 ? 'var(--terra)' : r.risk >= 40 ? 'var(--gold)' : 'var(--green)';
+        return `
+          <div style="padding:8px;border-radius:10px;background:rgba(0,0,0,0.22);border:1px solid rgba(255,255,255,0.08);margin-top:6px">
+            <div style="display:flex;justify-content:space-between;align-items:center;font-size:11.5px">
+              <b>${r.name}</b>
+              <span style="color:${col};font-weight:900">${r.risk}%</span>
+            </div>
+            <div style="font-size:10.5px;color:var(--text-muted);margin:3px 0 6px">${r.sector} • ${r.action}</div>
+            ${r.risk >= 45 ? `<button class="mini-btn" style="width:100%;border-color:${col};color:${col}" onclick="executeDiseaseTreatment('${r.id}', ${r.sectorIdx})">🛡️ تنفيذ الوقاية والمعالجة الحيوية</button>` : ''}
+          </div>
+        `;
+      }).join('')}
+    </div>
+  `;
+}
+
+// Tab 4: Forecast & NASA Satellite Insights
+function buildDataTab(d, safeDay) {
+  const nd = getEffectiveNDVI(d);
+  const sectors = [{ n: 'قطاع A (بقوليات)', v: nd.A }, { n: 'قطاع B (حبوب)', v: nd.B }, { n: 'قطاع C (غطاء)', v: nd.C }];
+  const ndBars = sectors.map(s => {
+    const pct = Math.round(cl(s.v / 0.85) * 100);
+    const col = s.v < 0.40 ? 'var(--terra)' : s.v < 0.55 ? 'var(--gold)' : 'var(--green)';
+    const lbl = s.v < 0.40 ? 'إجهاد/ضعف' : s.v < 0.55 ? 'متوسط' : 'صحي وكثيف';
+    return `
+      <div class="ndvi-row">
+        <div class="ndvi-head"><span>${s.n}</span><b style="color:${col}">${s.v.toFixed(2)} • ${lbl}</b></div>
+        <div class="ndvi-track"><div class="ndvi-fill" style="width:${pct}%;background:${col}"></div></div>
+      </div>
+    `;
+  }).join('');
+
+  const forecastRows = FORECAST_D.length ? FORECAST_D.slice(0, 7).map((f, k) => {
+    const isSel = (activeScope === 'forecast' && k === day);
+    const lbl = k === 0 ? 'اليوم' : k === 1 ? 'غداً' : f.short_date;
+    const adv = f.p >= 9 ? '🌧️ تغطية' : f.gt >= 0.4 ? '🛑 أوقف الري' : f.ir >= 1.5 ? '💦 ري' : '✅ مستقر';
+    return `
+      <div class="f-row ${isSel ? 'active' : ''}" onclick="M=1;switchDataset('forecast', ${k})">
+        <div><b style="font-size:11.5px">${lbl}</b> <small style="color:var(--text-muted)">(${f.tx.toFixed(0)}°/${f.tn.toFixed(0)}° • مطر ${f.p}مم)</small></div>
+        <span style="background:${f.s[1]};color:#081a0d;padding:2px 8px;border-radius:99px;font-weight:900;font-size:10px">${adv}</span>
+      </div>
+    `;
+  }).join('') : '<div style="font-size:11px;color:var(--text-muted)">جاري جلب التوقعات الحية...</div>';
+
+  const pl = d.plan || ((!d.is_forecast && PLAN && PLAN[safeDay]) ? PLAN[safeDay] : null);
+
+  return `
+    <div class="card">
+      <div class="card-title"><span>🛰️ محاكاة تباين الغطاء (NDVI استرشادي)</span><button class="mini-btn" onclick="openModal('glossary')">ما هذا؟</button></div>
+      <div style="font-size:10px;color:var(--text-muted);margin-bottom:6px">نموذج محاكاة لبيانات Sentinel-2 المستقبلية (المصدر الفعلي الحالي: NASA POWER).</div>
+      ${ndBars}
+      ${nd.anomaly ? `<div style="margin-top:8px;font-size:10.5px;color:#e8a08a;font-weight:800">${nd.anomaly}</div>` : ''}
+      <div style="margin-top:9px;padding-top:8px;border-top:1px solid var(--border-soft);display:flex;justify-content:space-between;font-size:11.5px">
+        <span>🌾 مرونة المحصول (CRI — بدون GWETROOT)</span><b style="color:var(--green)">${d.cri}%</b>
+      </div>
+      <div style="margin-top:6px;font-size:10px;color:#ecd08a;line-height:1.45">
+        ⚠️ <b>حالة رطوبة الجذور (GWETROOT):</b> قيد التحقق العلمي (بسبب انقطاع 1 أكتوبر في بيانات POWER)، ويُعتمد حالياً على <b>GWETTOP</b> والأمطار فقط.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🔮 توقعات الطقس لـ 7 أيام (اضغط للمحاكاة)</div>
+      ${forecastRows}
+    </div>
+
+    ${pl ? `
+      <div class="card" style="font-size:11px;line-height:1.6">
+        <div class="card-title">📡 توصيات خطة المناخ المصغّر</div>
+        <div><b>🌿 المناخ المصغر:</b> ${pl.micro_climate_swapping}</div>
+        <div style="margin-top:4px"><b>💧 الري الموجه:</b> ${pl.space_guided_irrigation}</div>
+        <div style="margin-top:4px"><b>🧱 تعافي التربة:</b> ${pl.soil_regeneration}</div>
+      </div>
+    ` : ''}
+  `;
+}
+
+// Master UI Render
+function ui(checkPest = false) {
+  const safeDay = Math.min(day, D.length - 1);
+  const d = D[safeDay]; if (!d) return;
+  d.s = stat(d);
+
+  // Update Top Weather Pill
+  if ($('top-weather')) {
+    const icon = d.p >= 2 ? '🌧️' : d.tx >= 33 ? '🔥' : '☀️';
+    $('top-weather').innerHTML = `${icon} ${d.tx.toFixed(0)}°C • رطوبة التربة ${Math.round(d.gt * 100)}%`;
+  }
+  if ($('dd') && d.iso_date) $('dd').value = d.iso_date;
+  if ($('m1')) $('m1').className = `mini-btn ${M == 1 ? 'on' : ''}`;
+  if ($('m2')) $('m2').className = `mini-btn ${M == 2 ? 'on' : ''}`;
+
+  // تم تأجيل التنبيه التلقائي المنبثق للآفات بناءً على توصية البحث لحين توفر بيانات ساعية وشتوية
+
+  const autoGr = (safeDay < sow && !d.is_forecast) ? 0 : cl((safeDay - sow) / 45, 0.25, 1);
+  grT = (M == 2) ? 1 : (manualGddPct !== null ? cl(manualGddPct / 85, 0.08, 1.15) : autoGr);
+
+  const headHTML = `
+    <div class="panel-head">
+      <div class="panel-title">🌿 مساعد أفق ${panelCollapsed ? `• ${d.tx.toFixed(0)}°C` : ''}</div>
+      <button class="mini-btn" onclick="togglePanel()">${panelCollapsed ? '➕ فتح اللوحة' : '➖ تصغير'}</button>
+    </div>
+  `;
+
+  if (panelCollapsed) {
+    $('panel').innerHTML = headHTML;
+    if (viewMode === 'expert') { roi(); draw(); }
+    return;
+  }
+
+  const tabs = [
+    { id: 'today', label: '📋 اليوم' },
+    { id: 'rotation', label: '🔄 الدورات' },
+    { id: 'health', label: '🌾 الحصاد' },
+    { id: 'data', label: '🛰️ البيانات' }
+  ];
+  const tabsHTML = `<div class="tabs">${tabs.map(t => `<button class="tab-btn ${activeTab===t.id?'active':''}" onclick="setTab('${t.id}')">${t.label}</button>`).join('')}</div>`;
+
+  let bodyHTML = '';
+  if (activeTab === 'today') bodyHTML = buildTodayTab(d, safeDay);
+  else if (activeTab === 'rotation') bodyHTML = buildRotationTab();
+  else if (activeTab === 'health') bodyHTML = buildHealthHarvestTab(d, safeDay);
+  else bodyHTML = buildDataTab(d, safeDay);
+
+  $('panel').innerHTML = `${headHTML}${tabsHTML}<div class="panel-body">${bodyHTML}</div>`;
+  if (viewMode === 'expert') { roi(); draw(); }
+}
+
+// =========================================================================
+// 7. EXPERT TIMELINE, ROI, VIEW MODES & DATA LOADING
+// =========================================================================
+function setViewMode(vm) {
+  viewMode = vm;
+  document.body.classList.toggle('farmer-mode', vm === 'farmer');
+  $('btn-farmer').classList.toggle('on', vm === 'farmer');
+  $('btn-expert').classList.toggle('on', vm === 'expert');
+  if (vm === 'farmer' && M === 2 && activeTab !== 'rotation') mode(1);
+  ui();
+}
+
+const dp = $('dr');
+dp.oninput = () => { farmArea = +dp.value; roi(); ui(); };
+function roi() {
+  const a = +dp.value; farmArea = a; if ($('dv')) $('dv').textContent = a + ' دونم';
+  const yrObj = getPastYearDataset(activeYear);
+  let mult = goal === 'w' ? 1.25 : goal === 'd' ? 1.15 : 0.9;
+  const adjSav = Math.min(0.85, sav * mult), m = (yrObj.stats.base - yrObj.stats.smart * (2 - mult)) * a;
+  if ($('rw')) $('rw').textContent = Math.round(m) + ' م³';
+  if ($('rm')) $('rm').textContent = Math.round(m * 1.2) + ' $';
+  if ($('rt')) $('rt').innerHTML = `توفير متوقع <b>~${Math.round(adjSav * 100)}%</b> مقارنة بالري التقليدي.`;
+}
+
+function draw() {
+  const c = $('ch'); if (!c || viewMode === 'farmer') return;
+  const x = c.getContext('2d'), W = c.width = c.clientWidth * 2, H = c.height = c.clientHeight * 2, T = 40, B = H - 8, h = B - T, X = i => W - (i + 0.5) / N * W;
+  x.clearRect(0, 0, W, H);
+  if (M == 2) {
+    x.font = 'bold 24px Cairo'; x.textAlign = 'center';
+    [0, 1, 2].forEach(s => {
+      x.fillStyle = s == season ? '#8db85c' : '#ffffff1a'; x.fillRect(W - (s + 1) * W / 3 + 6, 0, W / 3 - 12, H);
+      x.fillStyle = s == season ? '#081a0d' : '#b6c4b8'; x.fillText('الموسم ' + (s + 1), W - (s + 0.5) * W / 3, H / 2 + 8);
+    });
+    return;
+  }
+
+  x.font = 'bold 19px Cairo'; x.textAlign = 'center';
+  if (activeScope === 'forecast') {
+    D.forEach((d, k) => {
+      const a = W - k / N * W, b = W - (k + 1) / N * W;
+      x.fillStyle = k % 2 ? '#4f9fc418' : '#4f9fc428'; x.fillRect(b, 0, a - b, H);
+      x.fillStyle = '#9cc6dc'; x.fillText(k === 0 ? 'اليوم' : k === 1 ? 'غداً' : d.short_date, (a + b) / 2, 26);
+    });
+  } else {
+    const arMonths = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+    const segments = [];
+    D.forEach((d, idx) => {
+      const mNum = d.iso_date ? parseInt(d.iso_date.slice(5, 7), 10) - 1 : Math.min(11, 6 + Math.floor(idx / 30));
+      const yrNum = d.iso_date ? d.iso_date.slice(0, 4) : activeYear;
+      const lbl = `${arMonths[mNum]} ${yrNum}`;
+      if (!segments.length || segments[segments.length - 1].lbl !== lbl) {
+        segments.push({ lbl, start: idx, end: idx + 1 });
+      } else {
+        segments[segments.length - 1].end = idx + 1;
+      }
+    });
+    segments.forEach((seg, k) => {
+      const a = W - seg.start / N * W, b = W - seg.end / N * W;
+      x.fillStyle = k % 2 ? '#ffffff08' : '#ffffff12'; x.fillRect(b, 0, a - b, H);
+      x.fillStyle = '#d4ded5'; x.fillText(seg.lbl, (a + b) / 2, 26);
+    });
+  }
+
+  x.fillStyle = '#8db85c33'; x.strokeStyle = '#8db85c'; x.lineWidth = 2; x.beginPath(); x.moveTo(X(0), B);
+  D.forEach((d, i) => x.lineTo(X(i), B - d.sc / 100 * h)); x.lineTo(X(N - 1), B); x.fill();
+  x.beginPath(); D.forEach((d, i) => { const y = B - d.sc / 100 * h; i ? x.lineTo(X(i), y) : x.moveTo(X(i), y); }); x.stroke();
+
+  D.forEach((d, i) => {
+    const bh = Math.min(1, d.p / 16) * h; x.fillStyle = '#4f9fc4';
+    const bw = activeScope === 'forecast' ? Math.min(36, W / N * 0.4) : W / N * 0.7;
+    x.fillRect(X(i) - bw / 2, B - bh, bw, bh);
+  });
+
+  x.strokeStyle = '#c8573a'; x.lineWidth = 3.5; x.beginPath();
+  D.forEach((d, i) => { const y = B - cl((d.tx - 10) / 34) * h; i ? x.lineTo(X(i), y) : x.moveTo(X(i), y); }); x.stroke();
+
+  if (activeScope === 'hist') {
+    x.setLineDash([8, 6]); x.strokeStyle = '#8db85c'; x.lineWidth = 2.5; x.beginPath(); x.moveTo(X(sow), T); x.lineTo(X(sow), B); x.stroke(); x.setLineDash([]);
+    x.fillStyle = '#8db85c'; x.fillText('🌱 بذر', X(sow), T + 20);
+  }
+  const safeDay = Math.min(day, D.length - 1);
+  x.fillStyle = '#ebe5d3'; x.fillRect(X(safeDay) - 2, T, 4, h);
+}
+
+const ch = $('ch'); let sc = false, tm = null, hv = -1;
+const getIdxFromEvent = e => { const r = ch.getBoundingClientRect(); return cl(Math.floor((1 - (e.clientX - r.left) / r.width) * N), 0, N - 1); };
+function pick(e) { const r = ch.getBoundingClientRect(), f = (e.clientX - r.left) / r.width; if (M == 1) day = getIdxFromEvent(e); else season = cl(Math.floor((1 - f) * 3), 0, 2); ui(true); }
+ch.onpointerdown = e => { sc = true; pick(e); };
+ch.onpointermove = e => { hv = getIdxFromEvent(e); sc ? pick(e) : draw(); };
+ch.onpointerleave = () => { hv = -1; draw(); };
+addEventListener('pointerup', () => sc = false);
+
+function step(k) { if (M == 2) mode(1); day = cl(day + k, 0, N - 1); ui(true); }
+function play() {
+  if (tm) { clearInterval(tm); tm = null; $('pl').textContent = '▶ تشغيل'; return; }
+  $('pl').textContent = '⏸ إيقاف';
+  tm = setInterval(() => { if (M == 1) day = (day + 1) % N; else season = (season + 1) % 3; ui(true); }, M == 1 ? (activeScope === 'forecast' ? 900 : 140) : 1600);
+}
+function mode(m) { M = m; if (tm) { play(); play(); } if (m == 2) gr = 0; ui(); }
+
+function switchDataset(scope, targetIdx = 0, year = activeYear) {
+  if (scope === 'forecast' && FORECAST_D.length === 0) return;
+  activeScope = scope; manualGddPct = null;
+  if (scope === 'forecast') {
+    D = FORECAST_D; N = D.length; sow = forecastStats.sow;
+    if ($('chart-scope-label')) $('chart-scope-label').textContent = `🔮 توقعات الـ 7 أيام القادمة`;
+  } else {
+    activeYear = YEAR_ARCHIVE[year] ? year : Math.min(year, CURRENT_YEAR - 1);
+    const yrObj = getPastYearDataset(activeYear);
+    D = yrObj.data; N = D.length; sow = yrObj.stats.sow;
+    if ($('chart-scope-label')) $('chart-scope-label').textContent = `📅 سجل موسم ${activeYear}`;
+  }
+  day = cl(targetIdx, 0, N - 1);
+  if ($('jp')) $('jp').innerHTML = (activeScope === 'hist' && FORECAST_D.length > 0) ? `<button class="mini-btn" onclick="switchDataset('forecast',0)">🔮 العودة لتوقعات اليوم</button>` : '';
+  ui(true);
+}
+
+function setDate(v) {
+  if (!v) return; if (M == 2) mode(1);
+  const chosenYear = parseInt(v.slice(0, 4), 10);
+  if (YEAR_ARCHIVE[chosenYear]) {
+    const yrObj = YEAR_ARCHIVE[chosenYear];
+    const exactIdx = yrObj.data.findIndex(item => item.iso_date === v);
+    if (exactIdx !== -1) { switchDataset('hist', exactIdx, chosenYear); return; }
+  }
+  if (chosenYear >= CURRENT_YEAR) {
+    const fIdx = FORECAST_D.findIndex(item => item.iso_date === v);
+    if (fIdx !== -1) { switchDataset('forecast', fIdx); return; }
+    if (YEAR_ARCHIVE[chosenYear]) {
+      const yrObj = YEAR_ARCHIVE[chosenYear];
+      const diffDays = Math.round((new Date(v) - new Date(yrObj.data[0].iso_date)) / 864e5);
+      switchDataset('hist', cl(diffDays, 0, yrObj.data.length - 1), chosenYear);
+      return;
+    }
+    switchDataset('forecast', 0);
+    return;
+  }
+  const yrObj = getPastYearDataset(chosenYear);
+  const exactIdx = yrObj.data.findIndex(item => item.iso_date === v);
+  if (exactIdx !== -1) { switchDataset('hist', exactIdx, chosenYear); return; }
+  const diffDays = Math.round((new Date(v) - new Date(chosenYear, 8, 1)) / 864e5);
+  switchDataset('hist', cl(diffDays, 0, yrObj.data.length - 1), chosenYear);
+}
+
+function toggleHeatmap() {
+  heatmapActive = !heatmapActive;
+  const btn = $('btn-heatmap'), leg = $('heatmap-legend');
+  btn.classList.toggle('on', heatmapActive);
+  btn.innerHTML = heatmapActive ? '🗺️ إغلاق الخريطة' : '🗺️ خريطة التربة';
+  if (leg) leg.style.display = heatmapActive ? 'block' : 'none';
+  if (heatmapActive) showInAppBanner('🗺️ خريطة التربة مفعّلة: مرّر المؤشر على الأحواض لمعرفة مناطق الجفاف والرطوبة', '#2b6f66');
+  ui();
+}
+
+function triggerCrisis(type) {
+  if (M !== 1) mode(1);
+  const safeDay = Math.min(day, D.length - 1);
+  if (type === 'dry') { D[safeDay].tx = 42.0; D[safeDay].gt = 0.04; D[safeDay].p = 0.0; D[safeDay].cri = 15; }
+  else if (type === 'rain') { D[safeDay].tx = 15.0; D[safeDay].gt = 0.48; D[safeDay].p = 18.5; D[safeDay].cum = Math.max(D[safeDay].cum, 18.5); D[safeDay].cri = 30; }
+  D[safeDay].ir = D[safeDay].gt >= 0.4 ? 0 : Math.max(0, D[safeDay].et - D[safeDay].p);
+  blk.forEach(b => { b.inspected = false; b.treated = false; }); lastToastKey = '';
+  ui(true);
+  showInAppBanner(type === 'dry' ? '🔥 محاكاة موجة حر (42°C) — راجع توصية التغطية والري الفجري' : '🌧️ محاكاة أمطار غزيرة (18.5 مم) — راجع خطر الانجراف', type === 'dry' ? '#a8452c' : '#2f6f93');
+}
+
+let bannerTimer = null;
+function showInAppBanner(text, bg) {
+  const b = $('app-banner');
+  b.style.background = bg;
+  b.innerHTML = `<span onclick="this.parentElement.style.display='none'" style="position:absolute;right:11px;top:6px;cursor:pointer;font-size:15px">×</span>${text}`;
+  b.style.display = 'block'; b.style.opacity = '1';
+  clearTimeout(bannerTimer);
+  bannerTimer = setTimeout(() => { b.style.opacity = '0'; setTimeout(() => b.style.display = 'none', 350); }, 4500);
+}
+
+function openModal() { $('modal-backdrop').classList.add('open'); }
+function closeModal() { $('modal-backdrop').classList.remove('open'); }
+
+function ingestNasaJson(rawText) {
+  const cleanText = rawText
+    .replace(/\bNaN\b/g, 'null')
+    .replace(/\b-?Infinity\b/g, 'null')
+    .replace(/\}\s*\n(\s*)\{/g, '},\n$1{');
+  const parsed = JSON.parse(cleanText);
+  const rows = parsed.daily_data || parsed.data || [];
+  const validRows = rows.filter(r => r.T2M_MAX !== null && r.T2M_MAX > -900);
+  if (!validRows.length) return;
+
+  const year = validRows[0].YEAR || parseInt(String(validRows[0].DATE).slice(0, 4), 10) || 2026;
+  const formattedArr = validRows.map(r => {
+    const dObj = new Date(r.DATE + 'T12:00:00');
+    const plan = r.resilient_action_plan || {
+      space_guided_irrigation: r['resilient_action_plan.space_guided_irrigation'] || 'تفعيل الري الذكي الموجه.',
+      micro_climate_swapping: r['resilient_action_plan.micro_climate_swapping'] || 'تهوية الأتلام والحفاظ على التغطية.',
+      soil_regeneration: r['resilient_action_plan.soil_regeneration'] || 'تثبيت النيتروجين عبر تناوب البقوليات.'
+    };
+    return {
+      tx: r.T2M_MAX,
+      tn: r.T2M_MIN,
+      t: r.T2M,
+      rh: r.RH2M,
+      ws: r.WS10M,
+      gt: r.GWETTOP,
+      gr: r.GWETROOT,
+      p: Math.max(0, r.PRECTOTCORR || 0),
+      is_forecast: false,
+      year: year,
+      iso_date: r.DATE,
+      custom_date: dObj.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' }),
+      short_date: dObj.toLocaleDateString('ar-EG', { day: 'numeric', month: 'short' }),
+      plan: plan
+    };
+  });
+
+  const stats = processDataset(formattedArr, validRows[0].DOY || 196, false);
+  YEAR_ARCHIVE[year] = { data: formattedArr, stats: stats };
+  PLAN = formattedArr.map(item => item.plan);
+  activeYear = year;
+  if (activeScope === 'hist') {
+    D = formattedArr; N = D.length; sow = stats.sow;
+  }
+  ui();
+}
+
+fetch('nasariyya_power_4months (1).json').then(r => { if (!r.ok) throw 0; return r.text(); }).then(ingestNasaJson)
+  .catch(() => fetch('data/ofoq_data.json').then(r => { if (!r.ok) throw 0; return r.text(); }).then(ingestNasaJson))
+  .catch(() => fetch('Nassareyh_Integrated_90Days.json').then(r => { if (!r.ok) throw 0; return r.text(); }).then(ingestNasaJson))
+  .catch(() => fetch('data.json').then(r => { if (!r.ok) throw 0; return r.text(); }).then(ingestNasaJson))
+  .catch(() => {});
+
+class HybridDataManager {
+  async loadForecastData() {
+    try {
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=32.2438&longitude=35.39&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,wind_speed_10m_max&forecast_days=7&timezone=Asia/Jerusalem`;
+      const json = await (await fetch(url)).json();
+      return json.daily.time.slice(0, 7).map((dateStr, i) => {
+        const tx = json.daily.temperature_2m_max[i], tn = json.daily.temperature_2m_min[i];
+        const p = json.daily.precipitation_sum[i], ws = json.daily.wind_speed_10m_max[i];
+        const gt = Math.min(0.5, Math.max(0.05, 0.18 + (p * 0.02) - (tx * 0.003)));
+        const dObj = new Date(dateStr + 'T12:00:00');
+        return {
+          tx, tn, t: (tx + tn) / 2, rh: 55, ws, gt, gr: 0.45, p, is_forecast: true, iso_date: dateStr,
+          custom_date: dObj.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' }),
+          short_date: dObj.toLocaleDateString('ar-EG', { weekday: 'short', day: 'numeric', month: 'short' })
+        };
+      });
+    } catch (e) {
+      const last14 = YEAR_ARCHIVE[2026].data.slice(-14);
+      const avgTemp = last14.reduce((s, d) => s + d.tx, 0) / 14, avgRain = last14.reduce((s, d) => s + d.p, 0) / 14;
+      const forecast = [], today = new Date();
+      for (let i = 0; i < 7; i++) {
+        const rand = 0.95 + Math.random() * 0.1, tx = Number((avgTemp * rand).toFixed(1)), p = Number(Math.max(0, avgRain * rand).toFixed(1));
+        const gt = Math.min(0.5, Math.max(0.05, 0.18 + (p * 0.02) - (tx * 0.003)));
+        const dObj = new Date(today); dObj.setDate(today.getDate() + i);
+        forecast.push({
+          tx, tn: tx - 8, t: tx - 4, rh: 55, ws: 2.5, gt, gr: 0.45, p, is_forecast: true, iso_date: dObj.toISOString().slice(0, 10),
+          custom_date: dObj.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' }),
+          short_date: dObj.toLocaleDateString('ar-EG', { weekday: 'short', day: 'numeric', month: 'short' })
+        });
+      }
+      return forecast;
+    }
+  }
+  async init() {
+    const forecastData = await this.loadForecastData();
+    if (forecastData && forecastData.length > 0) {
+      FORECAST_D = forecastData.slice(0, 7);
+      forecastStats = processDataset(FORECAST_D, 318, true);
+      if ($('dd')) $('dd').max = FORECAST_D[FORECAST_D.length - 1].iso_date;
+      switchDataset('forecast', 0);
+    }
+  }
+}
+
+addEventListener('resize', draw);
+roi();
+ui(true);
+requestAnimationFrame(frame);
+new HybridDataManager().init();
+</script>
+<script>
+(()=>{
+const BTN='.tab-btn,.mode-btn,.seg-btn,.dock-btn,.mini-btn,.icon-pill,.season-pill,.stage-pill,.cta-btn,.rot-card,.f-row',GRP='#dock,.tabs,.seg-row,.mode-switch,.season-pills,.stage-pills,.top-actions';
+let cur=null,raf=0,ev=null;
+const reset=g=>{if(!g)return;[...g.children].forEach(c=>{c.style.setProperty('--s',1);c.style.setProperty('--ty','0px');c.style.zIndex=''})};
+function tick(){raf=0;if(!ev||!ev.target.closest)return;const t=ev.target;
+ [t.closest(BTN),t.closest('.card')].forEach(el=>{if(!el)return;const r=el.getBoundingClientRect();el.style.setProperty('--mx',ev.clientX-r.left+'px');el.style.setProperty('--my',ev.clientY-r.top+'px')});
+ const g=t.closest(GRP);if(g!==cur){reset(cur);cur=g}
+ if(g)[...g.children].forEach(ch=>{ch.classList.add('magi');const r=ch.getBoundingClientRect(),dx=ev.clientX-(r.left+r.width/2),dy=ev.clientY-(r.top+r.height/2),f=Math.exp(-(dx*dx+dy*dy)/(2*62*62));
+  ch.style.setProperty('--s',(1+.13*f).toFixed(3));ch.style.setProperty('--ty',(-3*f).toFixed(2)+'px');ch.style.zIndex=f>.5?2:''});
+}
+addEventListener('pointermove',e=>{if(e.pointerType==='touch')return;ev=e;if(!raf)raf=requestAnimationFrame(tick)},{passive:true});
+document.documentElement.addEventListener('pointerleave',()=>{reset(cur);cur=null});
+addEventListener('blur',()=>{reset(cur);cur=null});
+})();
+</script>
+</body>
+</html>
